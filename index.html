@@ -562,7 +562,8 @@
             appId: "1:1040195843897:web:363efaa47d7202087f9ae8"
         };
 
-        const firebaseConfig = mySecretConfig || JSON.parse(__firebase_config);
+        // Use standard config if secret one is missing
+        const firebaseConfig = (mySecretConfig && mySecretConfig.apiKey) ? mySecretConfig : JSON.parse(__firebase_config);
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -591,10 +592,19 @@
             reader.onerror = error => reject(error);
         });
 
+        // FIXED AUTH PROTOCOL
         const initAuth = async () => {
             try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
+                // If using a custom config, system tokens will mismatch. Always fallback to anonymous for custom projects in preview.
+                const isCustomConfig = (mySecretConfig && mySecretConfig.apiKey);
+                
+                if (!isCustomConfig && typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    try {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } catch (tokenErr) {
+                        console.warn("Token mismatch, falling back to anonymous");
+                        await signInAnonymously(auth);
+                    }
                 } else {
                     await signInAnonymously(auth);
                 }
@@ -603,6 +613,8 @@
                 if (err.code === 'auth/admin-restricted-operation') {
                     showToast("Admin Alert: Enable 'Anonymous' Auth in Firebase Console.", true);
                     document.getElementById('inventoryGrid').innerHTML = '<div class="col-span-full py-20 text-center text-red-500">Enable "Anonymous" Sign-in in Firebase > Authentication.</div>';
+                } else {
+                    showToast("Connection Error. Check Firebase settings.", true);
                 }
             }
         };
@@ -628,7 +640,6 @@
             showToast("Manage Mode Enabled!");
         };
 
-        // Expanded Car Add Logic
         document.getElementById('addCarForm').onsubmit = async (e) => {
             e.preventDefault();
             if (!userLoggedIn) return;
