@@ -189,21 +189,7 @@
             padding: 4px 0;
         }
 
-        /* Dashboard Specific Styles */
-        .tab-btn {
-            padding: 12px 24px;
-            color: #9ca3af;
-            font-weight: 800;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px solid transparent;
-            transition: 0.3s;
-        }
-        .tab-btn.active { color: #facc15; border-bottom-color: #facc15; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
+        /* Admin Dashboard Grid Styles */
         .admin-form-group {
             display: flex;
             flex-direction: column;
@@ -228,22 +214,11 @@
         .admin-form-input:focus {
             border-color: #facc15;
         }
+        /* Style for options inside dark inputs */
         .admin-form-input option {
             background-color: #18181b;
             color: white;
         }
-        .feature-checkbox-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 12px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .feature-checkbox-card input { accent-color: #facc15; }
     </style>
 </head>
 <body>
@@ -265,164 +240,117 @@
                 <h2 class="text-2xl font-bold text-yellow-500 italic">ADMIN LOGIN</h2>
                 <button onclick="closeModal('loginModal')" class="text-gray-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
             </div>
-            <p class="text-gray-400 text-sm mb-6">Enter password to enable management mode.</p>
-            <input type="password" id="adminPass" placeholder="Password" class="admin-form-input mb-4 text-center">
-            <button onclick="checkAdmin()" class="w-full bg-yellow-500 text-black py-3 rounded-lg font-bold hover:bg-yellow-400 transition">ENABLE MANAGE MODE</button>
+            <p class="text-gray-400 text-sm mb-6">In this preview environment, access is managed automatically. Click the button below to enter manage mode.</p>
+            <button id="autoLoginBtn" class="w-full bg-yellow-500 text-black py-3 rounded-lg font-bold hover:bg-yellow-400 transition">ENABLE MANAGE MODE</button>
         </div>
     </div>
 
     <!-- Dashboard Modal -->
     <div id="dashboardModal" class="modal">
-        <div class="bg-zinc-900 p-8 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-white/10 mx-4">
-            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+        <div class="bg-zinc-900 p-8 rounded-3xl w-full max-w-3xl max-h-[90vh] overflow-y-auto border border-white/10 mx-4">
+            <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
                 <h2 class="text-2xl font-bold text-yellow-500 italic">OWNER DASHBOARD</h2>
                 <button onclick="closeModal('dashboardModal')" class="text-gray-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
             </div>
 
-            <!-- Tabs -->
-            <div class="flex gap-4 mb-8 border-b border-white/5">
-                <button onclick="switchAdminTab('basic')" id="tabBtnBasic" class="tab-btn active">1. Basic Details</button>
-                <button onclick="switchAdminTab('features')" id="tabBtnFeatures" class="tab-btn">2. Car Features</button>
-                <button onclick="switchAdminTab('gallery')" id="tabBtnGallery" class="tab-btn">3. Moments</button>
+            <!-- Add Car Form -->
+            <div class="mb-12">
+                <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i class="fas fa-plus-circle text-yellow-500"></i> Detailed Inventory Entry</h3>
+                <form id="addCarForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="admin-form-group lg:col-span-2">
+                        <label class="admin-form-label">Car Model</label>
+                        <input type="text" id="carModel" placeholder="e.g. Maruti Suzuki Dezire VDI" required class="admin-form-input">
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Price (Display Text)</label>
+                        <input type="text" id="carPrice" placeholder="e.g. ₹4,85,000" required class="admin-form-input">
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Year</label>
+                        <input type="text" id="carYear" placeholder="e.g. 2017" required class="admin-form-input">
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Fuel Type</label>
+                        <select id="carFuel" class="admin-form-input">
+                            <option value="Petrol">Petrol</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="CNG">CNG</option>
+                            <option value="Electric">Electric (EV)</option>
+                            <option value="Hybrid">Hybrid</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">KM Driven</label>
+                        <input type="text" id="carKms" placeholder="e.g. 45,643 KM" required class="admin-form-input">
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Transmission</label>
+                        <select id="carTrans" class="admin-form-input">
+                            <option value="Manual">Manual</option>
+                            <option value="Automatic">Automatic</option>
+                            <option value="AMT">AMT</option>
+                            <option value="DCT/DSG">DCT/DSG</option>
+                            <option value="CVT">CVT</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Body Type</label>
+                        <select id="carBody" class="admin-form-input">
+                            <option value="Sedan">Sedan</option>
+                            <option value="SUV">SUV</option>
+                            <option value="Hatchback">Hatchback</option>
+                            <option value="MUV/MPV">MUV/MPV</option>
+                            <option value="Luxury">Luxury</option>
+                            <option value="Coupe">Coupe</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Owner</label>
+                        <select id="carOwner" class="admin-form-input">
+                            <option value="1st Owner">1st Owner</option>
+                            <option value="2nd Owner">2nd Owner</option>
+                            <option value="3rd Owner">3rd Owner</option>
+                            <option value="4th Owner">4th Owner</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Engine CC</label>
+                        <input type="text" id="carEngine" placeholder="e.g. 1248 CC" class="admin-form-input">
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Insurance</label>
+                        <select id="carInsurance" class="admin-form-input">
+                            <option value="Comprehensive">Comprehensive</option>
+                            <option value="Third Party">Third Party</option>
+                            <option value="Valid">Valid</option>
+                            <option value="Expired">Expired</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group lg:col-span-3">
+                        <label class="admin-form-label">Car Photo</label>
+                        <input type="file" id="carImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
+                    </div>
+                    <div class="admin-form-group lg:col-span-3">
+                        <label class="admin-form-label">Car Overview (Description)</label>
+                        <textarea id="carDescription" rows="3" placeholder="Write highlights about the car condition..." class="admin-form-input"></textarea>
+                    </div>
+                    <button type="submit" class="lg:col-span-3 bg-yellow-500 text-black py-4 rounded-xl font-bold hover:bg-yellow-400 transition uppercase tracking-widest mt-4">PUBLISH DETAILED LISTING</button>
+                </form>
             </div>
 
-            <form id="addCarForm">
-                <!-- TAB 1: BASIC DETAILS -->
-                <div id="tabBasic" class="tab-content active">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="admin-form-group lg:col-span-2">
-                            <label class="admin-form-label">Car Model</label>
-                            <input type="text" id="carModel" placeholder="e.g. Maruti Suzuki Dezire VDI" required class="admin-form-input">
-                        </div>
-                        <div class="admin-form-group">
-                            <label class="admin-form-label">Price</label>
-                            <input type="text" id="carPrice" placeholder="e.g. ₹4,85,000" required class="admin-form-input">
-                        </div>
-                        <div class="admin-form-group">
-                            <label class="admin-form-label">Year</label>
-                            <input type="text" id="carYear" placeholder="e.g. 2017" required class="admin-form-input">
-                        </div>
-                        <div class="admin-form-group">
-                            <label class="admin-form-label">Fuel Type</label>
-                            <select id="carFuel" class="admin-form-input">
-                                <option value="Petrol">Petrol</option>
-                                <option value="Diesel">Diesel</option>
-                                <option value="CNG">CNG</option>
-                                <option value="Electric">Electric (EV)</option>
-                                <option value="Hybrid">Hybrid</option>
-                            </select>
-                        </div>
-                        <div class="admin-form-group">
-                            <label class="admin-form-label">KM Driven</label>
-                            <input type="text" id="carKms" placeholder="e.g. 45,643 KM" required class="admin-form-input">
-                        </div>
-                        <div class="admin-form-group">
-                            <label class="admin-form-label">Transmission</label>
-                            <select id="carTrans" class="admin-form-input">
-                                <option value="Manual">Manual</option>
-                                <option value="Automatic">Automatic</option>
-                                <option value="AMT">AMT</option>
-                                <option value="DCT/DSG">DCT/DSG</option>
-                                <option value="CVT">CVT</option>
-                            </select>
-                        </div>
-                        <div class="admin-form-group">
-                            <label class="admin-form-label">Body Type</label>
-                            <select id="carBody" class="admin-form-input">
-                                <option value="Sedan">Sedan</option>
-                                <option value="SUV">SUV</option>
-                                <option value="Hatchback">Hatchback</option>
-                                <option value="MUV/MPV">MUV/MPV</option>
-                                <option value="Luxury">Luxury</option>
-                                <option value="Coupe">Coupe</option>
-                            </select>
-                        </div>
-                        <div class="admin-form-group">
-                            <label class="admin-form-label">Owner</label>
-                            <select id="carOwner" class="admin-form-input">
-                                <option value="1st Owner">1st Owner</option>
-                                <option value="2nd Owner">2nd Owner</option>
-                                <option value="3rd Owner">3rd Owner</option>
-                                <option value="4th Owner">4th Owner</option>
-                            </select>
-                        </div>
-                        <div class="admin-form-group">
-                            <label class="admin-form-label">Engine CC</label>
-                            <input type="text" id="carEngine" placeholder="e.g. 1248 CC" class="admin-form-input">
-                        </div>
-                        <div class="admin-form-group">
-                            <label class="admin-form-label">Insurance</label>
-                            <select id="carInsurance" class="admin-form-input">
-                                <option value="Comprehensive">Comprehensive</option>
-                                <option value="Third Party">Third Party</option>
-                                <option value="Valid">Valid</option>
-                                <option value="Expired">Expired</option>
-                            </select>
-                        </div>
-                        <div class="admin-form-group lg:col-span-3">
-                            <label class="admin-form-label">Car Photo</label>
-                            <input type="file" id="carImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
-                        </div>
-                        <div class="admin-form-group lg:col-span-3">
-                            <label class="admin-form-label">Overview (Description)</label>
-                            <textarea id="carDescription" rows="3" placeholder="Condition details..." class="admin-form-input"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 2: CAR FEATURES -->
-                <div id="tabFeatures" class="tab-content">
-                    <div class="space-y-8">
-                        <div>
-                            <p class="text-yellow-500 font-bold text-xs uppercase mb-4 tracking-widest">Entertainment & Communication</p>
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="Bluetooth"> Bluetooth</label>
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="Radio"> Radio</label>
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="Speakers Front"> Speakers Front</label>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="text-yellow-500 font-bold text-xs uppercase mb-4 tracking-widest">Safety Features</p>
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="ABS"> ABS</label>
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="Airbags"> Airbags</label>
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="Rear Camera"> Rear Camera</label>
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="Central locking"> Central locking</label>
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="Anti Theft Device"> Anti Theft</label>
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="Keyless Entry"> Keyless Entry</label>
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="Child Safety Locks"> Child Safety Locks</label>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="text-yellow-500 font-bold text-xs uppercase mb-4 tracking-widest">Comfort & Convenience</p>
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="Air Conditioner"> AC</label>
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="Power Steering"> Power Steering</label>
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="Power Windows - Front"> Front Power Windows</label>
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="Power Windows - Rear"> Rear Power Windows</label>
-                                <label class="feature-checkbox-card"><input type="checkbox" class="car-feat" value="Low Fuel Warning Light"> Low Fuel Warning</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-8 pt-6 border-t border-white/10">
-                    <button type="submit" id="submitBtn" class="w-full bg-yellow-500 text-black py-4 rounded-xl font-bold hover:bg-yellow-400 transition shadow-xl uppercase tracking-widest">PUBLISH LISTING</button>
-                </div>
-            </form>
-
-            <!-- TAB 3: MOMENTS -->
-            <div id="tabGallery" class="tab-content">
+            <!-- Add Gallery Form -->
+            <div class="border-t border-white/10 pt-8">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fas fa-camera text-yellow-500"></i> Add Delivery Moment</h3>
                 <form id="addGalleryForm" class="space-y-4">
-                    <input type="text" id="galleryTitle" placeholder="Customer Name / Car Name" class="admin-form-input">
-                    <input type="file" id="galleryImageFile" accept="image/*" class="admin-form-input">
-                    <button type="submit" class="w-full bg-white text-black py-4 rounded-2xl font-black uppercase tracking-widest">ADD TO GALLERY</button>
+                    <input type="text" id="galleryTitle" placeholder="Customer/Car Name (Optional)" class="admin-form-input w-full">
+                    <input type="file" id="galleryImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
+                    <button type="submit" class="w-full bg-yellow-500 text-black py-3 rounded-lg font-bold hover:bg-yellow-400">ADD TO GALLERY</button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Navigation -->
+    <!-- Header / Navbar -->
     <nav class="fixed w-full z-50 transition-all duration-300 bg-black/80 backdrop-blur-md border-b border-white/10">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center">
@@ -436,15 +364,16 @@
                 </div>
             </div>
             
-            <div class="hidden md:flex gap-8 text-sm font-medium uppercase tracking-widest text-gray-400">
+            <div class="hidden md:flex gap-8 text-sm font-medium uppercase tracking-widest">
                 <a href="#inventory" class="hover:text-yellow-400 transition">Buy</a>
                 <a href="#sell" class="hover:text-yellow-400 transition">Sell</a>
+                <a href="#" class="hover:text-yellow-400 transition">Exchange</a>
                 <a href="#" class="hover:text-yellow-400 transition">Services</a>
                 <a href="#" class="hover:text-yellow-400 transition">Contact</a>
             </div>
 
             <div class="flex items-center gap-4">
-                <button id="loginBtn" onclick="openModal('loginModal')" class="text-sm font-bold hover:text-yellow-500 transition border border-white/20 px-4 py-2 rounded-full uppercase">Login</button>
+                <button id="loginBtn" onclick="openModal('loginModal')" class="text-sm font-bold hover:text-yellow-500 transition border border-white/20 px-5 py-2 rounded-full uppercase">Login</button>
                 <button class="bg-yellow-500 text-black px-6 py-2.5 rounded-full text-sm font-bold hover:bg-yellow-400 transition shadow-lg shadow-yellow-500/20 uppercase tracking-tight">Enquire Now</button>
             </div>
         </div>
@@ -470,39 +399,53 @@
                 <div class="premium-filter-bar shadow-2xl backdrop-blur-md bg-black/40">
                     <div class="filter-item">
                         <p class="text-[12px] font-semibold text-white mb-1">Brand</p>
-                        <select id="filterBrand" class="filter-select">
-                            <option value="all">All Brands</option>
-                            <option value="BMW">BMW</option>
-                            <option value="Mercedes">Mercedes</option>
-                            <option value="Audi">Audi</option>
-                            <option value="Porsche">Porsche</option>
-                            <option value="Tata">Tata</option>
-                            <option value="Mahindra">Mahindra</option>
-                        </select>
+                        <div class="flex items-center justify-between text-gray-400">
+                            <select id="filterBrand" class="filter-select">
+                                <option value="all">All Brands</option>
+                                <option value="BMW">BMW</option>
+                                <option value="Mercedes">Mercedes</option>
+                                <option value="Audi">Audi</option>
+                                <option value="Porsche">Porsche</option>
+                                <option value="Jaguar">Jaguar</option>
+                                <option value="Tata">Tata</option>
+                                <option value="Mahindra">Mahindra</option>
+                                <option value="Maruti">Maruti Suzuki</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="filter-divider"></div>
                     <div class="filter-item flex-[1.4]">
                         <p class="text-[12px] font-semibold text-white">Body Type</p>
-                        <select id="filterBody" class="filter-select">
-                            <option value="all">All Bodies</option>
-                            <option value="Sedan">Sedan</option>
-                            <option value="SUV">SUV</option>
-                            <option value="Luxury">Luxury</option>
-                        </select>
+                        <div class="flex items-center justify-between text-gray-400">
+                            <select id="filterBody" class="filter-select">
+                                <option value="all">All Bodies</option>
+                                <option value="Sedan">Sedan</option>
+                                <option value="SUV">SUV</option>
+                                <option value="Hatchback">Hatchback</option>
+                                <option value="Luxury">Luxury</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="filter-divider"></div>
                     <div class="filter-item">
                         <p class="text-[12px] font-semibold text-white mb-1">Fuel Type</p>
-                        <select id="filterFuel" class="filter-select">
-                            <option value="all">All Fuel</option>
-                            <option value="Petrol">Petrol</option>
-                            <option value="Diesel">Diesel</option>
-                            <option value="Electric">Electric</option>
-                        </select>
+                        <div class="flex items-center justify-between text-gray-400">
+                            <select id="filterFuel" class="filter-select">
+                                <option value="all">All Fuel</option>
+                                <option value="Petrol">Petrol</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="CNG">CNG</option>
+                                <option value="Electric">Electric (EV)</option>
+                                <option value="Hybrid">Hybrid</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="flex items-center gap-3 pl-4">
-                        <button onclick="applyFilters()" class="bg-[#e11d48] hover:bg-[#be123c] text-white px-8 py-3 rounded-lg font-bold text-[13px] tracking-wider flex items-center gap-4 transition shadow-lg shadow-red-500/20">
-                            FIND CARS <i class="fas fa-search"></i>
+                        <button onclick="resetFilters()" class="bg-[#1a2323] p-3 rounded-lg text-gray-400 hover:text-white transition border border-white/5">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button onclick="applyFilters()" class="bg-[#e11d48] hover:bg-[#be123c] text-white px-8 py-3 rounded-lg font-bold text-[13px] tracking-wider flex items-center gap-4 transition">
+                            FIND CARS <i class="fas fa-search text-[14px]"></i>
                         </button>
                     </div>
                 </div>
@@ -522,6 +465,39 @@
             <div class="w-full md:w-1/2 relative">
                 <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800" alt="Luxury Sports Car" class="w-full h-auto object-contain drop-shadow-[0_35px_35px_rgba(0,0,0,0.15)]">
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-yellow-100 rounded-full blur-3xl opacity-50 -z-0"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section class="py-24 section-bg-image relative" style="background-image: url('https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&q=80&w=2000');">
+        <div class="absolute inset-0 bg-black/70"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-extrabold uppercase italic text-yellow-500">Why Sahyadri Car's?</h2>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10"><i class="fas fa-certificate text-4xl text-yellow-500 mb-4"></i><h3 class="font-bold mb-2 uppercase text-sm">Certified</h3></div>
+                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10"><i class="fas fa-hand-holding-usd text-4xl text-yellow-500 mb-4"></i><h3 class="font-bold mb-2 uppercase text-sm">Best Price</h3></div>
+                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10"><i class="fas fa-history text-4xl text-yellow-500 mb-4"></i><h3 class="font-bold mb-2 uppercase text-sm">History</h3></div>
+                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10"><i class="fas fa-shield-alt text-4xl text-yellow-500 mb-4"></i><h3 class="font-bold mb-2 uppercase text-sm">Secure</h3></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LUXURY BRAND STRIP -->
+    <section class="py-24 bg-zinc-50 overflow-hidden border-y border-zinc-200">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <p class="text-yellow-600 font-bold tracking-widest mb-2 uppercase text-xs">Exotic Inventory</p>
+                <h2 class="text-3xl md:text-4xl font-extrabold uppercase italic text-black">The Brands We <span class="text-yellow-600">Represent</span></h2>
+            </div>
+            <div class="flex flex-wrap justify-center gap-10 md:gap-14 items-center">
+                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Benz_logo%2C_2010.svg/1024px-Mercedes-Benz_logo%2C_2010.svg.png" alt="Mercedes" class="p-4"></div>
+                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/1024px-BMW.svg.png" alt="BMW" class="p-4"></div>
+                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Audi_logo_detail.svg/1024px-Audi_logo_detail.svg.png" alt="Audi" class="p-4"></div>
+                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Porsche_logo.svg/1024px-Porsche_logo.svg.png" alt="Porsche" class="p-4"></div>
+                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Jaguar_2012_logo.svg/1024px-Jaguar_2012_logo.svg.png" alt="Jaguar" class="p-4"></div>
             </div>
         </div>
     </section>
@@ -567,26 +543,28 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-black pt-16 pb-10 border-t border-white/10 text-center">
-        <div class="h-16 w-auto mx-auto mb-8">
-            <svg viewBox="0 0 320 120" class="h-full w-auto mx-auto">
-                <ellipse cx="160" cy="60" rx="155" ry="55" fill="#1a1a1a" stroke="#facc15" stroke-width="1.5"/>
-                <path d="M80 55 C120 25, 200 25, 260 55 C200 45, 140 45, 80 55" fill="#facc15" />
-                <text x="75" y="92" font-family="Arial, sans-serif" font-weight="900" font-size="34" fill="white" font-style="italic">Sahyadri</text>
-                <text x="218" y="92" font-family="Arial, sans-serif" font-weight="900" font-size="34" fill="#facc15" font-style="italic">Car's</text>
-            </svg>
+    <footer class="bg-black pt-16 pb-10 border-t border-white/10">
+        <div class="container mx-auto px-4 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="h-16 w-auto">
+                <svg viewBox="0 0 320 120" class="h-full w-auto">
+                    <ellipse cx="160" cy="60" rx="155" ry="55" fill="#1a1a1a" stroke="#facc15" stroke-width="1.5"/>
+                    <path d="M80 55 C120 25, 200 25, 260 55 C200 45, 140 45, 80 55" fill="#facc15" />
+                    <text x="75" y="92" font-family="Arial, sans-serif" font-weight="900" font-size="34" fill="white" font-style="italic">Sahyadri</text>
+                    <text x="218" y="92" font-family="Arial, sans-serif" font-weight="900" font-size="34" fill="#facc15" font-style="italic">Car's</text>
+                </svg>
+            </div>
+            <p class="text-gray-600 text-xs uppercase tracking-widest">© 2026 Sahyadri Car's. All rights reserved.</p>
         </div>
-        <p class="text-gray-600 text-xs uppercase tracking-widest">© 2026 Sahyadri Car's. All rights reserved.</p>
     </footer>
 
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
         // ✅ FIREBASE KEYS
-        const firebaseConfig = {
+        const mySecretConfig = {
             apiKey: "AIzaSyDNJeaLY-PczXJ1iNVU2UqadyT5suVAOhI",
             authDomain: "sahyadri-cars-official.firebaseapp.com",
             projectId: "sahyadri-cars-official",
@@ -595,10 +573,11 @@
             appId: "1:1040195843897:web:363efaa47d7202087f9ae8"
         };
 
+        const firebaseConfig = (mySecretConfig && mySecretConfig.apiKey) ? mySecretConfig : JSON.parse(__firebase_config);
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const appId = 'sahyadri-cars-official';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'sahyadri-cars-official';
 
         let userLoggedIn = false;
         let isManageModeEnabled = false;
@@ -608,26 +587,6 @@
         window.closeModal = (id) => document.getElementById(id).classList.remove('active');
         window.toggleDashboard = () => openModal('dashboardModal');
 
-        // Tab Switcher
-        window.switchAdminTab = (tab) => {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
-            document.getElementById('tabBtn' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
-            document.getElementById('submitBtn').style.display = (tab === 'gallery') ? 'none' : 'block';
-        };
-
-        window.checkAdmin = () => {
-            if(document.getElementById('adminPass').value === 'sahyadri123') {
-                isManageModeEnabled = true;
-                closeModal('loginModal');
-                document.getElementById('adminPanel').classList.remove('hidden');
-                document.getElementById('loginBtn').innerText = 'LOGOUT';
-                renderInventory(allCarInventory);
-                showToast("Manage Mode Active");
-            }
-        };
-
         const showToast = (msg, isError = false) => {
             const t = document.getElementById("toast");
             t.innerText = msg;
@@ -636,26 +595,77 @@
             setTimeout(() => { t.className = t.className.replace("show", ""); }, 4000);
         };
 
-        const toBase64 = file => new Promise((resolve) => {
+        const toBase64 = file => new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
         });
 
-        // Add Car
+        const initAuth = async () => {
+            try {
+                const isCustomConfig = (mySecretConfig && mySecretConfig.apiKey);
+                if (!isCustomConfig && typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    try {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } catch (tokenErr) {
+                        await signInAnonymously(auth);
+                    }
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.error("Auth failed:", err);
+                if (err.code === 'auth/admin-restricted-operation') {
+                    showToast("Admin Alert: Enable 'Anonymous' Auth in Firebase Console.", true);
+                    document.getElementById('inventoryGrid').innerHTML = '<div class="col-span-full py-20 text-center text-red-500">Enable "Anonymous" Sign-in in Firebase > Authentication.</div>';
+                }
+            }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            userLoggedIn = !!user;
+            updateUIState();
+        });
+
+        const updateUIState = () => {
+            const showManage = userLoggedIn && isManageModeEnabled;
+            document.getElementById('adminPanel').classList.toggle('hidden', !showManage);
+            document.getElementById('loginBtn').innerHTML = isManageModeEnabled ? 'EXIT MANAGE' : 'LOGIN';
+            document.getElementById('loginBtn').onclick = isManageModeEnabled ? () => { isManageModeEnabled = false; updateUIState(); } : () => openModal('loginModal');
+            renderInventory(allCarInventory);
+            renderGallery();
+        };
+
+        document.getElementById('autoLoginBtn').onclick = () => {
+            isManageModeEnabled = true;
+            closeModal('loginModal');
+            updateUIState();
+            showToast("Manage Mode Enabled!");
+        };
+
         document.getElementById('addCarForm').onsubmit = async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            btn.innerHTML = 'PUBLISHING...'; btn.disabled = true;
+            if (!userLoggedIn) return;
+            
+            const btn = e.target.querySelector('button');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> PUBLISHING...';
+            btn.disabled = true;
+
+            let imgData = "https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800";
+            const fileInput = document.getElementById('carImageFile');
+            
+            if (fileInput.files[0]) {
+                const b64 = await toBase64(fileInput.files[0]);
+                if (b64.length > 900000) { 
+                    showToast("Photo too large! Use a smaller file.", true);
+                    btn.innerHTML = 'PUBLISH CAR'; btn.disabled = false;
+                    return; 
+                }
+                imgData = b64;
+            }
 
             try {
-                let imgData = "https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800";
-                const file = document.getElementById('carImageFile').files[0];
-                if (file) imgData = await toBase64(file);
-
-                const features = [];
-                document.querySelectorAll('.car-feat:checked').forEach(c => features.push(c.value));
-
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), {
                     model: document.getElementById('carModel').value,
                     price: document.getElementById('carPrice').value,
@@ -668,99 +678,154 @@
                     engine: document.getElementById('carEngine').value,
                     insurance: document.getElementById('carInsurance').value,
                     description: document.getElementById('carDescription').value,
-                    features: features,
                     image: imgData,
                     createdAt: serverTimestamp()
                 });
-                showToast("Car Listed!");
+                showToast("Detailed Listing Published!");
                 document.getElementById('addCarForm').reset();
                 closeModal('dashboardModal');
-            } catch (err) { console.error(err); }
-            finally { btn.innerHTML = 'PUBLISH LISTING'; btn.disabled = false; }
+            } catch (err) { 
+                console.error(err);
+                showToast("Error saving car.", true);
+            } finally {
+                btn.innerHTML = 'PUBLISH CAR TO WEBSITE';
+                btn.disabled = false;
+            }
         };
 
-        // Render Inventory
+        document.getElementById('addGalleryForm').onsubmit = async (e) => {
+            e.preventDefault();
+            if (!userLoggedIn) return;
+            const btn = e.target.querySelector('button');
+            btn.innerHTML = 'UPLOADING...'; btn.disabled = true;
+
+            let imgData = "https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&q=80&w=800";
+            const fileInput = document.getElementById('galleryImageFile');
+            if (fileInput.files[0]) {
+                imgData = await toBase64(fileInput.files[0]);
+            }
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'gallery'), {
+                    title: document.getElementById('galleryTitle').value || "Delivery Moment",
+                    image: imgData,
+                    createdAt: serverTimestamp()
+                });
+                showToast("Moment Added!");
+                document.getElementById('addGalleryForm').reset();
+                closeModal('dashboardModal');
+            } catch (err) { console.error(err); }
+            finally { btn.innerHTML = 'ADD TO GALLERY'; btn.disabled = false; }
+        };
+
         const renderInventory = (cars) => {
             const grid = document.getElementById('inventoryGrid');
             grid.innerHTML = '';
+            if (!cars || cars.length === 0) {
+                grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-600">No cars found. Click "Manage" to add some!</div>';
+                return;
+            }
+            
             cars.forEach((carDoc) => {
                 const car = carDoc.data();
                 grid.innerHTML += `
-                <div class="bg-zinc-900 rounded-[40px] overflow-hidden border border-white/5 relative group">
-                    ${isManageModeEnabled ? `<button onclick="deleteCar('${carDoc.id}')" class="absolute top-4 right-4 bg-red-600 text-white w-10 h-10 rounded-full z-10 flex items-center justify-center hover:scale-110 shadow-2xl"><i class="fas fa-trash"></i></button>` : ''}
-                    <div class="h-64 overflow-hidden relative">
+                <div class="bg-zinc-900 rounded-[40px] overflow-hidden shadow-2xl group border border-white/5 relative">
+                    ${isManageModeEnabled ? `<button onclick="deleteCar('${carDoc.id}')" class="absolute top-4 right-4 bg-red-600/80 backdrop-blur-md text-white w-10 h-10 rounded-full z-10 hover:bg-red-700 transition"><i class="fas fa-trash"></i></button>` : ''}
+                    <div class="relative overflow-hidden h-64">
                         <img src="${car.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                         <div class="absolute bottom-4 left-4 flex gap-2">
-                             <span class="bg-black/60 backdrop-blur-md text-white text-[9px] px-3 py-1 rounded-full uppercase font-bold">${car.transmission || 'Manual'}</span>
+                             <span class="bg-black/60 backdrop-blur-md text-white text-[9px] px-3 py-1 rounded-full uppercase font-bold tracking-widest">${car.transmission || 'Manual'}</span>
+                             <span class="bg-yellow-500 text-black text-[9px] px-3 py-1 rounded-full uppercase font-bold tracking-widest">${car.owner || '1st Owner'}</span>
                         </div>
                     </div>
                     <div class="p-8">
                         <div class="flex justify-between items-start mb-4">
-                            <div><h3 class="text-xl font-extrabold text-white uppercase italic">${car.model}</h3></div>
-                            <p class="text-yellow-500 font-black text-lg italic">${car.price}</p>
+                            <div>
+                                <h3 class="text-xl font-extrabold text-white uppercase italic leading-tight">${car.model}</h3>
+                                <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mt-1">${car.bodyType || 'Sedan'} • ${car.engine || 'Certified'}</p>
+                            </div>
+                            <p class="text-yellow-500 font-black text-xl italic">${car.price}</p>
                         </div>
-                        <div class="grid grid-cols-3 gap-2 border-y border-white/10 py-4 mb-6 text-center text-[10px] text-gray-500 font-black uppercase">
-                            <div><i class="fas fa-road text-gray-500 mb-1"></i><br>${car.kms}</div>
-                            <div class="border-x border-white/10"><i class="fas fa-gas-pump text-gray-500 mb-1"></i><br>${car.fuel}</div>
-                            <div><i class="fas fa-calendar text-gray-500 mb-1"></i><br>${car.year}</div>
+                        <div class="grid grid-cols-3 gap-2 border-y border-white/10 py-4 mb-6 text-center">
+                            <div><i class="fas fa-road text-gray-500 text-sm mb-1"></i><p class="font-bold text-[10px] text-gray-300 uppercase">${car.kms}</p></div>
+                            <div class="border-x border-white/10"><i class="fas fa-gas-pump text-gray-500 text-sm mb-1"></i><p class="font-bold text-[10px] text-gray-300 uppercase">${car.fuel}</p></div>
+                            <div><i class="fas fa-calendar text-gray-500 text-sm mb-1"></i><p class="font-bold text-[10px] text-gray-300 uppercase">${car.year}</p></div>
                         </div>
-                        <button class="w-full bg-white text-black py-4 rounded-2xl font-black uppercase text-[10px] hover:bg-yellow-500 transition-all">Enquire Now</button>
+                        <p class="text-gray-400 text-xs mb-6 line-clamp-2 italic">${car.description || 'Premium pre-owned car in pristine condition with history check complete.'}</p>
+                        <button class="w-full bg-yellow-500 text-black py-4 rounded-2xl font-black hover:bg-yellow-400 transition uppercase text-xs tracking-widest shadow-lg shadow-yellow-500/10">View Detailed Specs</button>
                     </div>
                 </div>`;
             });
         };
 
+        window.applyFilters = () => {
+            const brand = document.getElementById('filterBrand').value;
+            const fuel = document.getElementById('filterFuel').value;
+            const body = document.getElementById('filterBody').value;
+
+            let filtered = allCarInventory;
+            if (brand !== 'all') filtered = filtered.filter(doc => doc.data().model.toLowerCase().includes(brand.toLowerCase()));
+            if (fuel !== 'all') filtered = filtered.filter(doc => doc.data().fuel === fuel);
+            if (body !== 'all') filtered = filtered.filter(doc => doc.data().bodyType === body);
+
+            renderInventory(filtered);
+            showToast(`Found ${filtered.length} matches`);
+            document.getElementById('inventory').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.resetFilters = () => {
+            document.getElementById('filterBrand').value = 'all';
+            document.getElementById('filterFuel').value = 'all';
+            document.getElementById('filterBody').value = 'all';
+            renderInventory(allCarInventory);
+            showToast("Filters Reset");
+        };
+
+        const setupListeners = () => {
+            if (!auth.currentUser) return;
+            const carQuery = query(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), orderBy('createdAt', 'desc'));
+            onSnapshot(carQuery, (snapshot) => {
+                allCarInventory = [];
+                snapshot.forEach(doc => allCarInventory.push(doc));
+                renderInventory(allCarInventory);
+            }, err => console.error(err));
+        };
+
         const renderGallery = () => {
-            onSnapshot(query(collection(db, 'artifacts', appId, 'public', 'data', 'gallery'), orderBy('createdAt', 'desc')), (snap) => {
+            if (!auth.currentUser) return;
+            const galleryQuery = query(collection(db, 'artifacts', appId, 'public', 'data', 'gallery'), orderBy('createdAt', 'desc'));
+            onSnapshot(galleryQuery, (snapshot) => {
                 const grid = document.getElementById('galleryGrid');
                 grid.innerHTML = '';
-                snap.forEach(d => {
-                    const item = d.data();
-                    grid.innerHTML += `<div class="relative group rounded-2xl overflow-hidden aspect-square">
+                snapshot.forEach((galDoc) => {
+                    const item = galDoc.data();
+                    grid.innerHTML += `
+                    <div class="gallery-item aspect-square md:aspect-auto md:h-80">
                         <img src="${item.image}" class="w-full h-full object-cover">
-                        ${isManageModeEnabled ? `<button onclick="deleteGallery('${d.id}')" class="absolute top-2 right-2 bg-red-600 p-2 rounded-full text-white text-xs"><i class="fas fa-trash"></i></button>` : ''}
+                        <div class="gallery-overlay">
+                            <p class="text-white font-bold text-sm mb-2">${item.title}</p>
+                            ${isManageModeEnabled ? `<button onclick="deleteGallery('${galDoc.id}')" class="bg-red-600 text-white text-[10px] px-3 py-1 rounded-full uppercase self-start">Delete</button>` : ''}
+                        </div>
                     </div>`;
                 });
-            });
+            }, err => console.error(err));
         };
 
-        document.getElementById('addGalleryForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('button'); btn.innerHTML = 'UPLOADING...';
-            try {
-                const file = document.getElementById('galleryImageFile').files[0];
-                if(file) {
-                    const img = await toBase64(file);
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'gallery'), {
-                        title: document.getElementById('galleryTitle').value,
-                        image: img, createdAt: serverTimestamp()
-                    });
-                    showToast("Moment Added");
-                    document.getElementById('addGalleryForm').reset();
-                }
-            } catch(err) { console.error(err); }
-            finally { btn.innerHTML = 'ADD TO GALLERY'; }
-        };
+        window.deleteCar = async (id) => { if(confirm("Delete this car?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'inventory', id)); };
+        window.deleteGallery = async (id) => { if(confirm("Delete this moment?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'gallery', id)); };
 
-        window.deleteCar = async (id) => { if(confirm("Delete?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'inventory', id)); };
-        window.deleteGallery = async (id) => { if(confirm("Delete?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'gallery', id)); };
+        initAuth().then(() => { setupListeners(); });
 
-        window.applyFilters = () => {
-            const b = document.getElementById('filterBrand').value;
-            const f = document.getElementById('filterFuel').value;
-            let filtered = allCarInventory.map(d => d);
-            if(b !== 'all') filtered = filtered.filter(d => d.data().model.toLowerCase().includes(b.toLowerCase()));
-            if(f !== 'all') filtered = filtered.filter(d => d.data().fuel === f);
-            renderInventory(filtered);
-            showToast(`Found ${filtered.length} cars`);
-        };
-
-        onSnapshot(query(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), orderBy('createdAt', 'desc')), (snap) => {
-            allCarInventory = snap.docs;
-            renderInventory(allCarInventory);
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('py-2', 'bg-black/95');
+                nav.classList.remove('py-3', 'bg-black/80');
+            } else {
+                nav.classList.add('py-3', 'bg-black/80');
+                nav.classList.remove('py-2', 'bg-black/95');
+            }
         });
-
-        signInAnonymously(auth).then(() => renderGallery());
     </script>
 </body>
 </html>
