@@ -219,6 +219,48 @@
             background-color: #18181b;
             color: white;
         }
+
+        /* Admin Tab UI */
+        .tab-btn {
+            padding: 10px 20px;
+            border-bottom: 2px solid transparent;
+            color: #9ca3af;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            color: #facc15;
+            border-bottom-color: #facc15;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .feature-checkbox-group {
+            display: grid;
+            grid-template-cols: repeat(2, 1fr);
+            gap: 12px;
+        }
+        @media (min-width: 768px) {
+            .feature-checkbox-group { grid-template-cols: repeat(3, 1fr); }
+        }
+
+        .feature-item-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #d1d5db;
+            cursor: pointer;
+            padding: 8px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .feature-item-label:hover { background: rgba(255,255,255,0.07); }
+        .feature-item-label input { accent-color: #facc15; }
     </style>
 </head>
 <body>
@@ -247,99 +289,151 @@
 
     <!-- Dashboard Modal -->
     <div id="dashboardModal" class="modal">
-        <div class="bg-zinc-900 p-8 rounded-3xl w-full max-w-3xl max-h-[90vh] overflow-y-auto border border-white/10 mx-4">
-            <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+        <div class="bg-zinc-900 p-8 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-white/10 mx-4">
+            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
                 <h2 class="text-2xl font-bold text-yellow-500 italic">OWNER DASHBOARD</h2>
                 <button onclick="closeModal('dashboardModal')" class="text-gray-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
             </div>
 
-            <!-- Add Car Form -->
-            <div class="mb-12">
-                <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i class="fas fa-plus-circle text-yellow-500"></i> Detailed Inventory Entry</h3>
-                <form id="addCarForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="admin-form-group lg:col-span-2">
-                        <label class="admin-form-label">Car Model</label>
-                        <input type="text" id="carModel" placeholder="e.g. Maruti Suzuki Dezire VDI" required class="admin-form-input">
-                    </div>
-                    <div class="admin-form-group">
-                        <label class="admin-form-label">Price (Display Text)</label>
-                        <input type="text" id="carPrice" placeholder="e.g. ₹4,85,000" required class="admin-form-input">
-                    </div>
-                    <div class="admin-form-group">
-                        <label class="admin-form-label">Year</label>
-                        <input type="text" id="carYear" placeholder="e.g. 2017" required class="admin-form-input">
-                    </div>
-                    <div class="admin-form-group">
-                        <label class="admin-form-label">Fuel Type</label>
-                        <select id="carFuel" class="admin-form-input">
-                            <option value="Petrol">Petrol</option>
-                            <option value="Diesel">Diesel</option>
-                            <option value="CNG">CNG</option>
-                            <option value="Electric">Electric (EV)</option>
-                            <option value="Hybrid">Hybrid</option>
-                        </select>
-                    </div>
-                    <div class="admin-form-group">
-                        <label class="admin-form-label">KM Driven</label>
-                        <input type="text" id="carKms" placeholder="e.g. 45,643 KM" required class="admin-form-input">
-                    </div>
-                    <div class="admin-form-group">
-                        <label class="admin-form-label">Transmission</label>
-                        <select id="carTrans" class="admin-form-input">
-                            <option value="Manual">Manual</option>
-                            <option value="Automatic">Automatic</option>
-                            <option value="AMT">AMT</option>
-                            <option value="DCT/DSG">DCT/DSG</option>
-                            <option value="CVT">CVT</option>
-                        </select>
-                    </div>
-                    <div class="admin-form-group">
-                        <label class="admin-form-label">Body Type</label>
-                        <select id="carBody" class="admin-form-input">
-                            <option value="Sedan">Sedan</option>
-                            <option value="SUV">SUV</option>
-                            <option value="Hatchback">Hatchback</option>
-                            <option value="MUV/MPV">MUV/MPV</option>
-                            <option value="Luxury">Luxury</option>
-                            <option value="Coupe">Coupe</option>
-                        </select>
-                    </div>
-                    <div class="admin-form-group">
-                        <label class="admin-form-label">Owner</label>
-                        <select id="carOwner" class="admin-form-input">
-                            <option value="1st Owner">1st Owner</option>
-                            <option value="2nd Owner">2nd Owner</option>
-                            <option value="3rd Owner">3rd Owner</option>
-                            <option value="4th Owner">4th Owner</option>
-                        </select>
-                    </div>
-                    <div class="admin-form-group">
-                        <label class="admin-form-label">Engine CC</label>
-                        <input type="text" id="carEngine" placeholder="e.g. 1248 CC" class="admin-form-input">
-                    </div>
-                    <div class="admin-form-group">
-                        <label class="admin-form-label">Insurance</label>
-                        <select id="carInsurance" class="admin-form-input">
-                            <option value="Comprehensive">Comprehensive</option>
-                            <option value="Third Party">Third Party</option>
-                            <option value="Valid">Valid</option>
-                            <option value="Expired">Expired</option>
-                        </select>
-                    </div>
-                    <div class="admin-form-group lg:col-span-3">
-                        <label class="admin-form-label">Car Photo</label>
-                        <input type="file" id="carImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
-                    </div>
-                    <div class="admin-form-group lg:col-span-3">
-                        <label class="admin-form-label">Car Overview (Description)</label>
-                        <textarea id="carDescription" rows="3" placeholder="Write highlights about the car condition..." class="admin-form-input"></textarea>
-                    </div>
-                    <button type="submit" class="lg:col-span-3 bg-yellow-500 text-black py-4 rounded-xl font-bold hover:bg-yellow-400 transition uppercase tracking-widest mt-4">PUBLISH DETAILED LISTING</button>
-                </form>
+            <!-- Dashboard Tabs -->
+            <div class="flex gap-4 mb-8 border-b border-white/5">
+                <button onclick="switchAdminTab('details')" id="tabBtnDetails" class="tab-btn active">1. Basic Details</button>
+                <button onclick="switchAdminTab('features')" id="tabBtnFeatures" class="tab-btn">2. Car Features</button>
             </div>
 
+            <!-- Add Car Form -->
+            <form id="addCarForm">
+                
+                <!-- Tab: Details -->
+                <div id="tabDetails" class="tab-content active">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <div class="admin-form-group lg:col-span-2">
+                            <label class="admin-form-label">Car Model</label>
+                            <input type="text" id="carModel" placeholder="e.g. Maruti Suzuki Dezire VDI" required class="admin-form-input">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Price (Display Text)</label>
+                            <input type="text" id="carPrice" placeholder="e.g. ₹4,85,000" required class="admin-form-input">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Year</label>
+                            <input type="text" id="carYear" placeholder="e.g. 2017" required class="admin-form-input">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Fuel Type</label>
+                            <select id="carFuel" class="admin-form-input">
+                                <option value="Petrol">Petrol</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="CNG">CNG</option>
+                                <option value="Electric">Electric (EV)</option>
+                                <option value="Hybrid">Hybrid</option>
+                            </select>
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">KM Driven</label>
+                            <input type="text" id="carKms" placeholder="e.g. 45,643 KM" required class="admin-form-input">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Transmission</label>
+                            <select id="carTrans" class="admin-form-input">
+                                <option value="Manual">Manual</option>
+                                <option value="Automatic">Automatic</option>
+                                <option value="AMT">AMT</option>
+                                <option value="DCT/DSG">DCT/DSG</option>
+                                <option value="CVT">CVT</option>
+                            </select>
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Body Type</label>
+                            <select id="carBody" class="admin-form-input">
+                                <option value="Sedan">Sedan</option>
+                                <option value="SUV">SUV</option>
+                                <option value="Hatchback">Hatchback</option>
+                                <option value="MUV/MPV">MUV/MPV</option>
+                                <option value="Luxury">Luxury</option>
+                                <option value="Coupe">Coupe</option>
+                            </select>
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Owner</label>
+                            <select id="carOwner" class="admin-form-input">
+                                <option value="1st Owner">1st Owner</option>
+                                <option value="2nd Owner">2nd Owner</option>
+                                <option value="3rd Owner">3rd Owner</option>
+                                <option value="4th Owner">4th Owner</option>
+                            </select>
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Engine CC</label>
+                            <input type="text" id="carEngine" placeholder="e.g. 1248 CC" class="admin-form-input">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Insurance</label>
+                            <select id="carInsurance" class="admin-form-input">
+                                <option value="Comprehensive">Comprehensive</option>
+                                <option value="Third Party">Third Party</option>
+                                <option value="Valid">Valid</option>
+                                <option value="Expired">Expired</option>
+                            </select>
+                        </div>
+                        <div class="admin-form-group lg:col-span-3">
+                            <label class="admin-form-label">Car Photo</label>
+                            <input type="file" id="carImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
+                        </div>
+                        <div class="admin-form-group lg:col-span-3">
+                            <label class="admin-form-label">Car Overview (Description)</label>
+                            <textarea id="carDescription" rows="3" placeholder="Write highlights about the car condition..." class="admin-form-input"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Features -->
+                <div id="tabFeatures" class="tab-content">
+                    <div class="space-y-8 mb-8">
+                        <div>
+                            <h4 class="text-yellow-500 text-xs font-black uppercase mb-4 tracking-widest border-b border-white/5 pb-2">Entertainment & Communication</h4>
+                            <div class="feature-checkbox-group">
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Bluetooth"> Bluetooth</label>
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Radio"> Radio</label>
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Speakers Front"> Speakers Front</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-yellow-500 text-xs font-black uppercase mb-4 tracking-widest border-b border-white/5 pb-2">Safety</h4>
+                            <div class="feature-checkbox-group">
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Central locking"> Central locking</label>
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="ABS"> ABS</label>
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Driver Air Bag"> Driver Air Bag</label>
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Anti Theft Device"> Anti Theft Device</label>
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Rear Camera"> Rear Camera</label>
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Keyless Entry"> Keyless Entry</label>
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Child Safety Locks"> Child Safety Locks</label>
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Airbag"> Airbag</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-yellow-500 text-xs font-black uppercase mb-4 tracking-widest border-b border-white/5 pb-2">Comfort & Convenience</h4>
+                            <div class="feature-checkbox-group">
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Air Conditioner"> Air Conditioner</label>
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Power Window"> Power Window</label>
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Power Steering"> Power Steering</label>
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Power Windows - Front"> Power Windows - Front</label>
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Power Windows - Rear"> Power Windows - Rear</label>
+                                <label class="feature-item-label"><input type="checkbox" name="feat" value="Low Fuel Warning Light"> Low Fuel Warning Light</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <button type="submit" class="w-full bg-yellow-500 text-black py-4 rounded-xl font-bold hover:bg-yellow-400 transition uppercase tracking-widest">PUBLISH LISTING</button>
+                </div>
+            </form>
+
             <!-- Add Gallery Form -->
-            <div class="border-t border-white/10 pt-8">
+            <div class="border-t border-white/10 pt-8 mt-12">
                 <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fas fa-camera text-yellow-500"></i> Add Delivery Moment</h3>
                 <form id="addGalleryForm" class="space-y-4">
                     <input type="text" id="galleryTitle" placeholder="Customer/Car Name (Optional)" class="admin-form-input w-full">
@@ -373,7 +467,7 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <button id="loginBtn" onclick="openModal('loginModal')" class="text-sm font-bold hover:text-yellow-500 transition border border-white/20 px-5 py-2 rounded-full uppercase">Login</button>
+                <button id="loginBtn" onclick="openModal('loginModal')" class="text-sm font-bold hover:text-yellow-500 transition border border-white/20 px-4 py-2 rounded-full uppercase">Login</button>
                 <button class="bg-yellow-500 text-black px-6 py-2.5 rounded-full text-sm font-bold hover:bg-yellow-400 transition shadow-lg shadow-yellow-500/20 uppercase tracking-tight">Enquire Now</button>
             </div>
         </div>
@@ -587,6 +681,20 @@
         window.closeModal = (id) => document.getElementById(id).classList.remove('active');
         window.toggleDashboard = () => openModal('dashboardModal');
 
+        // Dashboard Tab Management
+        window.switchAdminTab = (tab) => {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            if (tab === 'details') {
+                document.getElementById('tabDetails').classList.add('active');
+                document.getElementById('tabBtnDetails').classList.add('active');
+            } else if (tab === 'features') {
+                document.getElementById('tabFeatures').classList.add('active');
+                document.getElementById('tabBtnFeatures').classList.add('active');
+            }
+        };
+
         const showToast = (msg, isError = false) => {
             const t = document.getElementById("toast");
             t.innerText = msg;
@@ -620,6 +728,18 @@
                     showToast("Admin Alert: Enable 'Anonymous' Auth in Firebase Console.", true);
                     document.getElementById('inventoryGrid').innerHTML = '<div class="col-span-full py-20 text-center text-red-500">Enable "Anonymous" Sign-in in Firebase > Authentication.</div>';
                 }
+            }
+        };
+
+        window.checkAdmin = () => {
+            const pass = document.getElementById('adminPass').value;
+            if (pass === 'sahyadri123') {
+                isManageModeEnabled = true;
+                closeModal('loginModal');
+                updateUIState();
+                showToast("Manage Mode Enabled!");
+            } else {
+                showToast("Incorrect Password", true);
             }
         };
 
@@ -665,6 +785,12 @@
                 imgData = b64;
             }
 
+            // Collect selected features
+            const features = [];
+            document.querySelectorAll('input[name="feat"]:checked').forEach(cb => {
+                features.push(cb.value);
+            });
+
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), {
                     model: document.getElementById('carModel').value,
@@ -678,6 +804,7 @@
                     engine: document.getElementById('carEngine').value,
                     insurance: document.getElementById('carInsurance').value,
                     description: document.getElementById('carDescription').value,
+                    features: features, // Saving the list of features
                     image: imgData,
                     createdAt: serverTimestamp()
                 });
@@ -688,7 +815,7 @@
                 console.error(err);
                 showToast("Error saving car.", true);
             } finally {
-                btn.innerHTML = 'PUBLISH CAR TO WEBSITE';
+                btn.innerHTML = 'PUBLISH LISTING';
                 btn.disabled = false;
             }
         };
@@ -730,7 +857,7 @@
                 const car = carDoc.data();
                 grid.innerHTML += `
                 <div class="bg-zinc-900 rounded-[40px] overflow-hidden shadow-2xl group border border-white/5 relative">
-                    ${isManageModeEnabled ? `<button onclick="deleteCar('${carDoc.id}')" class="absolute top-4 right-4 bg-red-600/80 backdrop-blur-md text-white w-10 h-10 rounded-full z-10 hover:bg-red-700 transition"><i class="fas fa-trash"></i></button>` : ''}
+                    ${isManageModeEnabled ? `<button onclick="deleteCar('${carDoc.id}')" class="absolute top-4 right-4 bg-red-600/80 backdrop-blur-md text-white w-10 h-10 rounded-full z-10 hover:bg-red-700 transition flex items-center justify-center"><i class="fas fa-trash"></i></button>` : ''}
                     <div class="relative overflow-hidden h-64">
                         <img src="${car.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                         <div class="absolute bottom-4 left-4 flex gap-2">
