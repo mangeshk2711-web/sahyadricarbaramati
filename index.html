@@ -4,6 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sahyadri Car's | Premium Pre-owned Luxury Cars</title>
+    <meta name="description" content="Sahyadri Car's in Baramati offers certified pre-owned cars with transparent pricing, verified history, test drive support, and direct WhatsApp enquiry.">
+    <meta name="keywords" content="used cars Baramati, pre owned cars Maharashtra, luxury used cars, certified cars, Sahyadri Cars, second hand cars Pune district">
+    <meta name="author" content="Sahyadri Car's">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="canonical" href="https://sahyadricars.in/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Sahyadri Car's | Premium Pre-owned Luxury Cars">
+    <meta property="og:description" content="Certified pre-owned cars in Baramati with transparent pricing, verified history, and quick enquiry support.">
+    <meta property="og:url" content="https://sahyadricars.in/">
+    <meta property="og:site_name" content="Sahyadri Car's">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=2000">
+    <meta property="og:locale" content="en_IN">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sahyadri Car's | Premium Pre-owned Luxury Cars">
+    <meta name="twitter:description" content="Buy certified pre-owned cars in Baramati with verified history and transparent pricing.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=2000">
+
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "AutoDealer",
+          "name": "Sahyadri Car's",
+          "url": "https://sahyadricars.in/",
+          "image": "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=2000",
+          "description": "Certified pre-owned car dealership in Baramati, Maharashtra.",
+          "telephone": "+91-99999-99999",
+          "priceRange": "₹₹₹",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Baramati",
+            "addressRegion": "Maharashtra",
+            "addressCountry": "IN"
+          },
+          "areaServed": "Maharashtra",
+          "sameAs": [
+            "https://wa.me/919999999999"
+          ]
+        }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -23,6 +68,9 @@
             color: #ffffff;
             scroll-behavior: smooth;
             letter-spacing: 0.01em;
+        }
+        input, select, textarea, button {
+            font-size: 16px;
         }
 
         section {
@@ -231,6 +279,7 @@
             backdrop-filter: blur(12px);
             align-items: center;
             justify-content: center;
+            -webkit-overflow-scrolling: touch;
         }
         .modal.active { display: flex; }
 
@@ -341,6 +390,40 @@
             letter-spacing: -0.02em;
             line-height: 1.1;
         }
+        .site-logo-nav {
+            height: 82px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+            max-width: min(52vw, 360px);
+        }
+        .site-logo-footer {
+            height: 96px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+            max-width: min(70vw, 420px);
+        }
+        .brand-title {
+            font-size: clamp(1.1rem, 2.2vw, 1.7rem);
+            font-weight: 900;
+            font-style: italic;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #ffffff 0%, #facc15 55%, #eab308 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 14px rgba(250, 204, 21, 0.18);
+            white-space: nowrap;
+        }
+        .footer-link {
+            color: #9ca3af;
+            transition: color 0.2s ease;
+        }
+        .footer-link:hover {
+            color: #facc15;
+        }
 
         @media (max-width: 768px) {
             h1, h2 {
@@ -348,6 +431,17 @@
             }
             .premium-filter-bar {
                 border-radius: 16px;
+            }
+            .site-logo-nav {
+                height: 62px;
+                max-width: 62vw;
+            }
+            .site-logo-footer {
+                height: 76px;
+            }
+            .brand-title {
+                font-size: 1rem;
+                letter-spacing: 0.03em;
             }
         }
 
@@ -418,7 +512,7 @@
         .whatsapp-float {
             position: fixed;
             right: 20px;
-            bottom: 22px;
+            bottom: calc(22px + env(safe-area-inset-bottom, 0px));
             z-index: 120;
             width: 58px;
             height: 58px;
@@ -437,6 +531,60 @@
         }
         .whatsapp-float i {
             font-size: 30px;
+        }
+        .call-float {
+            position: fixed;
+            right: 20px;
+            bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+            z-index: 120;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: #facc15;
+            color: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 14px 26px rgba(250, 204, 21, 0.35);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .call-float:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 18px 34px rgba(250, 204, 21, 0.45);
+        }
+        .call-float i {
+            font-size: 24px;
+        }
+
+        #mobileMenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        #mobileMenu.active {
+            max-height: 280px;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding-top: env(safe-area-inset-top, 0px);
+            }
+            .hero-stat-pill {
+                min-width: calc(50% - 8px);
+                flex: 1;
+            }
+            .premium-filter-bar .flex.items-center.gap-3.pl-4.flex-shrink-0 {
+                width: 100%;
+                padding-left: 0;
+                margin-top: 8px;
+            }
+            .premium-filter-bar .flex.items-center.gap-3.pl-4.flex-shrink-0 button {
+                flex: 1;
+                justify-content: center;
+            }
+            iframe[title="Sahyadri Cars Location"] {
+                height: 320px;
+            }
         }
     </style>
 </head>
@@ -484,9 +632,37 @@
                 <!-- Tab: Details -->
                 <div id="tabDetails" class="tab-content active">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Car Brand</label>
+                            <select id="carBrand" required class="admin-form-input">
+                                <option value="">Select Brand</option>
+                                <option value="Maruti Suzuki">Maruti Suzuki</option>
+                                <option value="Hyundai">Hyundai</option>
+                                <option value="Honda">Honda</option>
+                                <option value="Toyota">Toyota</option>
+                                <option value="Tata">Tata</option>
+                                <option value="Mahindra">Mahindra</option>
+                                <option value="Kia">Kia</option>
+                                <option value="MG">MG</option>
+                                <option value="Skoda">Skoda</option>
+                                <option value="Volkswagen">Volkswagen</option>
+                                <option value="Renault">Renault</option>
+                                <option value="Nissan">Nissan</option>
+                                <option value="BMW">BMW</option>
+                                <option value="Mercedes">Mercedes</option>
+                                <option value="Audi">Audi</option>
+                                <option value="Jaguar">Jaguar</option>
+                                <option value="Land Rover">Land Rover</option>
+                                <option value="Volvo">Volvo</option>
+                                <option value="Porsche">Porsche</option>
+                            </select>
+                        </div>
                         <div class="admin-form-group lg:col-span-2">
                             <label class="admin-form-label">Car Model</label>
-                            <input type="text" id="carModel" placeholder="e.g. Maruti Suzuki Dezire VDI" required class="admin-form-input">
+                            <select id="carModelSelect" required class="admin-form-input">
+                                <option value="">Select model</option>
+                            </select>
+                            <input type="text" id="carModelCustom" placeholder="Enter model name" class="admin-form-input mt-2 hidden">
                         </div>
                         <div class="admin-form-group">
                             <label class="admin-form-label">Price (Display Text)</label>
@@ -556,6 +732,13 @@
                         <div class="admin-form-group lg:col-span-3">
                             <label class="admin-form-label">Car Photos (Select multiple for all angles)</label>
                             <input type="file" id="carImageFile" accept="image/*" multiple class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
+                        </div>
+                        <div class="admin-form-group lg:col-span-3">
+                            <label class="admin-form-label">Homepage Cover Photo</label>
+                            <select id="carCoverIndex" class="admin-form-input">
+                                <option value="0">Image 1 (Default)</option>
+                            </select>
+                            <p class="text-[11px] text-gray-500 mt-1">Choose which uploaded image appears first on homepage cards.</p>
                         </div>
                         <div class="admin-form-group lg:col-span-3">
                             <label class="admin-form-label">Car Overview (Description)</label>
@@ -670,7 +853,16 @@
                         </div>
 
                         <div class="sticky bottom-0 bg-zinc-950 pt-4 border-t border-white/5">
-                            <button class="w-full bg-yellow-500 text-black py-5 rounded-2xl font-black uppercase tracking-widest shadow-2xl hover:scale-[1.02] transition">Book Inspection Now</button>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <a id="detailCallBtn" href="tel:+919999999999" class="w-full bg-yellow-500 text-black py-5 rounded-2xl font-black uppercase tracking-widest shadow-2xl hover:scale-[1.02] transition flex items-center justify-center gap-3">
+                                    <i class="fas fa-phone-alt"></i>
+                                    Call Now
+                                </a>
+                                <a id="detailWhatsappBtn" href="https://wa.me/919999999999" target="_blank" rel="noopener noreferrer" class="w-full bg-[#25d366] text-white py-5 rounded-2xl font-black uppercase tracking-widest shadow-2xl hover:scale-[1.02] transition flex items-center justify-center gap-3">
+                                    <i class="fab fa-whatsapp text-xl"></i>
+                                    Enquire on WhatsApp
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -681,15 +873,12 @@
     <!-- Header / Navbar -->
     <nav class="fixed w-full z-50 transition-all duration-300 bg-black/75 backdrop-blur-xl border-b border-white/10">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center">
-                <div class="h-14 w-auto">
-                    <svg viewBox="0 0 320 120" class="h-full w-full">
-                        <ellipse cx="160" cy="60" rx="155" ry="55" fill="#1a1a1a" stroke="#facc15" stroke-width="1.5"/>
-                        <path d="M80 55 C120 25, 200 25, 260 55 C200 45, 140 45, 80 55" fill="#facc15" />
-                        <text x="75" y="92" font-family="Arial, sans-serif" font-weight="900" font-size="34" fill="white" font-style="italic">Sahyadri</text>
-                        <text x="218" y="92" font-family="Arial, sans-serif" font-weight="900" font-size="34" fill="#facc15" font-style="italic">Car's</text>
-                    </svg>
-                </div>
+            <div class="flex items-center gap-3">
+                <img
+                    src="file:///C:/Users/User/.cursor/projects/c-Users-User-Desktop-cardealer/assets/c__Users_User_AppData_Roaming_Cursor_User_workspaceStorage_e1f7a3c73e83e08bb0806060555f83cb_images_ChatGPT_Image_Mar_30__2026__12_08_13_AM-332d4fd1-a6f0-4bb9-9153-73a9eaa79ca0.png"
+                    alt="Sahyadri Cars Logo"
+                    class="site-logo-nav">
+                <span class="brand-title">Sahyadricars</span>
             </div>
             
             <div class="hidden md:flex gap-8 text-sm font-medium uppercase tracking-widest">
@@ -699,8 +888,18 @@
             </div>
 
             <div class="flex items-center gap-4">
+                <button id="mobileMenuBtn" class="md:hidden text-white border border-white/20 w-10 h-10 rounded-full flex items-center justify-center" aria-label="Open menu">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <button id="loginBtn" onclick="openModal('loginModal')" class="text-sm font-bold hover:text-yellow-500 transition border border-white/20 px-4 py-2 rounded-full uppercase">Login</button>
                 <button class="primary-btn bg-yellow-500 text-black px-6 py-2.5 text-sm hover:bg-yellow-400 shadow-lg shadow-yellow-500/20 uppercase tracking-tight">Enquire Now</button>
+            </div>
+        </div>
+        <div id="mobileMenu" class="md:hidden border-t border-white/10 bg-black/95">
+            <div class="container mx-auto px-4 py-4 flex flex-col gap-3 text-sm font-bold uppercase tracking-widest">
+                <a href="#inventory" class="hover:text-yellow-400 transition">Buy</a>
+                <a href="#" class="hover:text-yellow-400 transition">Services</a>
+                <a href="#" class="hover:text-yellow-400 transition">Contact</a>
             </div>
         </div>
     </nav>
@@ -867,6 +1066,21 @@
                         <p class="text-gray-500 text-xs">Instant settlement</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INVENTORY SECTION -->
+    <section id="inventory" class="py-24 bg-black">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <p class="text-yellow-500 font-bold tracking-widest mb-2 uppercase text-[10px]">Premium Stock</p>
+                    <h2 class="section-title text-4xl font-extrabold uppercase italic tracking-tighter">Featured <span class="text-yellow-500">Inventory</span></h2>
+                </div>
+            </div>
+            <div id="inventoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="col-span-full py-20 text-center text-gray-500 italic">Connecting to Database...</div>
             </div>
         </div>
     </section>
@@ -1226,21 +1440,6 @@
         </div>
     </section>
 
-    <!-- INVENTORY SECTION -->
-    <section id="inventory" class="py-24 bg-black">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-end mb-12">
-                <div>
-                    <p class="text-yellow-500 font-bold tracking-widest mb-2 uppercase text-[10px]">Premium Stock</p>
-                    <h2 class="section-title text-4xl font-extrabold uppercase italic tracking-tighter">Featured <span class="text-yellow-500">Inventory</span></h2>
-                </div>
-            </div>
-            <div id="inventoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                <div class="col-span-full py-20 text-center text-gray-500 italic">Connecting to Database...</div>
-            </div>
-        </div>
-    </section>
-
     <!-- HAPPY DELIVERIES GALLERY SECTION -->
     <section class="py-24 bg-zinc-900/30">
         <div class="container mx-auto px-4">
@@ -1281,17 +1480,55 @@
         </div>
     </section>
 
-    <footer class="bg-black pt-16 pb-10 border-t border-white/10">
-        <div class="container mx-auto px-4 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-8">
-            <div class="h-16 w-auto">
-                <svg viewBox="0 0 320 120" class="h-full w-auto">
-                    <ellipse cx="160" cy="60" rx="155" ry="55" fill="#1a1a1a" stroke="#facc15" stroke-width="1.5"/>
-                    <path d="M80 55 C120 25, 200 25, 260 55 C200 45, 140 45, 80 55" fill="#facc15" />
-                    <text x="75" y="92" font-family="Arial, sans-serif" font-weight="900" font-size="34" fill="white" font-style="italic">Sahyadri</text>
-                    <text x="218" y="92" font-family="Arial, sans-serif" font-weight="900" font-size="34" fill="#facc15" font-style="italic">Car's</text>
-                </svg>
+    <footer class="bg-black pt-16 pb-8 border-t border-white/10">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+                <div>
+                    <img
+                        src="file:///C:/Users/User/.cursor/projects/c-Users-User-Desktop-cardealer/assets/c__Users_User_AppData_Roaming_Cursor_User_workspaceStorage_e1f7a3c73e83e08bb0806060555f83cb_images_ChatGPT_Image_Mar_30__2026__12_08_13_AM-332d4fd1-a6f0-4bb9-9153-73a9eaa79ca0.png"
+                        alt="Sahyadri Cars Logo"
+                        class="site-logo-footer mb-4">
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs">Premium pre-owned car dealership in Baramati with verified inventory and transparent deals.</p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-black uppercase tracking-wider text-sm mb-4">Quick Links</h4>
+                    <div class="flex flex-col gap-2 text-sm">
+                        <a href="#inventory" class="footer-link">Buy Cars</a>
+                        <a href="#inventory" class="footer-link">Featured Inventory</a>
+                        <a href="https://maps.google.com/?q=Baramati+Maharashtra" target="_blank" rel="noopener noreferrer" class="footer-link">Showroom Location</a>
+                        <a href="#" class="footer-link">Contact Us</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-black uppercase tracking-wider text-sm mb-4">Our Services</h4>
+                    <div class="flex flex-col gap-2 text-sm">
+                        <span class="text-gray-400">Certified Pre-owned Cars</span>
+                        <span class="text-gray-400">Inspection & Test Drive</span>
+                        <span class="text-gray-400">Documentation Support</span>
+                        <span class="text-gray-400">Finance Assistance</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-black uppercase tracking-wider text-sm mb-4">Contact</h4>
+                    <div class="flex flex-col gap-3 text-sm text-gray-400">
+                        <a href="tel:+919999999999" class="footer-link"><i class="fas fa-phone-alt mr-2 text-yellow-500"></i>+91 99999 99999</a>
+                        <a href="https://wa.me/919999999999" target="_blank" rel="noopener noreferrer" class="footer-link"><i class="fab fa-whatsapp mr-2 text-green-500"></i>WhatsApp Enquiry</a>
+                        <p><i class="fas fa-map-marker-alt mr-2 text-red-500"></i>Baramati, Maharashtra</p>
+                    </div>
+                    <div class="flex items-center gap-3 mt-5">
+                        <a href="#" aria-label="Instagram" class="w-9 h-9 rounded-full border border-white/20 text-gray-300 hover:text-yellow-400 hover:border-yellow-500 flex items-center justify-center transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Facebook" class="w-9 h-9 rounded-full border border-white/20 text-gray-300 hover:text-yellow-400 hover:border-yellow-500 flex items-center justify-center transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="YouTube" class="w-9 h-9 rounded-full border border-white/20 text-gray-300 hover:text-yellow-400 hover:border-yellow-500 flex items-center justify-center transition"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
             </div>
-            <p class="text-gray-600 text-xs uppercase tracking-widest">© 2026 Sahyadri Car's. All rights reserved.</p>
+
+            <div class="pt-6 border-t border-white/10 text-center">
+                <p class="text-gray-600 text-xs uppercase tracking-widest">© 2026 Sahyadri Car's. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
@@ -1303,6 +1540,14 @@
         aria-label="Enquire on WhatsApp"
         title="Chat on WhatsApp">
         <i class="fab fa-whatsapp"></i>
+    </a>
+    <a
+        id="floatingCallBtn"
+        href="tel:+919999999999"
+        class="call-float"
+        aria-label="Call car dealer"
+        title="Call Now">
+        <i class="fas fa-phone-alt"></i>
     </a>
 
     <!-- Firebase SDKs -->
@@ -1327,6 +1572,29 @@
         const auth = getAuth(app);
         const db = getDB(app);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'sahyadri-cars-official';
+        const WHATSAPP_NUMBER = "919999999999";
+        const DEALER_PHONE_NUMBER = "+919999999999";
+        const brandModels = {
+            "Maruti Suzuki": ["Swift", "Baleno", "Dzire", "Brezza", "Ertiga", "Ciaz", "Grand Vitara", "Other"],
+            "Hyundai": ["i10", "i20", "Verna", "Creta", "Venue", "Alcazar", "Exter", "Other"],
+            "Honda": ["City", "Amaze", "Jazz", "WR-V", "Elevate", "Civic", "Other"],
+            "Toyota": ["Innova", "Fortuner", "Glanza", "Urban Cruiser", "Camry", "Etios", "Other"],
+            "Tata": ["Tiago", "Altroz", "Nexon", "Harrier", "Safari", "Punch", "Other"],
+            "Mahindra": ["XUV300", "XUV700", "Scorpio", "Scorpio N", "Thar", "Bolero", "Other"],
+            "Kia": ["Seltos", "Sonet", "Carens", "Carnival", "EV6", "Other"],
+            "MG": ["Hector", "Astor", "Gloster", "ZS EV", "Comet EV", "Other"],
+            "Skoda": ["Slavia", "Kushaq", "Octavia", "Superb", "Rapid", "Other"],
+            "Volkswagen": ["Polo", "Vento", "Virtus", "Taigun", "Tiguan", "Other"],
+            "Renault": ["Kwid", "Kiger", "Triber", "Duster", "Other"],
+            "Nissan": ["Magnite", "Sunny", "Terrano", "Micra", "Other"],
+            "BMW": ["3 Series", "5 Series", "7 Series", "X1", "X3", "X5", "Other"],
+            "Mercedes": ["A-Class", "C-Class", "E-Class", "S-Class", "GLA", "GLE", "Other"],
+            "Audi": ["A3", "A4", "A6", "Q3", "Q5", "Q7", "Other"],
+            "Jaguar": ["XE", "XF", "F-Pace", "XJ", "Other"],
+            "Land Rover": ["Discovery Sport", "Range Rover Evoque", "Range Rover Velar", "Defender", "Other"],
+            "Volvo": ["XC40", "XC60", "XC90", "S90", "S60", "Other"],
+            "Porsche": ["Macan", "Cayenne", "Panamera", "911", "Taycan", "Other"]
+        };
 
         let userLoggedIn = false;
         let isManageModeEnabled = false;
@@ -1354,6 +1622,17 @@
                 } else {
                     openModal('loginModal');
                 }
+            });
+        }
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+            });
+            mobileMenu.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', () => mobileMenu.classList.remove('active'));
             });
         }
 
@@ -1435,6 +1714,61 @@
             showToast("Manage Mode Enabled!");
         };
 
+        const refreshCoverImageOptions = () => {
+            const imageInput = document.getElementById('carImageFile');
+            const coverSelect = document.getElementById('carCoverIndex');
+            if (!imageInput || !coverSelect) return;
+
+            coverSelect.innerHTML = '';
+            const total = imageInput.files ? imageInput.files.length : 0;
+            if (total === 0) {
+                coverSelect.innerHTML = '<option value="0">Image 1 (Default)</option>';
+                return;
+            }
+            for (let i = 0; i < total; i++) {
+                coverSelect.innerHTML += `<option value="${i}">Image ${i + 1}</option>`;
+            }
+        };
+
+        const carImageInput = document.getElementById('carImageFile');
+        if (carImageInput) {
+            carImageInput.addEventListener('change', refreshCoverImageOptions);
+        }
+
+        const updateModelOptions = () => {
+            const brand = document.getElementById('carBrand').value;
+            const modelSelect = document.getElementById('carModelSelect');
+            const customModelInput = document.getElementById('carModelCustom');
+            if (!modelSelect || !customModelInput) return;
+
+            modelSelect.innerHTML = '<option value="">Select model</option>';
+            const models = brandModels[brand] || ["Other"];
+            models.forEach((m) => {
+                modelSelect.innerHTML += `<option value="${m}">${m}</option>`;
+            });
+            customModelInput.classList.add('hidden');
+            customModelInput.required = false;
+            customModelInput.value = '';
+        };
+
+        const brandSelectEl = document.getElementById('carBrand');
+        const modelSelectEl = document.getElementById('carModelSelect');
+        const customModelEl = document.getElementById('carModelCustom');
+
+        if (brandSelectEl) {
+            brandSelectEl.addEventListener('change', updateModelOptions);
+        }
+        if (modelSelectEl && customModelEl) {
+            modelSelectEl.addEventListener('change', () => {
+                const showCustom = modelSelectEl.value === 'Other';
+                customModelEl.classList.toggle('hidden', !showCustom);
+                customModelEl.required = showCustom;
+                if (!showCustom) customModelEl.value = '';
+            });
+        }
+
+        updateModelOptions();
+
         document.getElementById('addCarForm').onsubmit = async (e) => {
             e.preventDefault();
             if (!userLoggedIn) return;
@@ -1451,6 +1785,13 @@
                     const b64 = await toBase64(imageFiles[i]);
                     imagesArray.push(b64);
                 }
+
+                // Move selected cover image to index 0 so existing UI uses it as primary image.
+                const selectedCoverIndex = parseInt(document.getElementById('carCoverIndex').value || '0', 10);
+                if (selectedCoverIndex > 0 && selectedCoverIndex < imagesArray.length) {
+                    const [cover] = imagesArray.splice(selectedCoverIndex, 1);
+                    imagesArray.unshift(cover);
+                }
             } else {
                 imagesArray.push("https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800");
             }
@@ -1459,8 +1800,21 @@
             document.querySelectorAll('input[name="feat"]:checked').forEach(cb => features.push(cb.value));
 
             try {
+                const brand = document.getElementById('carBrand').value;
+                const selectedModel = document.getElementById('carModelSelect').value;
+                const customModel = document.getElementById('carModelCustom').value.trim();
+                const modelName = selectedModel === 'Other' ? customModel : selectedModel;
+                if (!brand || !modelName) {
+                    showToast("Please select car brand and model.", true);
+                    btn.innerHTML = 'PUBLISH LISTING';
+                    btn.disabled = false;
+                    return;
+                }
+
                 await add(col(db, 'artifacts', appId, 'public', 'data', 'inventory'), {
-                    model: document.getElementById('carModel').value,
+                    brand: brand,
+                    modelName: modelName,
+                    model: `${brand} ${modelName}`.trim(),
                     price: document.getElementById('carPrice').value,
                     year: document.getElementById('carYear').value,
                     fuel: document.getElementById('carFuel').value,
@@ -1477,6 +1831,7 @@
                 });
                 showToast("Detailed Listing Published!");
                 document.getElementById('addCarForm').reset();
+                refreshCoverImageOptions();
                 closeModal('dashboardModal');
             } catch (err) { 
                 console.error(err);
@@ -1484,6 +1839,40 @@
             } finally {
                 btn.innerHTML = 'PUBLISH LISTING';
                 btn.disabled = false;
+            }
+        };
+
+        document.getElementById('addGalleryForm').onsubmit = async (e) => {
+            e.preventDefault();
+            if (!userLoggedIn) return;
+
+            const fileInput = document.getElementById('galleryImageFile');
+            const imgFile = fileInput.files[0];
+            if (!imgFile) {
+                showToast("Please select a gallery image.", true);
+                return;
+            }
+
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ADDING...';
+            submitBtn.disabled = true;
+
+            try {
+                const base64Image = await toBase64(imgFile);
+                const title = document.getElementById('galleryTitle').value.trim() || 'Happy Delivery';
+                await add(col(db, 'artifacts', appId, 'public', 'data', 'gallery'), {
+                    title,
+                    image: base64Image,
+                    createdAt: time()
+                });
+                showToast("Delivery moment added!");
+                e.target.reset();
+            } catch (err) {
+                console.error(err);
+                showToast("Error saving gallery image.", true);
+            } finally {
+                submitBtn.innerHTML = 'ADD TO GALLERY';
+                submitBtn.disabled = false;
             }
         };
 
@@ -1568,6 +1957,19 @@
                 featGrid.innerHTML = '<p class="text-gray-600 text-xs italic">Standard safety and luxury inclusions.</p>';
             }
 
+            // Dynamic WhatsApp enquiry link with selected car details.
+            const waMsg = encodeURIComponent(
+                `Hello Sahyadri Cars, I am interested in this car:\nModel: ${car.model || "N/A"}\nYear: ${car.year || "N/A"}\nPrice: ${car.price || "N/A"}\nPlease share more details.`
+            );
+            const waBtn = document.getElementById('detailWhatsappBtn');
+            if (waBtn) {
+                waBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}`;
+            }
+            const callBtn = document.getElementById('detailCallBtn');
+            if (callBtn) {
+                callBtn.href = `tel:${DEALER_PHONE_NUMBER}`;
+            }
+
             openModal('carDetailsModal');
         };
 
@@ -1610,18 +2012,26 @@
             listen(galleryQuery, (snapshot) => {
                 const grid = document.getElementById('galleryGrid');
                 grid.innerHTML = '';
+                if (snapshot.empty) {
+                    grid.innerHTML = '<div class="col-span-full text-center py-10 opacity-60 text-white italic">No delivery moments added yet.</div>';
+                    return;
+                }
                 snapshot.forEach((galDoc) => {
                     const item = galDoc.data();
                     grid.innerHTML += `
                     <div class="gallery-item aspect-square md:aspect-auto md:h-80">
                         <img src="${item.image}" class="w-full h-full object-cover">
                         <div class="gallery-overlay">
-                            <p class="text-white font-bold text-sm mb-2">${item.title}</p>
+                            <p class="text-white font-bold text-sm mb-2">${item.title || 'Happy Delivery'}</p>
                             ${isManageModeEnabled ? `<button onclick="deleteGallery('${galDoc.id}')" class="bg-red-600 text-white text-[10px] px-3 py-1 rounded-full uppercase self-start">Delete</button>` : ''}
                         </div>
                     </div>`;
                 });
-            }, err => console.error(err));
+            }, err => {
+                console.error(err);
+                const grid = document.getElementById('galleryGrid');
+                if (grid) grid.innerHTML = '<div class="col-span-full text-center py-10 text-red-400 italic">Unable to load gallery right now.</div>';
+            });
         };
 
         window.deleteCar = async (id) => { if(confirm("Delete this car?")) await del(docRef(db, 'artifacts', appId, 'public', 'data', 'inventory', id)); };
