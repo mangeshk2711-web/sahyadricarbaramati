@@ -179,13 +179,14 @@
 
         /* Functional Select Styles to match UI */
         .filter-select {
-            background: transparent;
+            background: #0b1414;
             color: #9ca3af;
             font-size: 14px;
             width: 100%;
             outline: none;
             cursor: pointer;
-            appearance: none;
+            border: none;
+            padding: 4px 0;
         }
 
         /* Admin Dashboard Grid Styles */
@@ -212,6 +213,11 @@
         }
         .admin-form-input:focus {
             border-color: #facc15;
+        }
+        /* Style for options inside dark inputs */
+        .admin-form-input option {
+            background-color: #18181b;
+            color: white;
         }
     </style>
 </head>
@@ -269,7 +275,7 @@
                             <option value="Petrol">Petrol</option>
                             <option value="Diesel">Diesel</option>
                             <option value="CNG">CNG</option>
-                            <option value="Electric">Electric</option>
+                            <option value="Electric">Electric (EV)</option>
                             <option value="Hybrid">Hybrid</option>
                         </select>
                     </div>
@@ -290,9 +296,9 @@
                     <div class="admin-form-group">
                         <label class="admin-form-label">Body Type</label>
                         <select id="carBody" class="admin-form-input">
-                            <option value="Hatchback">Hatchback</option>
                             <option value="Sedan">Sedan</option>
                             <option value="SUV">SUV</option>
+                            <option value="Hatchback">Hatchback</option>
                             <option value="MUV/MPV">MUV/MPV</option>
                             <option value="Luxury">Luxury</option>
                             <option value="Coupe">Coupe</option>
@@ -316,12 +322,12 @@
                         <select id="carInsurance" class="admin-form-input">
                             <option value="Comprehensive">Comprehensive</option>
                             <option value="Third Party">Third Party</option>
-                            <option value="Expired">Expired</option>
                             <option value="Valid">Valid</option>
+                            <option value="Expired">Expired</option>
                         </select>
                     </div>
                     <div class="admin-form-group lg:col-span-3">
-                        <label class="admin-form-label">Car Photo (URL or Upload)</label>
+                        <label class="admin-form-label">Car Photo</label>
                         <input type="file" id="carImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
                     </div>
                     <div class="admin-form-group lg:col-span-3">
@@ -409,10 +415,15 @@
                     </div>
                     <div class="filter-divider"></div>
                     <div class="filter-item flex-[1.4]">
-                        <p class="text-[12px] font-semibold text-white">Price Status</p>
-                        <div class="flex items-center justify-between text-gray-400 mt-2">
-                             <span class="text-[13px]">Showing All Listings</span>
-                             <i class="fas fa-info-circle text-[10px]"></i>
+                        <p class="text-[12px] font-semibold text-white">Body Type</p>
+                        <div class="flex items-center justify-between text-gray-400">
+                            <select id="filterBody" class="filter-select">
+                                <option value="all">All Bodies</option>
+                                <option value="Sedan">Sedan</option>
+                                <option value="SUV">SUV</option>
+                                <option value="Hatchback">Hatchback</option>
+                                <option value="Luxury">Luxury</option>
+                            </select>
                         </div>
                     </div>
                     <div class="filter-divider"></div>
@@ -420,11 +431,11 @@
                         <p class="text-[12px] font-semibold text-white mb-1">Fuel Type</p>
                         <div class="flex items-center justify-between text-gray-400">
                             <select id="filterFuel" class="filter-select">
-                                <option value="all">All Fuel Types</option>
+                                <option value="all">All Fuel</option>
                                 <option value="Petrol">Petrol</option>
                                 <option value="Diesel">Diesel</option>
                                 <option value="CNG">CNG</option>
-                                <option value="Electric">Electric</option>
+                                <option value="Electric">Electric (EV)</option>
                                 <option value="Hybrid">Hybrid</option>
                             </select>
                         </div>
@@ -562,7 +573,6 @@
             appId: "1:1040195843897:web:363efaa47d7202087f9ae8"
         };
 
-        // Use standard config if secret one is missing
         const firebaseConfig = (mySecretConfig && mySecretConfig.apiKey) ? mySecretConfig : JSON.parse(__firebase_config);
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -592,17 +602,13 @@
             reader.onerror = error => reject(error);
         });
 
-        // FIXED AUTH PROTOCOL
         const initAuth = async () => {
             try {
-                // If using a custom config, system tokens will mismatch. Always fallback to anonymous for custom projects in preview.
                 const isCustomConfig = (mySecretConfig && mySecretConfig.apiKey);
-                
                 if (!isCustomConfig && typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     try {
                         await signInWithCustomToken(auth, __initial_auth_token);
                     } catch (tokenErr) {
-                        console.warn("Token mismatch, falling back to anonymous");
                         await signInAnonymously(auth);
                     }
                 } else {
@@ -613,8 +619,6 @@
                 if (err.code === 'auth/admin-restricted-operation') {
                     showToast("Admin Alert: Enable 'Anonymous' Auth in Firebase Console.", true);
                     document.getElementById('inventoryGrid').innerHTML = '<div class="col-span-full py-20 text-center text-red-500">Enable "Anonymous" Sign-in in Firebase > Authentication.</div>';
-                } else {
-                    showToast("Connection Error. Check Firebase settings.", true);
                 }
             }
         };
@@ -757,9 +761,13 @@
         window.applyFilters = () => {
             const brand = document.getElementById('filterBrand').value;
             const fuel = document.getElementById('filterFuel').value;
+            const body = document.getElementById('filterBody').value;
+
             let filtered = allCarInventory;
             if (brand !== 'all') filtered = filtered.filter(doc => doc.data().model.toLowerCase().includes(brand.toLowerCase()));
             if (fuel !== 'all') filtered = filtered.filter(doc => doc.data().fuel === fuel);
+            if (body !== 'all') filtered = filtered.filter(doc => doc.data().bodyType === body);
+
             renderInventory(filtered);
             showToast(`Found ${filtered.length} matches`);
             document.getElementById('inventory').scrollIntoView({ behavior: 'smooth' });
@@ -768,6 +776,7 @@
         window.resetFilters = () => {
             document.getElementById('filterBrand').value = 'all';
             document.getElementById('filterFuel').value = 'all';
+            document.getElementById('filterBody').value = 'all';
             renderInventory(allCarInventory);
             showToast("Filters Reset");
         };
