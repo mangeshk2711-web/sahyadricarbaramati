@@ -216,11 +216,11 @@
             <div class="mb-12">
                 <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fas fa-plus-circle text-yellow-500"></i> Add New Inventory Item</h3>
                 <form id="addCarForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="carModel" placeholder="Model Name (e.g. BMW 5 Series)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none">
-                    <input type="text" id="carPrice" placeholder="Price (e.g. ₹38.75L)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none">
-                    <input type="text" id="carKms" placeholder="Kilometers (e.g. 24k Kms)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none">
-                    <input type="text" id="carFuel" placeholder="Fuel Type (e.g. Diesel)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none">
-                    <input type="text" id="carYear" placeholder="Year (e.g. 2020)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none">
+                    <input type="text" id="carModel" placeholder="Model Name (e.g. BMW 5 Series)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none text-white">
+                    <input type="text" id="carPrice" placeholder="Price (e.g. ₹38.75L)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none text-white">
+                    <input type="text" id="carKms" placeholder="Kilometers (e.g. 24k Kms)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none text-white">
+                    <input type="text" id="carFuel" placeholder="Fuel Type (e.g. Diesel)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none text-white">
+                    <input type="text" id="carYear" placeholder="Year (e.g. 2020)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none text-white">
                     <div class="col-span-full">
                         <label class="block text-xs text-gray-500 mb-2 uppercase font-bold">Car Photo (Max 1MB)</label>
                         <input type="file" id="carImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
@@ -233,7 +233,7 @@
             <div class="border-t border-white/10 pt-8">
                 <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fas fa-camera text-yellow-500"></i> Add Delivery Moment</h3>
                 <form id="addGalleryForm" class="space-y-4">
-                    <input type="text" id="galleryTitle" placeholder="Customer/Car Name (Optional)" class="w-full bg-white/5 border border-white/10 p-3 rounded-lg outline-none">
+                    <input type="text" id="galleryTitle" placeholder="Customer/Car Name (Optional)" class="w-full bg-white/5 border border-white/10 p-3 rounded-lg outline-none text-white">
                     <input type="file" id="galleryImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
                     <button type="submit" class="w-full bg-yellow-500 text-black py-3 rounded-lg font-bold hover:bg-yellow-400">ADD TO GALLERY</button>
                 </form>
@@ -408,7 +408,7 @@
                 <h2 class="text-4xl md:text-5xl font-extrabold uppercase italic">Our Happy <span class="text-yellow-500">Deliveries</span></h2>
             </div>
             <div id="galleryGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                <div class="col-span-full text-center py-10 opacity-50">Syncing Gallery...</div>
+                <div class="col-span-full text-center py-10 opacity-50 text-white italic">Syncing Gallery...</div>
             </div>
         </div>
     </section>
@@ -435,10 +435,16 @@
         import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
         // ==========================================
-        // 🚨 IMPORTANT: PASTE YOUR CONFIG HERE 🚨
-        // Replace the empty string "" with your code from Firebase Part 3.
+        // ✅ YOUR FIREBASE KEYS ARE BACK IN PLACE
         // ==========================================
-        const mySecretConfig = ""; 
+        const mySecretConfig = {
+            apiKey: "AIzaSyDNJeaLY-PczXJ1iNVU2UqadyT5suVAOhI",
+            authDomain: "sahyadri-cars-official.firebaseapp.com",
+            projectId: "sahyadri-cars-official",
+            storageBucket: "sahyadri-cars-official.firebasestorage.app",
+            messagingSenderId: "1040195843897",
+            appId: "1:1040195843897:web:363efaa47d7202087f9ae8"
+        };
 
         const firebaseConfig = mySecretConfig || JSON.parse(__firebase_config);
         const app = initializeApp(firebaseConfig);
@@ -460,7 +466,7 @@
             t.innerText = msg;
             t.style.backgroundColor = isError ? "#ef4444" : "#10b981";
             t.className = "show";
-            setTimeout(() => { t.className = t.className.replace("show", ""); }, 3000);
+            setTimeout(() => { t.className = t.className.replace("show", ""); }, 4000);
         };
 
         // Helper: Convert File to Base64 (Compressed for Firestore)
@@ -481,7 +487,13 @@
                 }
             } catch (err) {
                 console.error("Auth failed:", err);
-                showToast("Connection Error. Please refresh.", true);
+                if (err.code === 'auth/admin-restricted-operation') {
+                    showToast("Admin Alert: Enable 'Anonymous' Auth in Firebase Console.", true);
+                    const grid = document.getElementById('inventoryGrid');
+                    grid.innerHTML = '<div class="col-span-full py-20 text-center text-red-500">Enable "Anonymous" Sign-in in Firebase > Authentication > Sign-in Method.</div>';
+                } else {
+                    showToast("Connection Error. Please check settings.", true);
+                }
             }
         };
 
@@ -595,8 +607,8 @@
 
         // Render Inventory
         const renderInventory = () => {
-            if (!userLoggedIn) return;
-            const q = collection(db, 'artifacts', appId, 'public', 'data', 'inventory');
+            if (!auth.currentUser) return;
+            const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), orderBy('createdAt', 'desc'));
             
             onSnapshot(q, (snapshot) => {
                 const grid = document.getElementById('inventoryGrid');
@@ -633,8 +645,8 @@
 
         // Render Gallery
         const renderGallery = () => {
-            if (!userLoggedIn) return;
-            const q = collection(db, 'artifacts', appId, 'public', 'data', 'gallery');
+            if (!auth.currentUser) return;
+            const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'gallery'), orderBy('createdAt', 'desc'));
             
             onSnapshot(q, (snapshot) => {
                 const grid = document.getElementById('galleryGrid');
