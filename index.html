@@ -972,66 +972,6 @@
             </div>
         </div>
 
-        <!-- Filter Bar (inside hero, below content) -->
-        <div class="relative z-10 container mx-auto px-4 pb-8 -mt-4 lg:-mt-8">
-            <div class="premium-filter-bar shadow-2xl">
-                <div class="filter-item">
-                    <p class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1">Brand</p>
-                    <select id="filterBrand" class="filter-select font-semibold text-white">
-                        <option value="all">All Brands</option>
-                        <option value="BMW">BMW</option>
-                        <option value="Mercedes">Mercedes</option>
-                        <option value="Audi">Audi</option>
-                        <option value="Porsche">Porsche</option>
-                        <option value="Jaguar">Jaguar</option>
-                        <option value="Tata">Tata</option>
-                        <option value="Mahindra">Mahindra</option>
-                        <option value="Maruti">Maruti Suzuki</option>
-                    </select>
-                </div>
-                <div class="filter-divider"></div>
-                <div class="filter-item">
-                    <p class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1">Body Type</p>
-                    <select id="filterBody" class="filter-select font-semibold text-white">
-                        <option value="all">All Bodies</option>
-                        <option value="Sedan">Sedan</option>
-                        <option value="SUV">SUV</option>
-                        <option value="Hatchback">Hatchback</option>
-                        <option value="Luxury">Luxury</option>
-                    </select>
-                </div>
-                <div class="filter-divider"></div>
-                <div class="filter-item">
-                    <p class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1">Fuel Type</p>
-                    <select id="filterFuel" class="filter-select font-semibold text-white">
-                        <option value="all">All Fuel</option>
-                        <option value="Petrol">Petrol</option>
-                        <option value="Diesel">Diesel</option>
-                        <option value="CNG">CNG</option>
-                        <option value="Electric">Electric (EV)</option>
-                        <option value="Hybrid">Hybrid</option>
-                    </select>
-                </div>
-                <div class="filter-divider"></div>
-                <div class="filter-item">
-                    <p class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1">Transmission</p>
-                    <select class="filter-select font-semibold text-white">
-                        <option value="all">All Types</option>
-                        <option>Manual</option>
-                        <option>Automatic</option>
-                        <option>AMT</option>
-                    </select>
-                </div>
-                <div class="flex items-center gap-3 pl-4 flex-shrink-0">
-                    <button onclick="resetFilters()" class="bg-white/5 p-3 rounded-lg text-gray-400 hover:text-white transition border border-white/10">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
-                    <button onclick="applyFilters()" class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-black text-[13px] tracking-wider flex items-center gap-3 transition shadow-lg shadow-red-900/40">
-                        FIND CARS <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
     </section>
 
     <!-- Trust Badges Strip -->
@@ -1079,6 +1019,65 @@
                     <h2 class="section-title text-4xl font-extrabold uppercase italic tracking-tighter">Featured <span class="text-yellow-500">Inventory</span></h2>
                 </div>
             </div>
+
+            <div class="premium-filter-bar shadow-2xl mb-10">
+                <div class="filter-item">
+                    <p class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1">Brand</p>
+                    <select id="invFilterBrand" class="filter-select font-semibold text-white">
+                        <option value="all">All Brands</option>
+                        <option value="BMW">BMW</option>
+                        <option value="Mercedes">Mercedes</option>
+                        <option value="Audi">Audi</option>
+                        <option value="Porsche">Porsche</option>
+                        <option value="Jaguar">Jaguar</option>
+                        <option value="Tata">Tata</option>
+                        <option value="Mahindra">Mahindra</option>
+                        <option value="Maruti">Maruti Suzuki</option>
+                    </select>
+                </div>
+                <div class="filter-divider"></div>
+                <div class="filter-item">
+                    <p class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1">Body Type</p>
+                    <select id="invFilterBody" class="filter-select font-semibold text-white">
+                        <option value="all">All Bodies</option>
+                        <option value="Sedan">Sedan</option>
+                        <option value="SUV">SUV</option>
+                        <option value="Hatchback">Hatchback</option>
+                        <option value="Luxury">Luxury</option>
+                    </select>
+                </div>
+                <div class="filter-divider"></div>
+                <div class="filter-item">
+                    <p class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1">Fuel Type</p>
+                    <select id="invFilterFuel" class="filter-select font-semibold text-white">
+                        <option value="all">All Fuel</option>
+                        <option value="Petrol">Petrol</option>
+                        <option value="Diesel">Diesel</option>
+                        <option value="CNG">CNG</option>
+                        <option value="Electric">Electric (EV)</option>
+                        <option value="Hybrid">Hybrid</option>
+                    </select>
+                </div>
+                <div class="filter-divider"></div>
+                <div class="filter-item">
+                    <p class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1">Transmission</p>
+                    <select id="invFilterTrans" class="filter-select font-semibold text-white">
+                        <option value="all">All Types</option>
+                        <option value="Manual">Manual</option>
+                        <option value="Automatic">Automatic</option>
+                        <option value="AMT">AMT</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-3 pl-4 flex-shrink-0">
+                    <button onclick="resetInventoryFilters()" class="bg-white/5 p-3 rounded-lg text-gray-400 hover:text-white transition border border-white/10">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button onclick="applyInventoryFilters()" class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-black text-[13px] tracking-wider flex items-center gap-3 transition shadow-lg shadow-red-900/40">
+                        FILTER CARS <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
             <div id="inventoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 <div class="col-span-full py-20 text-center text-gray-500 italic">Connecting to Database...</div>
             </div>
@@ -1973,27 +1972,84 @@
             openModal('carDetailsModal');
         };
 
-        window.applyFilters = () => {
-            const brand = document.getElementById('filterBrand').value;
-            const fuel = document.getElementById('filterFuel').value;
-            const body = document.getElementById('filterBody').value;
-
+        const getFilteredCars = (brand, fuel, body, trans) => {
             let filtered = allCarInventory;
-            if (brand !== 'all') filtered = filtered.filter(doc => doc.data().model.toLowerCase().includes(brand.toLowerCase()));
+            if (brand !== 'all') {
+                filtered = filtered.filter((doc) => {
+                    const data = doc.data();
+                    const brandValue = (data.brand || data.model || '').toLowerCase();
+                    return brandValue.includes(brand.toLowerCase());
+                });
+            }
             if (fuel !== 'all') filtered = filtered.filter(doc => doc.data().fuel === fuel);
             if (body !== 'all') filtered = filtered.filter(doc => doc.data().bodyType === body);
-
-            renderInventory(filtered);
-            showToast(`Found ${filtered.length} matches`);
-            document.getElementById('inventory').scrollIntoView({ behavior: 'smooth' });
+            if (trans !== 'all') filtered = filtered.filter(doc => (doc.data().transmission || '').toLowerCase() === trans.toLowerCase());
+            return filtered;
         };
 
-        window.resetFilters = () => {
-            document.getElementById('filterBrand').value = 'all';
-            document.getElementById('filterFuel').value = 'all';
-            document.getElementById('filterBody').value = 'all';
+        const populateInventoryFilterOptions = () => {
+            const brandEl = document.getElementById('invFilterBrand');
+            const bodyEl = document.getElementById('invFilterBody');
+            const fuelEl = document.getElementById('invFilterFuel');
+            const transEl = document.getElementById('invFilterTrans');
+            if (!brandEl || !bodyEl || !fuelEl || !transEl) return;
+
+            const prev = {
+                brand: brandEl.value || 'all',
+                body: bodyEl.value || 'all',
+                fuel: fuelEl.value || 'all',
+                trans: transEl.value || 'all'
+            };
+
+            const brandSet = new Set();
+            const bodySet = new Set();
+            const fuelSet = new Set();
+            const transSet = new Set();
+
+            allCarInventory.forEach((doc) => {
+                const d = doc.data();
+                if (d.brand) brandSet.add(d.brand);
+                else if (d.model) brandSet.add(String(d.model).split(' ')[0]);
+                if (d.bodyType) bodySet.add(d.bodyType);
+                if (d.fuel) fuelSet.add(d.fuel);
+                if (d.transmission) transSet.add(d.transmission);
+            });
+
+            const fillSelect = (el, values, defaultLabel) => {
+                el.innerHTML = `<option value="all">${defaultLabel}</option>`;
+                Array.from(values).sort((a, b) => String(a).localeCompare(String(b))).forEach((v) => {
+                    el.innerHTML += `<option value="${v}">${v}</option>`;
+                });
+            };
+
+            fillSelect(brandEl, brandSet, 'All Brands');
+            fillSelect(bodyEl, bodySet, 'All Bodies');
+            fillSelect(fuelEl, fuelSet, 'All Fuel');
+            fillSelect(transEl, transSet, 'All Types');
+
+            brandEl.value = brandSet.has(prev.brand) ? prev.brand : 'all';
+            bodyEl.value = bodySet.has(prev.body) ? prev.body : 'all';
+            fuelEl.value = fuelSet.has(prev.fuel) ? prev.fuel : 'all';
+            transEl.value = transSet.has(prev.trans) ? prev.trans : 'all';
+        };
+
+        window.applyInventoryFilters = () => {
+            const brand = document.getElementById('invFilterBrand').value;
+            const fuel = document.getElementById('invFilterFuel').value;
+            const body = document.getElementById('invFilterBody').value;
+            const trans = document.getElementById('invFilterTrans').value;
+            const filtered = getFilteredCars(brand, fuel, body, trans);
+            renderInventory(filtered);
+            showToast(`Found ${filtered.length} matches`);
+        };
+
+        window.resetInventoryFilters = () => {
+            document.getElementById('invFilterBrand').value = 'all';
+            document.getElementById('invFilterFuel').value = 'all';
+            document.getElementById('invFilterBody').value = 'all';
+            document.getElementById('invFilterTrans').value = 'all';
             renderInventory(allCarInventory);
-            showToast("Filters Reset");
+            showToast("Inventory Filters Reset");
         };
 
         const setupListeners = () => {
@@ -2002,6 +2058,7 @@
             listen(carQuery, (snapshot) => {
                 allCarInventory = [];
                 snapshot.forEach(doc => allCarInventory.push(doc));
+                populateInventoryFilterOptions();
                 renderInventory(allCarInventory);
             }, err => console.error(err));
         };
