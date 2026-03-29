@@ -266,10 +266,11 @@
                     <div class="admin-form-group">
                         <label class="admin-form-label">Fuel Type</label>
                         <select id="carFuel" class="admin-form-input">
-                            <option value="Diesel">Diesel</option>
                             <option value="Petrol">Petrol</option>
+                            <option value="Diesel">Diesel</option>
                             <option value="CNG">CNG</option>
                             <option value="Electric">Electric</option>
+                            <option value="Hybrid">Hybrid</option>
                         </select>
                     </div>
                     <div class="admin-form-group">
@@ -281,14 +282,19 @@
                         <select id="carTrans" class="admin-form-input">
                             <option value="Manual">Manual</option>
                             <option value="Automatic">Automatic</option>
+                            <option value="AMT">AMT</option>
+                            <option value="DCT/DSG">DCT/DSG</option>
+                            <option value="CVT">CVT</option>
                         </select>
                     </div>
                     <div class="admin-form-group">
                         <label class="admin-form-label">Body Type</label>
                         <select id="carBody" class="admin-form-input">
+                            <option value="Hatchback">Hatchback</option>
                             <option value="Sedan">Sedan</option>
                             <option value="SUV">SUV</option>
-                            <option value="Hatchback">Hatchback</option>
+                            <option value="MUV/MPV">MUV/MPV</option>
+                            <option value="Luxury">Luxury</option>
                             <option value="Coupe">Coupe</option>
                         </select>
                     </div>
@@ -298,6 +304,7 @@
                             <option value="1st Owner">1st Owner</option>
                             <option value="2nd Owner">2nd Owner</option>
                             <option value="3rd Owner">3rd Owner</option>
+                            <option value="4th Owner">4th Owner</option>
                         </select>
                     </div>
                     <div class="admin-form-group">
@@ -307,9 +314,10 @@
                     <div class="admin-form-group">
                         <label class="admin-form-label">Insurance</label>
                         <select id="carInsurance" class="admin-form-input">
-                            <option value="Valid">Valid</option>
-                            <option value="Expired">Expired</option>
                             <option value="Comprehensive">Comprehensive</option>
+                            <option value="Third Party">Third Party</option>
+                            <option value="Expired">Expired</option>
+                            <option value="Valid">Valid</option>
                         </select>
                     </div>
                     <div class="admin-form-group lg:col-span-3">
@@ -393,6 +401,9 @@
                                 <option value="Audi">Audi</option>
                                 <option value="Porsche">Porsche</option>
                                 <option value="Jaguar">Jaguar</option>
+                                <option value="Tata">Tata</option>
+                                <option value="Mahindra">Mahindra</option>
+                                <option value="Maruti">Maruti Suzuki</option>
                             </select>
                         </div>
                     </div>
@@ -410,10 +421,11 @@
                         <div class="flex items-center justify-between text-gray-400">
                             <select id="filterFuel" class="filter-select">
                                 <option value="all">All Fuel Types</option>
-                                <option value="Diesel">Diesel</option>
                                 <option value="Petrol">Petrol</option>
+                                <option value="Diesel">Diesel</option>
                                 <option value="CNG">CNG</option>
                                 <option value="Electric">Electric</option>
+                                <option value="Hybrid">Hybrid</option>
                             </select>
                         </div>
                     </div>
