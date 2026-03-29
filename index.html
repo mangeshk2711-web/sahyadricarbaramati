@@ -9,11 +9,24 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
+        :root {
+            --bg-base: #0a0a0a;
+            --bg-soft: #111217;
+            --text-muted: #9ca3af;
+            --brand-gold: #facc15;
+            --brand-red: #dc2626;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0a0a0a;
+            background-color: var(--bg-base);
             color: #ffffff;
             scroll-behavior: smooth;
+            letter-spacing: 0.01em;
+        }
+
+        section {
+            scroll-margin-top: 92px;
         }
 
         .hero-gradient {
@@ -76,12 +89,14 @@
         }
 
         .premium-filter-bar {
-            background-color: #0b1414;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(160deg, rgba(14, 21, 21, 0.95), rgba(10, 10, 10, 0.92));
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             padding: 12px 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
         }
 
         .filter-item {
@@ -142,7 +157,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255,255,255,0.06);
+            background: radial-gradient(circle at 35% 25%, #ffffff 0%, #f4f4f5 55%, #e4e4e7 100%);
             backdrop-filter: blur(8px);
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -152,7 +167,7 @@
         }
         .brand-logo-circle:hover {
             border-color: #facc15;
-            background: rgba(255,255,255,0.12);
+            background: radial-gradient(circle at 35% 25%, #ffffff 0%, #fff7d6 60%, #fde68a 100%);
             box-shadow: 0 8px 30px rgba(250, 204, 21, 0.25);
             transform: translateY(-6px) scale(1.05);
         }
@@ -161,19 +176,35 @@
             height: 100%;
             object-fit: contain;
             padding: 20px;
-            filter: brightness(0) invert(1);
+            filter: grayscale(100%) contrast(1.1) brightness(0.45);
             transition: all 0.3s ease;
-            opacity: 0.85;
+            opacity: 0.95;
         }
         .brand-logo-circle:hover img {
-            filter: brightness(0) saturate(100%) invert(85%) sepia(60%) saturate(500%) hue-rotate(5deg);
+            filter: grayscale(10%) contrast(1.15) brightness(0.55);
             opacity: 1;
+        }
+        .brand-fallback {
+            display: none;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 14px;
+            color: #18181b;
+            font-weight: 900;
+            font-size: 11px;
+            line-height: 1.1;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
         }
 
         .gallery-item {
             position: relative;
             overflow: hidden;
             border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
         .gallery-overlay {
             position: absolute;
@@ -282,6 +313,44 @@
             color: white;
         }
 
+        .inventory-card {
+            background: linear-gradient(180deg, rgba(24, 24, 27, 0.95), rgba(14, 14, 16, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 2rem;
+            overflow: hidden;
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25);
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+        .inventory-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(250, 204, 21, 0.4);
+            box-shadow: 0 22px 55px rgba(0, 0, 0, 0.45);
+        }
+
+        .primary-btn {
+            border-radius: 999px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+        }
+        .primary-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        @media (max-width: 768px) {
+            h1, h2 {
+                line-height: 1.15 !important;
+            }
+            .premium-filter-bar {
+                border-radius: 16px;
+            }
+        }
+
         /* Admin Tab UI */
         .tab-btn {
             padding: 10px 20px;
@@ -344,6 +413,30 @@
             font-size: 12px;
             color: #ccc;
             border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            right: 20px;
+            bottom: 22px;
+            z-index: 120;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: #25d366;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 14px 26px rgba(37, 211, 102, 0.35);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .whatsapp-float:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 18px 34px rgba(37, 211, 102, 0.45);
+        }
+        .whatsapp-float i {
+            font-size: 30px;
         }
     </style>
 </head>
@@ -586,7 +679,7 @@
     </div>
 
     <!-- Header / Navbar -->
-    <nav class="fixed w-full z-50 transition-all duration-300 bg-black/80 backdrop-blur-md border-b border-white/10">
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-black/75 backdrop-blur-xl border-b border-white/10">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center">
                 <div class="h-14 w-auto">
@@ -601,15 +694,13 @@
             
             <div class="hidden md:flex gap-8 text-sm font-medium uppercase tracking-widest">
                 <a href="#inventory" class="hover:text-yellow-400 transition">Buy</a>
-                <a href="#sell" class="hover:text-yellow-400 transition">Sell</a>
-                <a href="#" class="hover:text-yellow-400 transition">Exchange</a>
                 <a href="#" class="hover:text-yellow-400 transition">Services</a>
                 <a href="#" class="hover:text-yellow-400 transition">Contact</a>
             </div>
 
             <div class="flex items-center gap-4">
                 <button id="loginBtn" onclick="openModal('loginModal')" class="text-sm font-bold hover:text-yellow-500 transition border border-white/20 px-4 py-2 rounded-full uppercase">Login</button>
-                <button class="bg-yellow-500 text-black px-6 py-2.5 rounded-full text-sm font-bold hover:bg-yellow-400 transition shadow-lg shadow-yellow-500/20 uppercase tracking-tight">Enquire Now</button>
+                <button class="primary-btn bg-yellow-500 text-black px-6 py-2.5 text-sm hover:bg-yellow-400 shadow-lg shadow-yellow-500/20 uppercase tracking-tight">Enquire Now</button>
             </div>
         </div>
     </nav>
@@ -637,9 +728,9 @@
                         <span class="text-red-500 text-xs font-black uppercase tracking-[0.2em]">Premium Pre-Owned Cars</span>
                     </div>
 
-                    <h1 class="text-5xl md:text-6xl xl:text-7xl font-extrabold leading-none tracking-tighter italic uppercase mb-6">
+                    <h1 class="section-title text-5xl md:text-6xl xl:text-7xl font-extrabold leading-none tracking-tighter italic uppercase mb-6">
                         BUY | SELL<br>
-                        <span class="text-red-600">I</span> EXCHANGE
+                        CERTIFIED CARS
                     </h1>
 
                     <p class="text-gray-400 text-base md:text-lg mb-10 max-w-md leading-relaxed">
@@ -648,10 +739,10 @@
 
                     <!-- CTA Buttons -->
                     <div class="flex flex-wrap gap-4 mb-12">
-                        <button class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-black uppercase tracking-wider text-sm transition shadow-lg shadow-red-900/40">
+                        <button class="primary-btn bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-black uppercase tracking-wider text-sm transition shadow-lg shadow-red-900/40">
                             GET BEST OFFER
                         </button>
-                        <button onclick="document.getElementById('inventory').scrollIntoView({behavior:'smooth'})" class="border border-white/20 hover:border-yellow-400 hover:text-yellow-400 text-white px-8 py-4 rounded-lg font-black uppercase tracking-wider text-sm transition">
+                        <button onclick="document.getElementById('inventory').scrollIntoView({behavior:'smooth'})" class="primary-btn border border-white/20 hover:border-yellow-400 hover:text-yellow-400 text-white px-8 py-4 rounded-lg font-black uppercase tracking-wider text-sm transition">
                             VIEW INVENTORY
                         </button>
                     </div>
@@ -665,10 +756,6 @@
                         <div class="hero-stat-pill">
                             <p class="text-yellow-400 text-2xl font-black">13<span class="text-red-500">+</span></p>
                             <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Years Exp.</p>
-                        </div>
-                        <div class="hero-stat-pill">
-                            <p class="text-yellow-400 text-2xl font-black">6000<span class="text-red-500">+</span></p>
-                            <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Happy Clients</p>
                         </div>
                         <div class="hero-stat-pill">
                             <p class="text-yellow-400 text-2xl font-black">35<span class="text-red-500">+</span></p>
@@ -784,22 +871,6 @@
         </div>
     </section>
 
-    <!-- SELL YOUR CAR SECTION -->
-    <section id="sell" class="py-24 bg-white relative overflow-hidden">
-        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
-            <div class="w-full md:w-1/2 text-black">
-                <p class="text-yellow-600 font-bold tracking-widest mb-4 uppercase">Direct Buying</p>
-                <h2 class="text-4xl md:text-6xl font-extrabold mb-6 italic uppercase leading-tight">Sell Your Car <br><span class="text-yellow-600">In Minutes</span></h2>
-                <p class="text-zinc-600 text-lg mb-8 max-w-lg">Experience a transparent valuation process. We offer the most competitive market prices for luxury vehicles with instant settlement.</p>
-                <button class="bg-yellow-500 text-black px-10 py-4 rounded-full font-bold shadow-xl shadow-yellow-600/20 uppercase tracking-wider">Get Free Valuation</button>
-            </div>
-            <div class="w-full md:w-1/2 relative">
-                <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800" alt="Luxury Sports Car" class="w-full h-auto object-contain drop-shadow-[0_35px_35px_rgba(0,0,0,0.15)]">
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-yellow-100 rounded-full blur-3xl opacity-50 -z-0"></div>
-            </div>
-        </div>
-    </section>
-
     <!-- WHY CHOOSE US — Rich Redesign -->
     <section class="relative py-28 overflow-hidden bg-[#080808]">
 
@@ -823,7 +894,7 @@
                     Our Promise
                     <span class="w-6 h-px bg-yellow-500"></span>
                 </p>
-                <h2 class="text-5xl md:text-6xl font-extrabold uppercase italic text-white leading-tight">
+                <h2 class="section-title text-5xl md:text-6xl font-extrabold uppercase italic text-white leading-tight">
                     Why Choose <span class="text-transparent" style="-webkit-text-stroke: 1.5px #facc15;">Sahyadri</span><br>
                     <span class="text-yellow-500">Car's?</span>
                 </h2>
@@ -987,10 +1058,10 @@
                 <div class="absolute inset-0 opacity-30" style="background: radial-gradient(ellipse at 30% 50%, rgba(234,179,8,0.15), transparent 60%), radial-gradient(ellipse at 80% 50%, rgba(220,38,38,0.10), transparent 50%);"></div>
                 <div class="relative z-10">
                     <p class="text-yellow-500 text-xs font-black uppercase tracking-[0.3em] mb-2">Ready to Experience the Difference?</p>
-                    <h3 class="text-2xl md:text-3xl font-black italic uppercase text-white">13+ Years. 6000+ Happy Customers. <span class="text-yellow-500">Zero Regrets.</span></h3>
+                    <h3 class="text-2xl md:text-3xl font-black italic uppercase text-white">13+ Years. 4500+ Sold Cars. <span class="text-yellow-500">Zero Regrets.</span></h3>
                 </div>
                 <div class="relative z-10 flex gap-4 flex-shrink-0">
-                    <button class="bg-yellow-500 hover:bg-yellow-400 text-black px-8 py-4 rounded-xl font-black uppercase tracking-wider text-sm transition shadow-xl shadow-yellow-900/30">
+                    <button class="primary-btn bg-yellow-500 hover:bg-yellow-400 text-black px-8 py-4 rounded-xl font-black uppercase tracking-wider text-sm transition shadow-xl shadow-yellow-900/30">
                         Explore Cars
                     </button>
                     <button class="border border-white/15 hover:border-yellow-500 text-white hover:text-yellow-400 px-8 py-4 rounded-xl font-black uppercase tracking-wider text-sm transition">
@@ -1013,86 +1084,144 @@
 
                 <!-- Mercedes -->
                 <div class="brand-logo-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Benz_logo%2C_2010.svg/1024px-Mercedes-Benz_logo%2C_2010.svg.png" alt="Mercedes-Benz">
+                    <img src="https://logo.clearbit.com/mercedes-benz.com" alt="Mercedes-Benz" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="brand-fallback">Mercedes</span>
                 </div>
 
                 <!-- BMW -->
                 <div class="brand-logo-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/1024px-BMW.svg.png" alt="BMW">
+                    <img src="https://logo.clearbit.com/bmw.com" alt="BMW" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="brand-fallback">BMW</span>
                 </div>
 
                 <!-- Audi -->
                 <div class="brand-logo-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Audi_logo_detail.svg/1024px-Audi_logo_detail.svg.png" alt="Audi">
+                    <img src="https://logo.clearbit.com/audi.com" alt="Audi" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="brand-fallback">Audi</span>
                 </div>
 
                 <!-- Porsche -->
                 <div class="brand-logo-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Porsche_logo.svg/1024px-Porsche_logo.svg.png" alt="Porsche">
+                    <img src="https://logo.clearbit.com/porsche.com" alt="Porsche" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="brand-fallback">Porsche</span>
                 </div>
 
                 <!-- Jaguar -->
                 <div class="brand-logo-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Jaguar_2012_logo.svg/1024px-Jaguar_2012_logo.svg.png" alt="Jaguar">
+                    <img src="https://logo.clearbit.com/jaguar.com" alt="Jaguar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="brand-fallback">Jaguar</span>
                 </div>
 
                 <!-- Land Rover -->
                 <div class="brand-logo-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Land_Rover_logo.svg/1024px-Land_Rover_logo.svg.png" alt="Land Rover">
+                    <img src="https://logo.clearbit.com/landrover.com" alt="Land Rover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="brand-fallback">Land Rover</span>
                 </div>
 
                 <!-- Volvo -->
                 <div class="brand-logo-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Volvo_Cars_logo.svg/1024px-Volvo_Cars_logo.svg.png" alt="Volvo">
+                    <img src="https://logo.clearbit.com/volvocars.com" alt="Volvo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="brand-fallback">Volvo</span>
                 </div>
 
                 <!-- Toyota -->
                 <div class="brand-logo-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Toyota_carlogo.svg/1024px-Toyota_carlogo.svg.png" alt="Toyota">
+                    <img src="https://logo.clearbit.com/toyota.com" alt="Toyota" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="brand-fallback">Toyota</span>
                 </div>
 
                 <!-- Honda -->
                 <div class="brand-logo-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Honda.svg/1024px-Honda.svg.png" alt="Honda">
+                    <img src="https://logo.clearbit.com/honda.com" alt="Honda" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="brand-fallback">Honda</span>
                 </div>
 
                 <!-- Hyundai -->
                 <div class="brand-logo-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Hyundai_Motor_Company_logo.svg/1024px-Hyundai_Motor_Company_logo.svg.png" alt="Hyundai">
+                    <img src="https://logo.clearbit.com/hyundai.com" alt="Hyundai" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="brand-fallback">Hyundai</span>
                 </div>
 
                 <!-- Kia -->
                 <div class="brand-logo-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Kia-logo.svg/1024px-Kia-logo.svg.png" alt="Kia">
+                    <img src="https://logo.clearbit.com/kia.com" alt="Kia" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="brand-fallback">Kia</span>
                 </div>
 
                 <!-- Mahindra -->
                 <div class="brand-logo-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Mahindra_Rise_logo.svg/1024px-Mahindra_Rise_logo.svg.png" alt="Mahindra">
+                    <img src="https://logo.clearbit.com/mahindra.com" alt="Mahindra" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="brand-fallback">Mahindra</span>
                 </div>
 
                 <!-- Tata -->
                 <div class="brand-logo-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Tata_logo.svg/1024px-Tata_logo.svg.png" alt="Tata">
+                    <img src="https://logo.clearbit.com/tatamotors.com" alt="Tata" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="brand-fallback">Tata</span>
                 </div>
 
                 <!-- Maruti Suzuki -->
                 <div class="brand-logo-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Maruti_Suzuki_logo.svg/1024px-Maruti_Suzuki_logo.svg.png" alt="Maruti Suzuki">
+                    <img src="https://logo.clearbit.com/marutisuzuki.com" alt="Maruti Suzuki" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="brand-fallback">Maruti Suzuki</span>
                 </div>
 
             </div>
         </div>
     </section>
 
-    <!-- ACHIEVEMENTS -->
-    <section class="py-20 bg-zinc-900 border-y border-white/5">
+    <!-- CUSTOMER REVIEWS -->
+    <section class="py-24 bg-zinc-950 border-y border-white/5">
         <div class="container mx-auto px-4">
-            <div class="flex flex-wrap justify-center gap-10 md:gap-16">
-                <div class="stat-circle text-center"><i class="fas fa-calendar-alt text-3xl mb-2"></i><p class="text-3xl font-black">13+</p><p class="text-[10px] uppercase font-bold">Years In Business</p></div>
-                <div class="stat-circle text-center"><i class="fas fa-car text-3xl mb-2"></i><p class="text-3xl font-black">4500+</p><p class="text-[10px] uppercase font-bold">Sold Cars</p></div>
-                <div class="stat-circle text-center"><i class="fas fa-tags text-3xl mb-2"></i><p class="text-3xl font-black">35+</p><p class="text-[10px] uppercase font-bold">Brands</p></div>
-                <div class="stat-circle text-center"><i class="fas fa-users text-3xl mb-2"></i><p class="text-3xl font-black">6000+</p><p class="text-[10px] uppercase font-bold">Happy Customers</p></div>
+            <div class="text-center mb-14">
+                <p class="text-yellow-500 font-bold tracking-widest mb-2 uppercase text-xs">Customer Voices</p>
+                <h2 class="section-title text-4xl md:text-5xl font-extrabold uppercase italic text-white">
+                    Trusted by Families from <span class="text-yellow-500">Baramati</span>
+                </h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">
+                    Real feedback from Maharashtrian customers who bought their cars through Sahyadri Car's.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="rounded-3xl border border-white/10 bg-zinc-900/70 p-8">
+                    <div class="flex items-center gap-1 text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed mb-6">
+                        "Mi Baramati madhun BMW 3 Series ghetili. Gaadi full transparent history sobat dili. Team khup professional aahe ani deal pan fair rate madhe zali."
+                    </p>
+                    <div>
+                        <p class="text-white font-black uppercase tracking-wide text-sm">Santosh Jadhav</p>
+                        <p class="text-gray-500 text-xs uppercase tracking-widest">Baramati, Pune District</p>
+                    </div>
+                </div>
+
+                <div class="rounded-3xl border border-white/10 bg-zinc-900/70 p-8">
+                    <div class="flex items-center gap-1 text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed mb-6">
+                        "Aamchya family sathi SUV pahije hoti. Test drive pasun paperwork paryant complete support mila. Service honest aahe, mhanun mi recommend karto."
+                    </p>
+                    <div>
+                        <p class="text-white font-black uppercase tracking-wide text-sm">Vaishali Mane</p>
+                        <p class="text-gray-500 text-xs uppercase tracking-widest">Baramati, Maharashtra</p>
+                    </div>
+                </div>
+
+                <div class="rounded-3xl border border-white/10 bg-zinc-900/70 p-8">
+                    <div class="flex items-center gap-1 text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed mb-6">
+                        "Mi IT madhye kaam karto ani quality var compromise karat nahi. Audi A4 purchase kartana inspection report detail madhe samjun sangitla. Khup changla experience."
+                    </p>
+                    <div>
+                        <p class="text-white font-black uppercase tracking-wide text-sm">Nikhil Pawar</p>
+                        <p class="text-gray-500 text-xs uppercase tracking-widest">Vidya Pratishthan Area, Baramati</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1103,7 +1232,7 @@
             <div class="flex justify-between items-end mb-12">
                 <div>
                     <p class="text-yellow-500 font-bold tracking-widest mb-2 uppercase text-[10px]">Premium Stock</p>
-                    <h2 class="text-4xl font-extrabold uppercase italic tracking-tighter">Featured <span class="text-yellow-500">Inventory</span></h2>
+                    <h2 class="section-title text-4xl font-extrabold uppercase italic tracking-tighter">Featured <span class="text-yellow-500">Inventory</span></h2>
                 </div>
             </div>
             <div id="inventoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -1126,6 +1255,32 @@
     </section>
 
     <!-- Footer -->
+    <section class="bg-zinc-950 py-20 border-t border-white/10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-8">
+                <div>
+                    <p class="text-yellow-500 font-bold tracking-widest mb-2 uppercase text-xs">Visit Our Showroom</p>
+                    <h2 class="section-title text-3xl md:text-4xl font-extrabold uppercase italic text-white">Find Us on Google Maps</h2>
+                    <p class="text-gray-400 mt-3 max-w-xl">Visit our Baramati showroom for inspection, test drive, and direct purchase assistance.</p>
+                </div>
+                <a href="https://maps.google.com/?q=Baramati+Maharashtra" target="_blank" rel="noopener noreferrer" class="primary-btn bg-yellow-500 text-black px-7 py-3 uppercase text-sm font-bold w-fit">
+                    Open in Google Maps
+                </a>
+            </div>
+            <div class="rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+                <iframe
+                    title="Sahyadri Cars Location"
+                    src="https://www.google.com/maps?q=Baramati%2C%20Maharashtra&output=embed"
+                    width="100%"
+                    height="420"
+                    style="border:0;"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
     <footer class="bg-black pt-16 pb-10 border-t border-white/10">
         <div class="container mx-auto px-4 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-8">
             <div class="h-16 w-auto">
@@ -1140,11 +1295,23 @@
         </div>
     </footer>
 
+    <a
+        href="https://wa.me/919999999999?text=Hello%20Sahyadri%20Cars%2C%20I%20want%20to%20enquire%20about%20your%20available%20cars."
+        class="whatsapp-float"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Enquire on WhatsApp"
+        title="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        // Correction for import path
+        import { getFirestore as getDB, collection as col, addDoc as add, onSnapshot as listen, deleteDoc as del, doc as docRef, serverTimestamp as time, query as q, orderBy as ord } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
         // ✅ FIREBASE KEYS
         const mySecretConfig = {
@@ -1159,7 +1326,7 @@
         const firebaseConfig = (mySecretConfig && mySecretConfig.apiKey) ? mySecretConfig : JSON.parse(__firebase_config);
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
+        const db = getDB(app);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'sahyadri-cars-official';
 
         let userLoggedIn = false;
@@ -1272,7 +1439,7 @@
             document.querySelectorAll('input[name="feat"]:checked').forEach(cb => features.push(cb.value));
 
             try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), {
+                await add(col(db, 'artifacts', appId, 'public', 'data', 'inventory'), {
                     model: document.getElementById('carModel').value,
                     price: document.getElementById('carPrice').value,
                     year: document.getElementById('carYear').value,
@@ -1286,7 +1453,7 @@
                     description: document.getElementById('carDescription').value,
                     features: features,
                     images: imagesArray,
-                    createdAt: serverTimestamp()
+                    createdAt: time()
                 });
                 showToast("Detailed Listing Published!");
                 document.getElementById('addCarForm').reset();
@@ -1313,7 +1480,7 @@
                 const coverImage = car.images && car.images.length > 0 ? car.images[0] : (car.image || "https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800");
                 
                 grid.innerHTML += `
-                <div class="bg-zinc-900 rounded-[40px] overflow-hidden shadow-2xl group border border-white/5 relative">
+                <div class="inventory-card group relative">
                     ${isManageModeEnabled ? `<button onclick="deleteCar('${carDoc.id}')" class="absolute top-4 right-4 bg-red-600/80 backdrop-blur-md text-white w-10 h-10 rounded-full z-10 hover:bg-red-700 transition flex items-center justify-center"><i class="fas fa-trash"></i></button>` : ''}
                     <div class="relative overflow-hidden h-64">
                         <img src="${coverImage}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
@@ -1409,8 +1576,8 @@
 
         const setupListeners = () => {
             if (!auth.currentUser) return;
-            const carQuery = query(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), orderBy('createdAt', 'desc'));
-            onSnapshot(carQuery, (snapshot) => {
+            const carQuery = q(col(db, 'artifacts', appId, 'public', 'data', 'inventory'), ord('createdAt', 'desc'));
+            listen(carQuery, (snapshot) => {
                 allCarInventory = [];
                 snapshot.forEach(doc => allCarInventory.push(doc));
                 renderInventory(allCarInventory);
@@ -1419,8 +1586,8 @@
 
         const renderGallery = () => {
             if (!auth.currentUser) return;
-            const galleryQuery = query(collection(db, 'artifacts', appId, 'public', 'data', 'gallery'), orderBy('createdAt', 'desc'));
-            onSnapshot(galleryQuery, (snapshot) => {
+            const galleryQuery = q(col(db, 'artifacts', appId, 'public', 'data', 'gallery'), ord('createdAt', 'desc'));
+            listen(galleryQuery, (snapshot) => {
                 const grid = document.getElementById('galleryGrid');
                 grid.innerHTML = '';
                 snapshot.forEach((galDoc) => {
@@ -1437,8 +1604,8 @@
             }, err => console.error(err));
         };
 
-        window.deleteCar = async (id) => { if(confirm("Delete this car?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'inventory', id)); };
-        window.deleteGallery = async (id) => { if(confirm("Delete this moment?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'gallery', id)); };
+        window.deleteCar = async (id) => { if(confirm("Delete this car?")) await del(docRef(db, 'artifacts', appId, 'public', 'data', 'inventory', id)); };
+        window.deleteGallery = async (id) => { if(confirm("Delete this moment?")) await del(docRef(db, 'artifacts', appId, 'public', 'data', 'gallery', id)); };
 
         initAuth().then(() => { setupListeners(); });
 
