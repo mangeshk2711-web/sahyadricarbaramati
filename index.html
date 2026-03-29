@@ -176,6 +176,17 @@
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        /* Functional Select Styles to match UI */
+        .filter-select {
+            background: transparent;
+            color: #9ca3af;
+            font-size: 14px;
+            width: 100%;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+        }
     </style>
 </head>
 <body>
@@ -288,34 +299,45 @@
 
             <div class="max-w-6xl w-full">
                 <div class="premium-filter-bar shadow-2xl">
-                    <div class="filter-item cursor-pointer">
+                    <div class="filter-item">
                         <p class="text-[12px] font-semibold text-white mb-1">Brand</p>
                         <div class="flex items-center justify-between text-gray-400">
-                            <span class="text-[14px]">Select Brand</span>
-                            <i class="fas fa-chevron-down text-[10px]"></i>
+                            <select id="filterBrand" class="filter-select">
+                                <option value="all">All Brands</option>
+                                <option value="BMW">BMW</option>
+                                <option value="Mercedes">Mercedes</option>
+                                <option value="Audi">Audi</option>
+                                <option value="Porsche">Porsche</option>
+                                <option value="Jaguar">Jaguar</option>
+                            </select>
                         </div>
                     </div>
                     <div class="filter-divider"></div>
                     <div class="filter-item flex-[1.4]">
-                        <p class="text-[12px] font-semibold text-white">Price: <span class="text-gray-300 font-normal ml-1">₹22.47 lakhs - ₹1.00 cr</span></p>
-                        <div class="slider-track">
-                            <div class="slider-dot" style="left: 25%"></div>
-                            <div class="slider-dot" style="left: 85%"></div>
+                        <p class="text-[12px] font-semibold text-white">Price Status</p>
+                        <div class="flex items-center justify-between text-gray-400 mt-2">
+                             <span class="text-[13px]">Showing All Listings</span>
+                             <i class="fas fa-info-circle text-[10px]"></i>
                         </div>
                     </div>
                     <div class="filter-divider"></div>
-                    <div class="filter-item cursor-pointer">
-                        <p class="text-[12px] font-semibold text-white mb-1">Body Type</p>
+                    <div class="filter-item">
+                        <p class="text-[12px] font-semibold text-white mb-1">Fuel Type</p>
                         <div class="flex items-center justify-between text-gray-400">
-                            <span class="text-[14px]">Coupe</span>
-                            <i class="fas fa-chevron-down text-[10px]"></i>
+                            <select id="filterFuel" class="filter-select">
+                                <option value="all">All Fuel Types</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="Petrol">Petrol</option>
+                                <option value="Electric">Electric</option>
+                                <option value="Hybrid">Hybrid</option>
+                            </select>
                         </div>
                     </div>
                     <div class="flex items-center gap-3 pl-4">
-                        <button class="bg-[#1a2323] p-3 rounded-lg text-gray-400 hover:text-white transition border border-white/5">
-                            <i class="fas fa-sliders-h"></i>
+                        <button onclick="resetFilters()" class="bg-[#1a2323] p-3 rounded-lg text-gray-400 hover:text-white transition border border-white/5">
+                            <i class="fas fa-sync-alt"></i>
                         </button>
-                        <button class="bg-[#e11d48] hover:bg-[#be123c] text-white px-8 py-3 rounded-lg font-bold text-[13px] tracking-wider flex items-center gap-4 transition">
+                        <button onclick="applyFilters()" class="bg-[#e11d48] hover:bg-[#be123c] text-white px-8 py-3 rounded-lg font-bold text-[13px] tracking-wider flex items-center gap-4 transition">
                             FIND CARS <i class="fas fa-search text-[14px]"></i>
                         </button>
                     </div>
@@ -434,9 +456,7 @@
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-        // ==========================================
-        // ✅ YOUR FIREBASE KEYS ARE BACK IN PLACE
-        // ==========================================
+        // ✅ FIREBASE KEYS
         const mySecretConfig = {
             apiKey: "AIzaSyDNJeaLY-PczXJ1iNVU2UqadyT5suVAOhI",
             authDomain: "sahyadri-cars-official.firebaseapp.com",
@@ -454,6 +474,7 @@
 
         let userLoggedIn = false;
         let isManageModeEnabled = false;
+        let allCarInventory = []; // Local storage for filtering
 
         // Modal Controls
         window.openModal = (id) => document.getElementById(id).classList.add('active');
@@ -510,7 +531,7 @@
             document.getElementById('loginBtn').onclick = isManageModeEnabled ? () => { isManageModeEnabled = false; updateUIState(); } : () => openModal('loginModal');
             
             // Re-render when mode changes
-            renderInventory();
+            renderInventory(allCarInventory);
             renderGallery();
         };
 
@@ -605,50 +626,89 @@
             }
         };
 
-        // Render Inventory
-        const renderInventory = () => {
-            if (!auth.currentUser) return;
-            const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), orderBy('createdAt', 'desc'));
+        // Render Inventory Logic
+        const renderInventory = (cars) => {
+            const grid = document.getElementById('inventoryGrid');
+            grid.innerHTML = '';
             
-            onSnapshot(q, (snapshot) => {
-                const grid = document.getElementById('inventoryGrid');
-                grid.innerHTML = '';
-                if (snapshot.empty) grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-600">No cars found. Click "Manage" to add some!</div>';
-                
-                snapshot.forEach((itemDoc) => {
-                    const car = itemDoc.data();
-                    grid.innerHTML += `
-                    <div class="bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl group border border-white/5 relative">
-                        ${isManageModeEnabled ? `<button onclick="deleteCar('${itemDoc.id}')" class="absolute top-4 right-4 bg-red-600/80 backdrop-blur-md text-white w-10 h-10 rounded-full z-10 hover:bg-red-700 transition"><i class="fas fa-trash"></i></button>` : ''}
-                        <div class="relative overflow-hidden h-64">
-                            <img src="${car.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                        </div>
-                        <div class="p-6">
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <h3 class="text-xl font-extrabold text-white">${car.model}</h3>
-                                    <p class="text-gray-400 text-sm">Sahyadri Certified</p>
-                                </div>
-                                <p class="text-yellow-500 font-bold text-xl">${car.price}</p>
+            if (!cars || cars.length === 0) {
+                grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-600">No cars match your current filters.</div>';
+                return;
+            }
+            
+            cars.forEach((carDoc) => {
+                const car = carDoc.data();
+                grid.innerHTML += `
+                <div class="bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl group border border-white/5 relative">
+                    ${isManageModeEnabled ? `<button onclick="deleteCar('${carDoc.id}')" class="absolute top-4 right-4 bg-red-600/80 backdrop-blur-md text-white w-10 h-10 rounded-full z-10 hover:bg-red-700 transition"><i class="fas fa-trash"></i></button>` : ''}
+                    <div class="relative overflow-hidden h-64">
+                        <img src="${car.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-extrabold text-white uppercase italic">${car.model}</h3>
+                                <p class="text-gray-400 text-sm">Sahyadri Certified</p>
                             </div>
-                            <div class="grid grid-cols-3 gap-2 border-t border-white/10 pt-4 mb-6 text-center">
-                                <div><i class="fas fa-road text-gray-500 mb-1"></i><p class="font-bold text-xs text-gray-300">${car.kms}</p></div>
-                                <div class="border-x border-white/10"><i class="fas fa-gas-pump text-gray-500 mb-1"></i><p class="font-bold text-xs text-gray-300">${car.fuel}</p></div>
-                                <div><i class="fas fa-calendar text-gray-500 mb-1"></i><p class="font-bold text-xs text-gray-300">${car.year}</p></div>
-                            </div>
-                            <button class="w-full bg-yellow-500 text-black py-3 rounded-xl font-bold hover:bg-yellow-400 transition uppercase text-sm">View Details</button>
+                            <p class="text-yellow-500 font-bold text-xl">${car.price}</p>
                         </div>
-                    </div>`;
-                });
+                        <div class="grid grid-cols-3 gap-2 border-t border-white/10 pt-4 mb-6 text-center">
+                            <div><i class="fas fa-road text-gray-500 mb-1"></i><p class="font-bold text-xs text-gray-300 uppercase">${car.kms}</p></div>
+                            <div class="border-x border-white/10"><i class="fas fa-gas-pump text-gray-500 mb-1"></i><p class="font-bold text-xs text-gray-300 uppercase">${car.fuel}</p></div>
+                            <div><i class="fas fa-calendar text-gray-500 mb-1"></i><p class="font-bold text-xs text-gray-300">${car.year}</p></div>
+                        </div>
+                        <button class="w-full bg-yellow-500 text-black py-3 rounded-xl font-bold hover:bg-yellow-400 transition uppercase text-sm">Enquire Interest</button>
+                    </div>
+                </div>`;
+            });
+        };
+
+        // Filter Functionality
+        window.applyFilters = () => {
+            const brand = document.getElementById('filterBrand').value;
+            const fuel = document.getElementById('filterFuel').value;
+            
+            let filtered = allCarInventory;
+            
+            if (brand !== 'all') {
+                filtered = filtered.filter(doc => doc.data().model.toLowerCase().includes(brand.toLowerCase()));
+            }
+            
+            if (fuel !== 'all') {
+                filtered = filtered.filter(doc => doc.data().fuel === fuel);
+            }
+            
+            renderInventory(filtered);
+            showToast(`Found ${filtered.length} matches`);
+            
+            // Scroll to inventory
+            document.getElementById('inventory').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.resetFilters = () => {
+            document.getElementById('filterBrand').value = 'all';
+            document.getElementById('filterFuel').value = 'all';
+            renderInventory(allCarInventory);
+            showToast("Filters Reset");
+        };
+
+        // Live Listeners
+        const setupListeners = () => {
+            if (!auth.currentUser) return;
+            
+            // Car Inventory Listener
+            const carQuery = query(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), orderBy('createdAt', 'desc'));
+            onSnapshot(carQuery, (snapshot) => {
+                allCarInventory = [];
+                snapshot.forEach(doc => allCarInventory.push(doc));
+                renderInventory(allCarInventory); // Default render all
             }, err => console.error(err));
         };
 
-        // Render Gallery
         const renderGallery = () => {
             if (!auth.currentUser) return;
-            const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'gallery'), orderBy('createdAt', 'desc'));
-            
-            onSnapshot(q, (snapshot) => {
+            const galleryQuery = query(collection(db, 'artifacts', appId, 'public', 'data', 'gallery'), orderBy('createdAt', 'desc'));
+            onSnapshot(galleryQuery, (snapshot) => {
                 const grid = document.getElementById('galleryGrid');
                 grid.innerHTML = '';
                 snapshot.forEach((galDoc) => {
@@ -669,7 +729,9 @@
         window.deleteGallery = async (id) => { if(confirm("Delete this moment?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'gallery', id)); };
 
         // Start
-        initAuth();
+        initAuth().then(() => {
+            setupListeners();
+        });
 
         window.addEventListener('scroll', function() {
             const nav = document.querySelector('nav');
