@@ -20,6 +20,61 @@
             background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(10,10,10,1));
         }
 
+        /* NEW HERO STYLES */
+        .hero-split {
+            background: #0a0a0a;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-split::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a0000 0%, #0a0a0a 40%);
+            clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+            z-index: 0;
+        }
+        .hero-red-accent {
+            position: absolute;
+            top: 0; right: 0;
+            width: 58%;
+            height: 6px;
+            background: #e11d48;
+        }
+        .hero-stat-pill {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+            border-right: 1px solid rgba(0,0,0,0.08);
+            flex: 1;
+        }
+        .trust-badge:last-child { border-right: none; }
+        .trust-icon-box {
+            width: 44px;
+            height: 44px;
+            background: #e11d48;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        @media (max-width: 768px) {
+            .hero-split::before { width: 100%; clip-path: none; }
+            .trust-badge { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.08); }
+        }
+
         .premium-filter-bar {
             background-color: #0b1414;
             border-radius: 14px;
@@ -80,15 +135,16 @@
         }
 
         .brand-logo-circle {
-            width: 120px;
-            height: 120px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #ffffff;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 0;
             position: relative;
@@ -96,15 +152,22 @@
         }
         .brand-logo-circle:hover {
             border-color: #facc15;
-            box-shadow: 0 15px 35px rgba(250, 204, 21, 0.2);
-            transform: translateY(-8px);
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 8px 30px rgba(250, 204, 21, 0.25);
+            transform: translateY(-6px) scale(1.05);
         }
         .brand-logo-circle img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            padding: 22px;
+            padding: 20px;
+            filter: brightness(0) invert(1);
             transition: all 0.3s ease;
+            opacity: 0.85;
+        }
+        .brand-logo-circle:hover img {
+            filter: brightness(0) saturate(100%) invert(85%) sepia(60%) saturate(500%) hue-rotate(5deg);
+            opacity: 1;
         }
 
         .gallery-item {
@@ -239,11 +302,11 @@
 
         .feature-checkbox-group {
             display: grid;
-            grid-template-cols: repeat(2, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 12px;
         }
         @media (min-width: 768px) {
-            .feature-checkbox-group { grid-template-cols: repeat(3, 1fr); }
+            .feature-checkbox-group { grid-template-columns: repeat(3, 1fr); }
         }
 
         .feature-item-label {
@@ -551,74 +614,170 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="relative h-screen min-h-[850px] flex items-center pt-16">
+    <!-- Hero Section - Split Layout -->
+    <section class="hero-split pt-20">
+        <!-- Background Image -->
         <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1562141989-c5c79ac8f576?auto=format&fit=crop&q=80&w=2000" alt="Luxury Car Showroom" class="w-full h-full object-cover">
-            <div class="absolute inset-0 hero-gradient"></div>
+            <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=2000" alt="Hero Background" class="w-full h-full object-cover object-center">
+            <div class="absolute inset-0" style="background: linear-gradient(105deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.75) 45%, rgba(10,0,0,0.60) 100%);"></div>
+            <!-- Red vignette on right -->
+            <div class="absolute inset-0" style="background: radial-gradient(ellipse at 85% 50%, rgba(180,10,30,0.18) 0%, transparent 60%);"></div>
         </div>
 
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="max-w-3xl mb-16">
-                <h1 class="text-6xl md:text-8xl font-extrabold mb-4 leading-none tracking-tighter italic uppercase">
-                    BUY | SELL <br>
-                    <span class="text-yellow-500">EXCHANGE</span>
-                </h1>
-                <p class="text-xl text-gray-300 max-w-xl">Premium pre-owned luxury cars by <span class="text-white font-bold">Sahyadri Car's</span>. Quality, trust, and speed in every deal.</p>
-            </div>
+        <div class="hero-red-accent"></div>
 
-            <div class="max-w-6xl w-full">
-                <div class="premium-filter-bar shadow-2xl backdrop-blur-md bg-black/40">
-                    <div class="filter-item">
-                        <p class="text-[12px] font-semibold text-white mb-1">Brand</p>
-                        <div class="flex items-center justify-between text-gray-400">
-                            <select id="filterBrand" class="filter-select">
-                                <option value="all">All Brands</option>
-                                <option value="BMW">BMW</option>
-                                <option value="Mercedes">Mercedes</option>
-                                <option value="Audi">Audi</option>
-                                <option value="Porsche">Porsche</option>
-                                <option value="Jaguar">Jaguar</option>
-                                <option value="Tata">Tata</option>
-                                <option value="Mahindra">Mahindra</option>
-                                <option value="Maruti">Maruti Suzuki</option>
-                            </select>
-                        </div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center min-h-[88vh] gap-0">
+
+                <!-- LEFT: Text Content -->
+                <div class="w-full lg:w-[55%] py-16 lg:py-0 flex flex-col justify-center z-10">
+                    <!-- Top label -->
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-[3px] bg-red-600"></div>
+                        <span class="text-red-500 text-xs font-black uppercase tracking-[0.2em]">Premium Pre-Owned Cars</span>
                     </div>
-                    <div class="filter-divider"></div>
-                    <div class="filter-item flex-[1.4]">
-                        <p class="text-[12px] font-semibold text-white">Body Type</p>
-                        <div class="flex items-center justify-between text-gray-400">
-                            <select id="filterBody" class="filter-select">
-                                <option value="all">All Bodies</option>
-                                <option value="Sedan">Sedan</option>
-                                <option value="SUV">SUV</option>
-                                <option value="Hatchback">Hatchback</option>
-                                <option value="Luxury">Luxury</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="filter-divider"></div>
-                    <div class="filter-item">
-                        <p class="text-[12px] font-semibold text-white mb-1">Fuel Type</p>
-                        <div class="flex items-center justify-between text-gray-400">
-                            <select id="filterFuel" class="filter-select">
-                                <option value="all">All Fuel</option>
-                                <option value="Petrol">Petrol</option>
-                                <option value="Diesel">Diesel</option>
-                                <option value="CNG">CNG</option>
-                                <option value="Electric">Electric (EV)</option>
-                                <option value="Hybrid">Hybrid</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 pl-4">
-                        <button onclick="resetFilters()" class="bg-[#1a2323] p-3 rounded-lg text-gray-400 hover:text-white transition border border-white/5">
-                            <i class="fas fa-sync-alt"></i>
+
+                    <h1 class="text-5xl md:text-6xl xl:text-7xl font-extrabold leading-none tracking-tighter italic uppercase mb-6">
+                        BUY | SELL<br>
+                        <span class="text-red-600">I</span> EXCHANGE
+                    </h1>
+
+                    <p class="text-gray-400 text-base md:text-lg mb-10 max-w-md leading-relaxed">
+                        The finest pre-owned luxury cars in Maharashtra. Transparent pricing, verified history, and instant deals — only at <span class="text-white font-bold">Sahyadri Car's</span>.
+                    </p>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-wrap gap-4 mb-12">
+                        <button class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-black uppercase tracking-wider text-sm transition shadow-lg shadow-red-900/40">
+                            GET BEST OFFER
                         </button>
-                        <button onclick="applyFilters()" class="bg-[#e11d48] hover:bg-[#be123c] text-white px-8 py-3 rounded-lg font-bold text-[13px] tracking-wider flex items-center gap-4 transition">
-                            FIND CARS <i class="fas fa-search text-[14px]"></i>
+                        <button onclick="document.getElementById('inventory').scrollIntoView({behavior:'smooth'})" class="border border-white/20 hover:border-yellow-400 hover:text-yellow-400 text-white px-8 py-4 rounded-lg font-black uppercase tracking-wider text-sm transition">
+                            VIEW INVENTORY
                         </button>
+                    </div>
+
+                    <!-- Stats Row -->
+                    <div class="flex gap-4 flex-wrap">
+                        <div class="hero-stat-pill">
+                            <p class="text-yellow-400 text-2xl font-black">4500<span class="text-red-500">+</span></p>
+                            <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Cars Sold</p>
+                        </div>
+                        <div class="hero-stat-pill">
+                            <p class="text-yellow-400 text-2xl font-black">13<span class="text-red-500">+</span></p>
+                            <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Years Exp.</p>
+                        </div>
+                        <div class="hero-stat-pill">
+                            <p class="text-yellow-400 text-2xl font-black">6000<span class="text-red-500">+</span></p>
+                            <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Happy Clients</p>
+                        </div>
+                        <div class="hero-stat-pill">
+                            <p class="text-yellow-400 text-2xl font-black">35<span class="text-red-500">+</span></p>
+                            <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Brands</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: Floating badge only -->
+                <div class="hidden lg:flex w-full lg:w-[45%] relative items-center justify-end z-10">
+                    <div class="bg-red-600/90 backdrop-blur text-white px-6 py-4 rounded-2xl font-black text-sm uppercase tracking-wider shadow-2xl border border-red-500/30">
+                        <i class="fas fa-shield-alt mr-2 text-yellow-300"></i>100% Certified Cars
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Bar (inside hero, below content) -->
+        <div class="relative z-10 container mx-auto px-4 pb-8 -mt-4 lg:-mt-8">
+            <div class="premium-filter-bar shadow-2xl">
+                <div class="filter-item">
+                    <p class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1">Brand</p>
+                    <select id="filterBrand" class="filter-select font-semibold text-white">
+                        <option value="all">All Brands</option>
+                        <option value="BMW">BMW</option>
+                        <option value="Mercedes">Mercedes</option>
+                        <option value="Audi">Audi</option>
+                        <option value="Porsche">Porsche</option>
+                        <option value="Jaguar">Jaguar</option>
+                        <option value="Tata">Tata</option>
+                        <option value="Mahindra">Mahindra</option>
+                        <option value="Maruti">Maruti Suzuki</option>
+                    </select>
+                </div>
+                <div class="filter-divider"></div>
+                <div class="filter-item">
+                    <p class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1">Body Type</p>
+                    <select id="filterBody" class="filter-select font-semibold text-white">
+                        <option value="all">All Bodies</option>
+                        <option value="Sedan">Sedan</option>
+                        <option value="SUV">SUV</option>
+                        <option value="Hatchback">Hatchback</option>
+                        <option value="Luxury">Luxury</option>
+                    </select>
+                </div>
+                <div class="filter-divider"></div>
+                <div class="filter-item">
+                    <p class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1">Fuel Type</p>
+                    <select id="filterFuel" class="filter-select font-semibold text-white">
+                        <option value="all">All Fuel</option>
+                        <option value="Petrol">Petrol</option>
+                        <option value="Diesel">Diesel</option>
+                        <option value="CNG">CNG</option>
+                        <option value="Electric">Electric (EV)</option>
+                        <option value="Hybrid">Hybrid</option>
+                    </select>
+                </div>
+                <div class="filter-divider"></div>
+                <div class="filter-item">
+                    <p class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-1">Transmission</p>
+                    <select class="filter-select font-semibold text-white">
+                        <option value="all">All Types</option>
+                        <option>Manual</option>
+                        <option>Automatic</option>
+                        <option>AMT</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-3 pl-4 flex-shrink-0">
+                    <button onclick="resetFilters()" class="bg-white/5 p-3 rounded-lg text-gray-400 hover:text-white transition border border-white/10">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button onclick="applyFilters()" class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-black text-[13px] tracking-wider flex items-center gap-3 transition shadow-lg shadow-red-900/40">
+                        FIND CARS <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Badges Strip -->
+    <section class="bg-white border-b border-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-gray-100">
+                <div class="trust-badge">
+                    <div class="trust-icon-box"><i class="fas fa-search text-white text-sm"></i></div>
+                    <div>
+                        <p class="text-black font-black text-sm uppercase tracking-wide">Free Inspection</p>
+                        <p class="text-gray-500 text-xs">150+ point check</p>
+                    </div>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-icon-box"><i class="fas fa-rupee-sign text-white text-sm"></i></div>
+                    <div>
+                        <p class="text-black font-black text-sm uppercase tracking-wide">Instant Valuation</p>
+                        <p class="text-gray-500 text-xs">Best market price</p>
+                    </div>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-icon-box"><i class="fas fa-file-alt text-white text-sm"></i></div>
+                    <div>
+                        <p class="text-black font-black text-sm uppercase tracking-wide">No Hidden Charges</p>
+                        <p class="text-gray-500 text-xs">100% transparent</p>
+                    </div>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-icon-box"><i class="fas fa-bolt text-white text-sm"></i></div>
+                    <div>
+                        <p class="text-black font-black text-sm uppercase tracking-wide">Same Day Payment</p>
+                        <p class="text-gray-500 text-xs">Instant settlement</p>
                     </div>
                 </div>
             </div>
@@ -641,35 +800,287 @@
         </div>
     </section>
 
-    <!-- WHY CHOOSE US -->
-    <section class="py-24 section-bg-image relative" style="background-image: url('https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&q=80&w=2000');">
-        <div class="absolute inset-0 bg-black/70"></div>
+    <!-- WHY CHOOSE US — Rich Redesign -->
+    <section class="relative py-28 overflow-hidden bg-[#080808]">
+
+        <!-- Background texture layers -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=2000" alt="bg" class="w-full h-full object-cover opacity-10">
+            <!-- Gold gradient top -->
+            <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 0%, rgba(234,179,8,0.12) 0%, transparent 60%);"></div>
+            <!-- Red glow bottom left -->
+            <div class="absolute inset-0" style="background: radial-gradient(ellipse at 0% 100%, rgba(220,38,38,0.10) 0%, transparent 55%);"></div>
+            <!-- Grid lines -->
+            <div class="absolute inset-0 opacity-[0.04]" style="background-image: linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px); background-size: 60px 60px;"></div>
+        </div>
+
         <div class="container mx-auto px-4 relative z-10">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-extrabold uppercase italic text-yellow-500">Why Sahyadri Car's?</h2>
+
+            <!-- Header -->
+            <div class="text-center mb-20">
+                <p class="inline-flex items-center gap-2 text-yellow-500 text-xs font-black uppercase tracking-[0.3em] mb-4">
+                    <span class="w-6 h-px bg-yellow-500"></span>
+                    Our Promise
+                    <span class="w-6 h-px bg-yellow-500"></span>
+                </p>
+                <h2 class="text-5xl md:text-6xl font-extrabold uppercase italic text-white leading-tight">
+                    Why Choose <span class="text-transparent" style="-webkit-text-stroke: 1.5px #facc15;">Sahyadri</span><br>
+                    <span class="text-yellow-500">Car's?</span>
+                </h2>
+                <p class="text-gray-500 mt-4 max-w-xl mx-auto text-base">13+ years of trust, 4500+ cars delivered, and a reputation built on honesty — here's what sets us apart.</p>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10"><i class="fas fa-certificate text-4xl text-yellow-500 mb-4"></i><h3 class="font-bold mb-2 uppercase text-sm">Certified</h3></div>
-                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10"><i class="fas fa-hand-holding-usd text-4xl text-yellow-500 mb-4"></i><h3 class="font-bold mb-2 uppercase text-sm">Best Price</h3></div>
-                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10"><i class="fas fa-history text-4xl text-yellow-500 mb-4"></i><h3 class="font-bold mb-2 uppercase text-sm">History</h3></div>
-                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10"><i class="fas fa-shield-alt text-4xl text-yellow-500 mb-4"></i><h3 class="font-bold mb-2 uppercase text-sm">Secure</h3></div>
+
+            <!-- Main grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+
+                <!-- BIG CARD LEFT — Certified -->
+                <div class="lg:col-span-1 relative group overflow-hidden rounded-3xl border border-white/8 bg-gradient-to-br from-zinc-900 to-zinc-950 p-10 flex flex-col justify-between min-h-[360px]" style="border-color: rgba(255,255,255,0.06);">
+                    <div class="absolute top-0 right-0 w-56 h-56 rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition duration-700" style="background: radial-gradient(circle, #facc15, transparent);"></div>
+                    <!-- Number -->
+                    <span class="text-[100px] font-black italic leading-none text-white/5 absolute bottom-6 right-6 select-none">01</span>
+                    <div>
+                        <!-- Inspection SVG Illustration -->
+                        <div class="mb-8">
+                            <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="72" height="72" rx="18" fill="rgba(234,179,8,0.10)" stroke="rgba(234,179,8,0.2)" stroke-width="1"/>
+                                <!-- Clipboard -->
+                                <rect x="18" y="16" width="30" height="38" rx="3" fill="none" stroke="#facc15" stroke-width="1.8"/>
+                                <rect x="27" y="12" width="12" height="7" rx="2" fill="none" stroke="#facc15" stroke-width="1.8"/>
+                                <!-- Check lines -->
+                                <line x1="24" y1="28" x2="42" y2="28" stroke="#facc15" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+                                <line x1="24" y1="34" x2="38" y2="34" stroke="#facc15" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+                                <line x1="24" y1="40" x2="35" y2="40" stroke="#facc15" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+                                <!-- Magnifier -->
+                                <circle cx="46" cy="46" r="9" fill="none" stroke="#facc15" stroke-width="2"/>
+                                <circle cx="46" cy="46" r="4" fill="rgba(234,179,8,0.2)"/>
+                                <line x1="52" y1="52" x2="58" y2="58" stroke="#facc15" stroke-width="2.5" stroke-linecap="round"/>
+                                <!-- Tick -->
+                                <polyline points="22,28 25,31 30,24" stroke="#facc15" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-black uppercase italic text-white mb-3">150-Point Certified</h3>
+                        <p class="text-gray-500 leading-relaxed text-sm">Every car undergoes a rigorous 150-point inspection by certified engineers. What you see is exactly what you get — no surprises.</p>
+                    </div>
+                    <div class="mt-8 flex items-center gap-2 text-yellow-500 text-xs font-black uppercase tracking-widest">
+                        <span>Full Inspection Report</span>
+                        <i class="fas fa-arrow-right text-[10px]"></i>
+                    </div>
+                    <!-- Bottom gold line -->
+                    <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-yellow-500 via-yellow-300 to-transparent"></div>
+                </div>
+
+                <!-- RIGHT COLUMN — 2 stacked cards -->
+                <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- Best Price -->
+                    <div class="relative group overflow-hidden rounded-3xl border bg-gradient-to-br from-zinc-900 to-zinc-950 p-8 flex flex-col justify-between" style="border-color: rgba(255,255,255,0.06);">
+                        <div class="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-10 group-hover:opacity-20 transition" style="background: radial-gradient(circle, #ef4444, transparent);"></div>
+                        <span class="text-[80px] font-black italic leading-none text-white/5 absolute bottom-4 right-4 select-none">02</span>
+                        <div class="mb-6">
+                            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="64" height="64" rx="16" fill="rgba(239,68,68,0.10)" stroke="rgba(239,68,68,0.2)" stroke-width="1"/>
+                                <!-- Price tag shape -->
+                                <path d="M14 14 L36 14 L50 28 L36 50 L14 50 Z" fill="none" stroke="#ef4444" stroke-width="1.8" stroke-linejoin="round" opacity="0.6"/>
+                                <path d="M16 16 L36 16 L49 29 L35 48 L16 48 Z" fill="rgba(239,68,68,0.08)"/>
+                                <!-- Hole -->
+                                <circle cx="22" cy="22" r="3" fill="none" stroke="#ef4444" stroke-width="1.8"/>
+                                <!-- Rupee symbol -->
+                                <text x="30" y="36" font-family="Arial" font-weight="900" font-size="14" fill="#ef4444" text-anchor="middle">₹</text>
+                                <!-- Stars -->
+                                <circle cx="50" cy="14" r="2" fill="#ef4444" opacity="0.6"/>
+                                <circle cx="55" cy="20" r="1.5" fill="#ef4444" opacity="0.4"/>
+                                <circle cx="46" cy="20" r="1" fill="#ef4444" opacity="0.3"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-black uppercase italic text-white mb-2">Best Market Price</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Real-time market benchmarking ensures you always pay or receive the most competitive price — guaranteed.</p>
+                        <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-red-600 via-red-400 to-transparent"></div>
+                    </div>
+
+                    <!-- History Report -->
+                    <div class="relative group overflow-hidden rounded-3xl border bg-gradient-to-br from-zinc-900 to-zinc-950 p-8 flex flex-col justify-between" style="border-color: rgba(255,255,255,0.06);">
+                        <div class="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-10 group-hover:opacity-20 transition" style="background: radial-gradient(circle, #3b82f6, transparent);"></div>
+                        <span class="text-[80px] font-black italic leading-none text-white/5 absolute bottom-4 right-4 select-none">03</span>
+                        <div class="mb-6">
+                            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="64" height="64" rx="16" fill="rgba(59,130,246,0.10)" stroke="rgba(59,130,246,0.2)" stroke-width="1"/>
+                                <!-- Car silhouette -->
+                                <path d="M10 38 L14 28 L20 24 L44 24 L50 28 L54 38 L54 44 L10 44 Z" fill="rgba(59,130,246,0.12)" stroke="#3b82f6" stroke-width="1.8" stroke-linejoin="round"/>
+                                <!-- Windows -->
+                                <path d="M20 28 L24 24 L40 24 L44 28 Z" fill="rgba(59,130,246,0.25)" stroke="#3b82f6" stroke-width="1.2"/>
+                                <!-- Wheels -->
+                                <circle cx="20" cy="44" r="5" fill="none" stroke="#3b82f6" stroke-width="2"/>
+                                <circle cx="20" cy="44" r="2" fill="#3b82f6" opacity="0.4"/>
+                                <circle cx="44" cy="44" r="5" fill="none" stroke="#3b82f6" stroke-width="2"/>
+                                <circle cx="44" cy="44" r="2" fill="#3b82f6" opacity="0.4"/>
+                                <!-- History lines (document) -->
+                                <line x1="24" y1="33" x2="40" y2="33" stroke="#3b82f6" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+                                <line x1="24" y1="37" x2="36" y2="37" stroke="#3b82f6" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+                                <!-- Checkmark badge -->
+                                <circle cx="52" cy="14" r="8" fill="#3b82f6"/>
+                                <polyline points="48,14 51,17 56,11" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-black uppercase italic text-white mb-2">Full History Report</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Complete service records, accident history, and ownership details — total transparency before you decide.</p>
+                        <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-600 via-blue-400 to-transparent"></div>
+                    </div>
+
+                    <!-- Instant Payment -->
+                    <div class="relative group overflow-hidden rounded-3xl border bg-gradient-to-br from-zinc-900 to-zinc-950 p-8 flex flex-col justify-between" style="border-color: rgba(255,255,255,0.06);">
+                        <div class="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-10 group-hover:opacity-20 transition" style="background: radial-gradient(circle, #10b981, transparent);"></div>
+                        <span class="text-[80px] font-black italic leading-none text-white/5 absolute bottom-4 right-4 select-none">04</span>
+                        <div class="mb-6">
+                            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="64" height="64" rx="16" fill="rgba(16,185,129,0.10)" stroke="rgba(16,185,129,0.2)" stroke-width="1"/>
+                                <!-- Phone/payment device -->
+                                <rect x="20" y="12" width="24" height="38" rx="4" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1.8"/>
+                                <line x1="20" y1="20" x2="44" y2="20" stroke="#10b981" stroke-width="1.5" opacity="0.5"/>
+                                <line x1="20" y1="44" x2="44" y2="44" stroke="#10b981" stroke-width="1.5" opacity="0.5"/>
+                                <circle cx="32" cy="47" r="1.5" fill="#10b981" opacity="0.5"/>
+                                <!-- Rupee on screen -->
+                                <text x="32" y="36" font-family="Arial" font-weight="900" font-size="13" fill="#10b981" text-anchor="middle">₹</text>
+                                <!-- Lightning bolt -->
+                                <path d="M50 10 L46 20 L50 20 L46 32 L54 18 L50 18 Z" fill="#10b981" opacity="0.8"/>
+                                <!-- Tick circle -->
+                                <circle cx="12" cy="50" r="7" fill="#10b981"/>
+                                <polyline points="9,50 11,53 16,47" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-black uppercase italic text-white mb-2">Instant Payment</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Same-day payment settlement with zero hidden charges. Your money, your way, without any delays.</p>
+                        <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-600 via-emerald-400 to-transparent"></div>
+                    </div>
+
+                    <!-- Doorstep Service -->
+                    <div class="relative group overflow-hidden rounded-3xl border bg-gradient-to-br from-zinc-900 to-zinc-950 p-8 flex flex-col justify-between" style="border-color: rgba(255,255,255,0.06);">
+                        <div class="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-10 group-hover:opacity-20 transition" style="background: radial-gradient(circle, #a855f7, transparent);"></div>
+                        <span class="text-[80px] font-black italic leading-none text-white/5 absolute bottom-4 right-4 select-none">05</span>
+                        <div class="mb-6">
+                            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="64" height="64" rx="16" fill="rgba(168,85,247,0.10)" stroke="rgba(168,85,247,0.2)" stroke-width="1"/>
+                                <!-- House -->
+                                <path d="M12 30 L32 14 L52 30" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linejoin="round"/>
+                                <rect x="18" y="30" width="28" height="22" fill="rgba(168,85,247,0.1)" stroke="#a855f7" stroke-width="1.8" stroke-linejoin="round"/>
+                                <!-- Door -->
+                                <rect x="27" y="38" width="10" height="14" rx="1" fill="rgba(168,85,247,0.25)" stroke="#a855f7" stroke-width="1.2"/>
+                                <!-- Car approaching -->
+                                <path d="M4 46 L8 40 L18 40 L22 46 Z" fill="rgba(168,85,247,0.15)" stroke="#a855f7" stroke-width="1.5" stroke-linejoin="round"/>
+                                <rect x="5" y="43" width="16" height="4" rx="1" fill="rgba(168,85,247,0.1)" stroke="#a855f7" stroke-width="1.2"/>
+                                <circle cx="8" cy="47" r="2.5" fill="none" stroke="#a855f7" stroke-width="1.5"/>
+                                <circle cx="18" cy="47" r="2.5" fill="none" stroke="#a855f7" stroke-width="1.5"/>
+                                <!-- Motion lines -->
+                                <line x1="0" y1="42" x2="4" y2="42" stroke="#a855f7" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+                                <line x1="0" y1="45" x2="3" y2="45" stroke="#a855f7" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-black uppercase italic text-white mb-2">Doorstep Delivery</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">We bring the car to you. Test drive, paperwork, and delivery — all handled at your doorstep, hassle-free.</p>
+                        <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-600 via-purple-400 to-transparent"></div>
+                    </div>
+
+                </div>
             </div>
+
+            <!-- Bottom Banner -->
+            <div class="relative overflow-hidden rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6" style="background: linear-gradient(105deg, #1a0a00, #1a0500, #0d0d0d); border: 1px solid rgba(234,179,8,0.15);">
+                <div class="absolute inset-0 opacity-30" style="background: radial-gradient(ellipse at 30% 50%, rgba(234,179,8,0.15), transparent 60%), radial-gradient(ellipse at 80% 50%, rgba(220,38,38,0.10), transparent 50%);"></div>
+                <div class="relative z-10">
+                    <p class="text-yellow-500 text-xs font-black uppercase tracking-[0.3em] mb-2">Ready to Experience the Difference?</p>
+                    <h3 class="text-2xl md:text-3xl font-black italic uppercase text-white">13+ Years. 6000+ Happy Customers. <span class="text-yellow-500">Zero Regrets.</span></h3>
+                </div>
+                <div class="relative z-10 flex gap-4 flex-shrink-0">
+                    <button class="bg-yellow-500 hover:bg-yellow-400 text-black px-8 py-4 rounded-xl font-black uppercase tracking-wider text-sm transition shadow-xl shadow-yellow-900/30">
+                        Explore Cars
+                    </button>
+                    <button class="border border-white/15 hover:border-yellow-500 text-white hover:text-yellow-400 px-8 py-4 rounded-xl font-black uppercase tracking-wider text-sm transition">
+                        Contact Us
+                    </button>
+                </div>
+            </div>
+
         </div>
     </section>
 
     <!-- LUXURY BRAND STRIP -->
-    <section class="py-24 bg-zinc-50 overflow-hidden border-y border-zinc-200">
+    <section class="py-20 bg-zinc-950 overflow-hidden border-y border-white/5">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <p class="text-yellow-600 font-bold tracking-widest mb-2 uppercase text-xs">Exotic Inventory</p>
-                <h2 class="text-3xl md:text-4xl font-extrabold uppercase italic text-black">The Brands We <span class="text-yellow-600">Represent</span></h2>
+            <div class="text-center mb-14">
+                <p class="text-red-500 font-bold tracking-widest mb-2 uppercase text-xs">35+ Brands Available</p>
+                <h2 class="text-3xl md:text-4xl font-extrabold uppercase italic text-white">The Brands We <span class="text-yellow-500">Represent</span></h2>
             </div>
-            <div class="flex flex-wrap justify-center gap-10 md:gap-14 items-center">
-                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Benz_logo%2C_2010.svg/1024px-Mercedes-Benz_logo%2C_2010.svg.png" alt="Mercedes" class="p-4"></div>
-                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/1024px-BMW.svg.png" alt="BMW" class="p-4"></div>
-                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Audi_logo_detail.svg/1024px-Audi_logo_detail.svg.png" alt="Audi" class="p-4"></div>
-                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Porsche_logo.svg/1024px-Porsche_logo.svg.png" alt="Porsche" class="p-4"></div>
-                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Jaguar_2012_logo.svg/1024px-Jaguar_2012_logo.svg.png" alt="Jaguar" class="p-4"></div>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-5 items-center justify-items-center">
+
+                <!-- Mercedes -->
+                <div class="brand-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Benz_logo%2C_2010.svg/1024px-Mercedes-Benz_logo%2C_2010.svg.png" alt="Mercedes-Benz">
+                </div>
+
+                <!-- BMW -->
+                <div class="brand-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/1024px-BMW.svg.png" alt="BMW">
+                </div>
+
+                <!-- Audi -->
+                <div class="brand-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Audi_logo_detail.svg/1024px-Audi_logo_detail.svg.png" alt="Audi">
+                </div>
+
+                <!-- Porsche -->
+                <div class="brand-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Porsche_logo.svg/1024px-Porsche_logo.svg.png" alt="Porsche">
+                </div>
+
+                <!-- Jaguar -->
+                <div class="brand-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Jaguar_2012_logo.svg/1024px-Jaguar_2012_logo.svg.png" alt="Jaguar">
+                </div>
+
+                <!-- Land Rover -->
+                <div class="brand-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Land_Rover_logo.svg/1024px-Land_Rover_logo.svg.png" alt="Land Rover">
+                </div>
+
+                <!-- Volvo -->
+                <div class="brand-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Volvo_Cars_logo.svg/1024px-Volvo_Cars_logo.svg.png" alt="Volvo">
+                </div>
+
+                <!-- Toyota -->
+                <div class="brand-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Toyota_carlogo.svg/1024px-Toyota_carlogo.svg.png" alt="Toyota">
+                </div>
+
+                <!-- Honda -->
+                <div class="brand-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Honda.svg/1024px-Honda.svg.png" alt="Honda">
+                </div>
+
+                <!-- Hyundai -->
+                <div class="brand-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Hyundai_Motor_Company_logo.svg/1024px-Hyundai_Motor_Company_logo.svg.png" alt="Hyundai">
+                </div>
+
+                <!-- Kia -->
+                <div class="brand-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Kia-logo.svg/1024px-Kia-logo.svg.png" alt="Kia">
+                </div>
+
+                <!-- Mahindra -->
+                <div class="brand-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Mahindra_Rise_logo.svg/1024px-Mahindra_Rise_logo.svg.png" alt="Mahindra">
+                </div>
+
+                <!-- Tata -->
+                <div class="brand-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Tata_logo.svg/1024px-Tata_logo.svg.png" alt="Tata">
+                </div>
+
+                <!-- Maruti Suzuki -->
+                <div class="brand-logo-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Maruti_Suzuki_logo.svg/1024px-Maruti_Suzuki_logo.svg.png" alt="Maruti Suzuki">
+                </div>
+
             </div>
         </div>
     </section>
