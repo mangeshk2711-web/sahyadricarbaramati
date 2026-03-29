@@ -79,17 +79,16 @@
             transition: transform 0.3s ease;
         }
 
-        /* LIGHT MODE BRAND LOGO STYLES */
         .brand-logo-circle {
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            border: 1px solid rgba(0, 0, 0, 0.05); /* Very light border */
+            border: 1px solid rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #ffffff; /* White background for logos */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+            background: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 0;
             position: relative;
@@ -104,14 +103,10 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            padding: 22px; /* Breathing room for the logo image */
+            padding: 22px;
             transition: all 0.3s ease;
         }
-        .brand-logo-circle:hover img {
-            transform: scale(1.1);
-        }
 
-        /* Gallery Item Hover */
         .gallery-item {
             position: relative;
             overflow: hidden;
@@ -124,12 +119,26 @@
             opacity: 0;
             transition: opacity 0.3s ease;
             display: flex;
-            align-items: flex-end;
+            flex-direction: column;
+            justify-content: flex-end;
             padding: 1.5rem;
         }
         .gallery-item:hover .gallery-overlay {
             opacity: 1;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active { display: flex; }
 
         @media (max-width: 1024px) {
             .premium-filter-bar {
@@ -150,6 +159,64 @@
 </head>
 <body>
 
+    <!-- Admin Panel (Floating Bottom Left) -->
+    <div id="adminPanel" class="fixed bottom-6 left-6 z-[100] hidden">
+        <button onclick="toggleDashboard()" class="bg-yellow-500 text-black p-4 rounded-full shadow-2xl font-bold flex items-center gap-2 hover:scale-110 transition">
+            <i class="fas fa-tools"></i> MANAGE WEBSITE
+        </button>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="bg-zinc-900 p-8 rounded-3xl w-full max-w-md border border-white/10 mx-4 text-center">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-yellow-500 italic">ADMIN LOGIN</h2>
+                <button onclick="closeModal('loginModal')" class="text-gray-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <p class="text-gray-400 text-sm mb-6">In this preview environment, access is managed automatically. Click the button below to enter manage mode.</p>
+            <button id="autoLoginBtn" class="w-full bg-yellow-500 text-black py-3 rounded-lg font-bold hover:bg-yellow-400 transition">ENABLE MANAGE MODE</button>
+        </div>
+    </div>
+
+    <!-- Dashboard Modal -->
+    <div id="dashboardModal" class="modal">
+        <div class="bg-zinc-900 p-8 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-white/10 mx-4">
+            <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+                <h2 class="text-2xl font-bold text-yellow-500 italic">OWNER DASHBOARD</h2>
+                <div class="flex gap-4">
+                    <button onclick="closeModal('dashboardModal')" class="text-gray-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+                </div>
+            </div>
+
+            <!-- Add Car Form -->
+            <div class="mb-12">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fas fa-plus-circle text-yellow-500"></i> Add New Inventory Item</h3>
+                <form id="addCarForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="carModel" placeholder="Model Name (e.g. BMW 5 Series)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none">
+                    <input type="text" id="carPrice" placeholder="Price (e.g. ₹38.75L)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none">
+                    <input type="text" id="carKms" placeholder="Kilometers (e.g. 24k Kms)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none">
+                    <input type="text" id="carFuel" placeholder="Fuel Type (e.g. Diesel)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none">
+                    <input type="text" id="carYear" placeholder="Year (e.g. 2020)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none">
+                    <div class="col-span-full">
+                        <label class="block text-xs text-gray-500 mb-2 uppercase font-bold">Car Photo (Max 1MB)</label>
+                        <input type="file" id="carImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
+                    </div>
+                    <button type="submit" class="col-span-full bg-yellow-500 text-black py-3 rounded-lg font-bold">PUBLISH CAR TO WEBSITE</button>
+                </form>
+            </div>
+
+            <!-- Add Gallery Form -->
+            <div class="border-t border-white/10 pt-8">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fas fa-camera text-yellow-500"></i> Add Delivery Moment</h3>
+                <form id="addGalleryForm" class="space-y-4">
+                    <input type="text" id="galleryTitle" placeholder="Customer/Car Name (Optional)" class="w-full bg-white/5 border border-white/10 p-3 rounded-lg outline-none">
+                    <input type="file" id="galleryImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
+                    <button type="submit" class="w-full bg-yellow-500 text-black py-3 rounded-lg font-bold">ADD TO GALLERY</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Header / Navbar -->
     <nav class="fixed w-full z-50 transition-all duration-300 bg-black/80 backdrop-blur-md border-b border-white/10">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -165,14 +232,15 @@
             </div>
             
             <div class="hidden md:flex gap-8 text-sm font-medium uppercase tracking-widest">
-                <a href="#" class="hover:text-yellow-400 transition">Buy</a>
-                <a href="#" class="hover:text-yellow-400 transition">Sell</a>
+                <a href="#inventory" class="hover:text-yellow-400 transition">Buy</a>
+                <a href="#sell" class="hover:text-yellow-400 transition">Sell</a>
                 <a href="#" class="hover:text-yellow-400 transition">Exchange</a>
                 <a href="#" class="hover:text-yellow-400 transition">Services</a>
                 <a href="#" class="hover:text-yellow-400 transition">Contact</a>
             </div>
 
             <div class="flex items-center gap-4">
+                <button id="loginBtn" onclick="openModal('loginModal')" class="text-sm font-bold hover:text-yellow-500 transition border border-white/10 px-4 py-2 rounded-full uppercase">Login</button>
                 <button class="bg-yellow-500 text-black px-6 py-2.5 rounded-full text-sm font-bold hover:bg-yellow-400 transition shadow-lg shadow-yellow-500/20 uppercase tracking-tight">Enquire Now</button>
             </div>
         </div>
@@ -191,10 +259,9 @@
                     BUY | SELL <br>
                     <span class="text-yellow-500">EXCHANGE</span>
                 </h1>
-                <p class="text-xl text-gray-300 max-w-xl">Premium pre-owned luxury cars by <span class="text-white font-bold">Sahyadri Car's</span>. Maharashtra's most trusted destination for exotics.</p>
+                <p class="text-xl text-gray-300 max-w-xl">Premium pre-owned luxury cars by <span class="text-white font-bold">Sahyadri Car's</span>. Quality, trust, and speed in every deal.</p>
             </div>
 
-            <!-- FILTER COMPONENT -->
             <div class="max-w-6xl w-full">
                 <div class="premium-filter-bar shadow-2xl">
                     <div class="filter-item cursor-pointer">
@@ -234,20 +301,16 @@
     </section>
 
     <!-- SELL YOUR CAR SECTION -->
-    <section class="py-24 bg-white relative overflow-hidden">
+    <section id="sell" class="py-24 bg-white relative overflow-hidden">
         <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
             <div class="w-full md:w-1/2 text-black">
                 <p class="text-yellow-600 font-bold tracking-widest mb-4 uppercase">Direct Buying</p>
                 <h2 class="text-4xl md:text-6xl font-extrabold mb-6 italic uppercase leading-tight">Sell Your Car <br><span class="text-yellow-600">In Minutes</span></h2>
                 <p class="text-zinc-600 text-lg mb-8 max-w-lg">Experience a transparent valuation process. We offer the most competitive market prices for luxury vehicles with instant settlement.</p>
-                <div class="flex flex-wrap gap-4">
-                    <button class="bg-yellow-500 text-black px-10 py-4 rounded-full font-bold shadow-xl shadow-yellow-600/20 uppercase tracking-wider">Get Free Valuation</button>
-                </div>
+                <button class="bg-yellow-500 text-black px-10 py-4 rounded-full font-bold shadow-xl shadow-yellow-600/20 uppercase tracking-wider">Get Free Valuation</button>
             </div>
             <div class="w-full md:w-1/2 relative">
-                <div class="relative z-10">
-                    <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800" alt="Luxury Sports Car" class="w-full h-auto object-contain drop-shadow-[0_35px_35px_rgba(0,0,0,0.15)]">
-                </div>
+                <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800" alt="Luxury Sports Car" class="w-full h-auto object-contain drop-shadow-[0_35px_35px_rgba(0,0,0,0.15)]">
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-yellow-100 rounded-full blur-3xl opacity-50 -z-0"></div>
             </div>
         </div>
@@ -261,70 +324,27 @@
                 <h2 class="text-4xl md:text-5xl font-extrabold uppercase italic text-yellow-500">Why Sahyadri Car's?</h2>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10">
-                    <i class="fas fa-certificate text-4xl text-yellow-500 mb-4"></i>
-                    <h3 class="font-bold mb-2 uppercase text-sm">Certified</h3>
-                </div>
-                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10">
-                    <i class="fas fa-hand-holding-usd text-4xl text-yellow-500 mb-4"></i>
-                    <h3 class="font-bold mb-2 uppercase text-sm">Best Price</h3>
-                </div>
-                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10">
-                    <i class="fas fa-history text-4xl text-yellow-500 mb-4"></i>
-                    <h3 class="font-bold mb-2 uppercase text-sm">History</h3>
-                </div>
-                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10">
-                    <i class="fas fa-shield-alt text-4xl text-yellow-500 mb-4"></i>
-                    <h3 class="font-bold mb-2 uppercase text-sm">Secure</h3>
-                </div>
+                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10"><i class="fas fa-certificate text-4xl text-yellow-500 mb-4"></i><h3 class="font-bold mb-2 uppercase text-sm">Certified</h3></div>
+                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10"><i class="fas fa-hand-holding-usd text-4xl text-yellow-500 mb-4"></i><h3 class="font-bold mb-2 uppercase text-sm">Best Price</h3></div>
+                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10"><i class="fas fa-history text-4xl text-yellow-500 mb-4"></i><h3 class="font-bold mb-2 uppercase text-sm">History</h3></div>
+                <div class="p-8 bg-white/5 backdrop-blur-md rounded-2xl text-center border border-white/10"><i class="fas fa-shield-alt text-4xl text-yellow-500 mb-4"></i><h3 class="font-bold mb-2 uppercase text-sm">Secure</h3></div>
             </div>
         </div>
     </section>
 
-    <!-- LUXURY BRAND STRIP SECTION (Premium Light Theme) -->
+    <!-- LUXURY BRAND STRIP -->
     <section class="py-24 bg-zinc-50 overflow-hidden border-y border-zinc-200">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <p class="text-yellow-600 font-bold tracking-widest mb-2 uppercase text-xs">Exotic Inventory</p>
                 <h2 class="text-3xl md:text-4xl font-extrabold uppercase italic text-black">The Brands We <span class="text-yellow-600">Represent</span></h2>
             </div>
-            
             <div class="flex flex-wrap justify-center gap-10 md:gap-14 items-center">
-                <!-- Mercedes-Benz -->
-                <div class="flex flex-col items-center gap-4 group">
-                    <div class="brand-logo-circle">
-                        <img src="src/mercedes.png" alt="Mercedes-Benz">
-                    </div>
-                    <span class="text-[10px] uppercase font-bold text-zinc-400 group-hover:text-yellow-600 transition tracking-widest">Mercedes-Benz</span>
-                </div>
-                <!-- BMW -->
-                <div class="flex flex-col items-center gap-4 group">
-                    <div class="brand-logo-circle">
-                        <img src="src/bmw.png" alt="BMW">
-                    </div>
-                    <span class="text-[10px] uppercase font-bold text-zinc-400 group-hover:text-yellow-600 transition tracking-widest">BMW</span>
-                </div>
-                <!-- Audi -->
-                <div class="flex flex-col items-center gap-4 group">
-                    <div class="brand-logo-circle">
-                        <img src="src/audi.png" alt="Audi">
-                    </div>
-                    <span class="text-[10px] uppercase font-bold text-zinc-400 group-hover:text-yellow-600 transition tracking-widest">Audi</span>
-                </div>
-                <!-- Porsche -->
-                <div class="flex flex-col items-center gap-4 group">
-                    <div class="brand-logo-circle">
-                        <img src="src/porsche.png" alt="Porsche">
-                    </div>
-                    <span class="text-[10px] uppercase font-bold text-zinc-400 group-hover:text-yellow-600 transition tracking-widest">Porsche</span>
-                </div>
-                <!-- Jaguar -->
-                <div class="flex flex-col items-center gap-4 group">
-                    <div class="brand-logo-circle">
-                        <img src="src/jaguar.png" alt="Jaguar">
-                    </div>
-                    <span class="text-[10px] uppercase font-bold text-zinc-400 group-hover:text-yellow-600 transition tracking-widest">Jaguar</span>
-                </div>
+                <div class="brand-logo-circle"><img src="src/mercedes.png" alt="Mercedes"></div>
+                <div class="brand-logo-circle"><img src="src/bmw.png" alt="BMW"></div>
+                <div class="brand-logo-circle"><img src="src/audi.png" alt="Audi"></div>
+                <div class="brand-logo-circle"><img src="src/porsche.png" alt="Porsche"></div>
+                <div class="brand-logo-circle"><img src="src/jaguar.png" alt="Jaguar"></div>
             </div>
         </div>
     </section>
@@ -333,107 +353,25 @@
     <section class="py-20 bg-zinc-900 border-y border-white/5">
         <div class="container mx-auto px-4">
             <div class="flex flex-wrap justify-center gap-10 md:gap-16">
-                <div class="stat-circle text-center">
-                    <i class="fas fa-calendar-alt text-3xl mb-2"></i>
-                    <p class="text-3xl font-black">13+</p>
-                    <p class="text-[10px] uppercase font-bold">Years In Business</p>
-                </div>
-                <div class="stat-circle text-center">
-                    <i class="fas fa-car text-3xl mb-2"></i>
-                    <p class="text-3xl font-black">4500+</p>
-                    <p class="text-[10px] uppercase font-bold">Sold Cars</p>
-                </div>
-                <div class="stat-circle text-center">
-                    <i class="fas fa-tags text-3xl mb-2"></i>
-                    <p class="text-3xl font-black">35+</p>
-                    <p class="text-[10px] uppercase font-bold">Brands</p>
-                </div>
-                <div class="stat-circle text-center">
-                    <i class="fas fa-users text-3xl mb-2"></i>
-                    <p class="text-3xl font-black">6000+</p>
-                    <p class="text-[10px] uppercase font-bold">Happy Customers</p>
-                </div>
+                <div class="stat-circle text-center"><i class="fas fa-calendar-alt text-3xl mb-2"></i><p class="text-3xl font-black">13+</p><p class="text-[10px] uppercase font-bold">Years In Business</p></div>
+                <div class="stat-circle text-center"><i class="fas fa-car text-3xl mb-2"></i><p class="text-3xl font-black">4500+</p><p class="text-[10px] uppercase font-bold">Sold Cars</p></div>
+                <div class="stat-circle text-center"><i class="fas fa-tags text-3xl mb-2"></i><p class="text-3xl font-black">35+</p><p class="text-[10px] uppercase font-bold">Brands</p></div>
+                <div class="stat-circle text-center"><i class="fas fa-users text-3xl mb-2"></i><p class="text-3xl font-black">6000+</p><p class="text-[10px] uppercase font-bold">Happy Customers</p></div>
             </div>
         </div>
     </section>
 
     <!-- INVENTORY SECTION -->
-    <section class="py-24 bg-black">
+    <section id="inventory" class="py-24 bg-black">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-end mb-12">
                 <div>
                     <p class="text-yellow-500 font-bold tracking-widest mb-2">CURATED COLLECTION</p>
                     <h2 class="text-4xl font-extrabold uppercase italic">Featured <span class="text-yellow-500">Inventory</span></h2>
                 </div>
-                <a href="#" class="text-yellow-500 font-bold hover:underline">View All Cars →</a>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Car Card 1 -->
-                <div class="bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl group border border-white/5">
-                    <div class="relative overflow-hidden h-64">
-                        <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&q=80&w=800" alt="Mercedes" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h3 class="text-xl font-extrabold text-white">Mercedes-Benz C-Class</h3>
-                                <p class="text-gray-400 text-sm">C 220d Progressive</p>
-                            </div>
-                            <p class="text-yellow-500 font-bold text-xl">₹42.50L</p>
-                        </div>
-                        <div class="grid grid-cols-3 gap-2 border-t border-white/10 pt-4 mb-6 text-center">
-                            <div><i class="fas fa-road text-gray-500 mb-1"></i><p class="font-bold text-sm text-gray-300">18k Kms</p></div>
-                            <div class="border-x border-white/10"><i class="fas fa-gas-pump text-gray-500 mb-1"></i><p class="font-bold text-sm text-gray-300">Diesel</p></div>
-                            <div><i class="fas fa-calendar text-gray-500 mb-1"></i><p class="font-bold text-sm text-gray-300">2021</p></div>
-                        </div>
-                        <button class="w-full bg-yellow-500 text-black py-3 rounded-xl font-bold hover:bg-yellow-400 transition uppercase text-sm">View Details</button>
-                    </div>
-                </div>
-
-                <!-- Car Card 2 -->
-                <div class="bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl group border border-white/5">
-                    <div class="relative overflow-hidden h-64">
-                        <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&q=80&w=800" alt="BMW" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h3 class="text-xl font-extrabold text-white">BMW 5 Series</h3>
-                                <p class="text-gray-400 text-sm">520d Luxury Line</p>
-                            </div>
-                            <p class="text-yellow-500 font-bold text-xl">₹38.75L</p>
-                        </div>
-                        <div class="grid grid-cols-3 gap-2 border-t border-white/10 pt-4 mb-6 text-center">
-                            <div><i class="fas fa-road text-gray-500 mb-1"></i><p class="font-bold text-sm text-gray-300">24k Kms</p></div>
-                            <div class="border-x border-white/10"><i class="fas fa-gas-pump text-gray-500 mb-1"></i><p class="font-bold text-sm text-gray-300">Diesel</p></div>
-                            <div><i class="fas fa-calendar text-gray-500 mb-1"></i><p class="font-bold text-sm text-gray-300">2020</p></div>
-                        </div>
-                        <button class="w-full bg-yellow-500 text-black py-3 rounded-xl font-bold hover:bg-yellow-400 transition uppercase text-sm">View Details</button>
-                    </div>
-                </div>
-
-                <!-- Car Card 3 -->
-                <div class="bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl group border border-white/5">
-                    <div class="relative overflow-hidden h-64">
-                        <img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&q=80&w=800" alt="Audi" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h3 class="text-xl font-extrabold text-white">Audi Q7 Quattro</h3>
-                                <p class="text-gray-400 text-sm">45 TDI Technology</p>
-                            </div>
-                            <p class="text-yellow-500 font-bold text-xl">₹55.00L</p>
-                        </div>
-                        <div class="grid grid-cols-3 gap-2 border-t border-white/10 pt-4 mb-6 text-center">
-                            <div><i class="fas fa-road text-gray-500 mb-1"></i><p class="font-bold text-sm text-gray-300">31k Kms</p></div>
-                            <div class="border-x border-white/10"><i class="fas fa-gas-pump text-gray-500 mb-1"></i><p class="font-bold text-sm text-gray-300">Diesel</p></div>
-                            <div><i class="fas fa-calendar text-gray-500 mb-1"></i><p class="font-bold text-sm text-gray-300">2019</p></div>
-                        </div>
-                        <button class="w-full bg-yellow-500 text-black py-3 rounded-xl font-bold hover:bg-yellow-400 transition uppercase text-sm">View Details</button>
-                    </div>
-                </div>
+            <div id="inventoryGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="col-span-full py-20 text-center text-gray-500 italic">Connecting to Database...</div>
             </div>
         </div>
     </section>
@@ -445,18 +383,8 @@
                 <p class="text-yellow-500 font-bold tracking-widest mb-2 uppercase">Sahyadri Moments</p>
                 <h2 class="text-4xl md:text-5xl font-extrabold uppercase italic">Our Happy <span class="text-yellow-500">Deliveries</span></h2>
             </div>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                <div class="gallery-item aspect-square md:aspect-auto md:h-80"><img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover"></div>
-                <div class="gallery-item aspect-square md:aspect-auto md:h-80 md:row-span-2"><img src="https://images.unsplash.com/photo-1493238507129-15510bfad190?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover"></div>
-                <div class="gallery-item aspect-square md:aspect-auto md:h-80"><img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover"></div>
-                <div class="gallery-item aspect-square md:aspect-auto md:h-80"><img src="https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover"></div>
-                <div class="gallery-item aspect-square md:aspect-auto md:h-80"><img src="https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover"></div>
-                <div class="gallery-item aspect-square md:aspect-auto md:h-80"><img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover"></div>
-            </div>
-            
-            <div class="text-center mt-12">
-                <button class="border-2 border-yellow-500/30 text-yellow-500 px-8 py-3 rounded-full font-bold hover:bg-yellow-500 hover:text-black transition uppercase text-sm tracking-widest">Load More Moments</button>
+            <div id="galleryGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <div class="col-span-full text-center py-10 opacity-50">Syncing Gallery...</div>
             </div>
         </div>
     </section>
@@ -465,7 +393,7 @@
     <footer class="bg-black pt-16 pb-10 border-t border-white/10">
         <div class="container mx-auto px-4 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-8">
             <div class="h-16 w-auto">
-                <svg viewBox="0 0 320 120" class="h-full w-full">
+                <svg viewBox="0 0 320 120" class="h-full w-auto">
                     <ellipse cx="160" cy="60" rx="155" ry="55" fill="#1a1a1a" stroke="#facc15" stroke-width="1.5"/>
                     <path d="M80 55 C120 25, 200 25, 260 55 C200 45, 140 45, 80 55" fill="#facc15" />
                     <text x="75" y="92" font-family="Arial, sans-serif" font-weight="900" font-size="34" fill="white" font-style="italic">Sahyadri</text>
@@ -476,7 +404,181 @@
         </div>
     </footer>
 
-    <script>
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+        // ENVIRONMENT-PROVIDED CONFIGURATION
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'sahyadri-cars';
+
+        let userLoggedIn = false;
+        let isManageModeEnabled = false;
+
+        // Modal Controls
+        window.openModal = (id) => document.getElementById(id).classList.add('active');
+        window.closeModal = (id) => document.getElementById(id).classList.remove('active');
+        window.toggleDashboard = () => openModal('dashboardModal');
+
+        // Helper: Convert File to Base64
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        // Initialize Authentication (MANDATORY RULE 3)
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.error("Auth initialization failed:", err);
+            }
+        };
+
+        // Listen for Auth changes
+        onAuthStateChanged(auth, (user) => {
+            userLoggedIn = !!user;
+            updateUIState();
+        });
+
+        const updateUIState = () => {
+            const showManage = userLoggedIn && isManageModeEnabled;
+            document.getElementById('adminPanel').classList.toggle('hidden', !showManage);
+            document.getElementById('loginBtn').innerHTML = isManageModeEnabled ? 'EXIT MANAGE' : 'LOGIN';
+            document.getElementById('loginBtn').onclick = isManageModeEnabled ? () => { isManageModeEnabled = false; updateUIState(); } : () => openModal('loginModal');
+            renderInventory();
+            renderGallery();
+        };
+
+        // Simulated Login Handler for Preview Mode
+        document.getElementById('autoLoginBtn').onclick = () => {
+            isManageModeEnabled = true;
+            closeModal('loginModal');
+            updateUIState();
+        };
+
+        // CRUD Operations
+        document.getElementById('addCarForm').onsubmit = async (e) => {
+            e.preventDefault();
+            if (!userLoggedIn) return;
+            
+            let imgData = "https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800";
+            const fileInput = document.getElementById('carImageFile');
+            if (fileInput.files[0]) {
+                const b64 = await toBase64(fileInput.files[0]);
+                if (b64.length > 1000000) { alert("File too large. Try under 1MB."); return; }
+                imgData = b64;
+            }
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), {
+                    model: document.getElementById('carModel').value,
+                    price: document.getElementById('carPrice').value,
+                    kms: document.getElementById('carKms').value,
+                    fuel: document.getElementById('carFuel').value,
+                    year: document.getElementById('carYear').value,
+                    image: imgData,
+                    createdAt: serverTimestamp()
+                });
+                document.getElementById('addCarForm').reset();
+                closeModal('dashboardModal');
+            } catch (err) { console.error(err); }
+        };
+
+        document.getElementById('addGalleryForm').onsubmit = async (e) => {
+            e.preventDefault();
+            if (!userLoggedIn) return;
+
+            let imgData = "https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&q=80&w=800";
+            const fileInput = document.getElementById('galleryImageFile');
+            if (fileInput.files[0]) {
+                const b64 = await toBase64(fileInput.files[0]);
+                if (b64.length > 1000000) { alert("File too large. Try under 1MB."); return; }
+                imgData = b64;
+            }
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'gallery'), {
+                    title: document.getElementById('galleryTitle').value || "Delivery Moment",
+                    image: imgData,
+                    createdAt: serverTimestamp()
+                });
+                document.getElementById('addGalleryForm').reset();
+                closeModal('dashboardModal');
+            } catch (err) { console.error(err); }
+        };
+
+        const renderInventory = () => {
+            if (!userLoggedIn) return;
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), (snapshot) => {
+                const grid = document.getElementById('inventoryGrid');
+                grid.innerHTML = '';
+                if (snapshot.empty) grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-600">No cars found. Add some!</div>';
+                
+                snapshot.forEach((itemDoc) => {
+                    const car = itemDoc.data();
+                    grid.innerHTML += `
+                    <div class="bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl group border border-white/5 relative">
+                        ${isManageModeEnabled ? `<button onclick="deleteCar('${itemDoc.id}')" class="absolute top-4 right-4 bg-red-600/80 backdrop-blur-md text-white w-10 h-10 rounded-full z-10 hover:bg-red-700 transition"><i class="fas fa-trash"></i></button>` : ''}
+                        <div class="relative overflow-hidden h-64">
+                            <img src="${car.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-extrabold text-white">${car.model}</h3>
+                                    <p class="text-gray-400 text-sm">Sahyadri Certified</p>
+                                </div>
+                                <p class="text-yellow-500 font-bold text-xl">${car.price}</p>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 border-t border-white/10 pt-4 mb-6 text-center">
+                                <div><i class="fas fa-road text-gray-500 mb-1"></i><p class="font-bold text-xs text-gray-300">${car.kms}</p></div>
+                                <div class="border-x border-white/10"><i class="fas fa-gas-pump text-gray-500 mb-1"></i><p class="font-bold text-xs text-gray-300">${car.fuel}</p></div>
+                                <div><i class="fas fa-calendar text-gray-500 mb-1"></i><p class="font-bold text-xs text-gray-300">${car.year}</p></div>
+                            </div>
+                            <button class="w-full bg-yellow-500 text-black py-3 rounded-xl font-bold hover:bg-yellow-400 transition uppercase text-sm">View Details</button>
+                        </div>
+                    </div>`;
+                });
+            }, err => console.error(err));
+        };
+
+        const renderGallery = () => {
+            if (!userLoggedIn) return;
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'gallery'), (snapshot) => {
+                const grid = document.getElementById('galleryGrid');
+                grid.innerHTML = '';
+                snapshot.forEach((galDoc) => {
+                    const item = galDoc.data();
+                    grid.innerHTML += `
+                    <div class="gallery-item aspect-square md:aspect-auto md:h-80">
+                        <img src="${item.image}" class="w-full h-full object-cover">
+                        <div class="gallery-overlay">
+                            <p class="text-white font-bold text-sm mb-2">${item.title}</p>
+                            ${isManageModeEnabled ? `<button onclick="deleteGallery('${galDoc.id}')" class="bg-red-600 text-white text-[10px] px-3 py-1 rounded-full uppercase self-start">Delete</button>` : ''}
+                        </div>
+                    </div>`;
+                });
+            }, err => console.error(err));
+        };
+
+        window.deleteCar = async (id) => { if(confirm("Delete this car?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'inventory', id)); };
+        window.deleteGallery = async (id) => { if(confirm("Delete this moment?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'gallery', id)); };
+
+        // Start
+        initAuth();
+
         window.addEventListener('scroll', function() {
             const nav = document.querySelector('nav');
             if (window.scrollY > 50) {
