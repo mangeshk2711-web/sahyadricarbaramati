@@ -155,9 +155,33 @@
             .section-bg-image { background-attachment: scroll; }
             .brand-logo-circle { width: 100px; height: 100px; }
         }
+
+        /* Feedback Toast */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #ef4444;
+            color: #fff;
+            text-align: center;
+            border-radius: 12px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
+
+    <!-- Toast Notification -->
+    <div id="toast">Message here</div>
 
     <!-- Admin Panel (Floating Bottom Left) -->
     <div id="adminPanel" class="fixed bottom-6 left-6 z-[100] hidden">
@@ -201,7 +225,7 @@
                         <label class="block text-xs text-gray-500 mb-2 uppercase font-bold">Car Photo (Max 1MB)</label>
                         <input type="file" id="carImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
                     </div>
-                    <button type="submit" class="col-span-full bg-yellow-500 text-black py-3 rounded-lg font-bold">PUBLISH CAR TO WEBSITE</button>
+                    <button type="submit" class="col-span-full bg-yellow-500 text-black py-3 rounded-lg font-bold hover:bg-yellow-400">PUBLISH CAR TO WEBSITE</button>
                 </form>
             </div>
 
@@ -211,7 +235,7 @@
                 <form id="addGalleryForm" class="space-y-4">
                     <input type="text" id="galleryTitle" placeholder="Customer/Car Name (Optional)" class="w-full bg-white/5 border border-white/10 p-3 rounded-lg outline-none">
                     <input type="file" id="galleryImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
-                    <button type="submit" class="w-full bg-yellow-500 text-black py-3 rounded-lg font-bold">ADD TO GALLERY</button>
+                    <button type="submit" class="w-full bg-yellow-500 text-black py-3 rounded-lg font-bold hover:bg-yellow-400">ADD TO GALLERY</button>
                 </form>
             </div>
         </div>
@@ -340,11 +364,11 @@
                 <h2 class="text-3xl md:text-4xl font-extrabold uppercase italic text-black">The Brands We <span class="text-yellow-600">Represent</span></h2>
             </div>
             <div class="flex flex-wrap justify-center gap-10 md:gap-14 items-center">
-                <div class="brand-logo-circle"><img src="src/mercedes.png" alt="Mercedes"></div>
-                <div class="brand-logo-circle"><img src="src/bmw.png" alt="BMW"></div>
-                <div class="brand-logo-circle"><img src="src/audi.png" alt="Audi"></div>
-                <div class="brand-logo-circle"><img src="src/porsche.png" alt="Porsche"></div>
-                <div class="brand-logo-circle"><img src="src/jaguar.png" alt="Jaguar"></div>
+                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Benz_logo%2C_2010.svg/1024px-Mercedes-Benz_logo%2C_2010.svg.png" alt="Mercedes" class="p-4"></div>
+                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/1024px-BMW.svg.png" alt="BMW" class="p-4"></div>
+                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Audi_logo_detail.svg/1024px-Audi_logo_detail.svg.png" alt="Audi" class="p-4"></div>
+                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Porsche_logo.svg/1024px-Porsche_logo.svg.png" alt="Porsche" class="p-4"></div>
+                <div class="brand-logo-circle"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Jaguar_2012_logo.svg/1024px-Jaguar_2012_logo.svg.png" alt="Jaguar" class="p-4"></div>
             </div>
         </div>
     </section>
@@ -408,14 +432,19 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-        // ENVIRONMENT-PROVIDED CONFIGURATION
-        const firebaseConfig = JSON.parse(__firebase_config);
+        // ==========================================
+        // 🚨 IMPORTANT: PASTE YOUR CONFIG HERE 🚨
+        // Replace the empty string "" with your code from Firebase Part 3.
+        // ==========================================
+        const mySecretConfig = ""; 
+
+        const firebaseConfig = mySecretConfig || JSON.parse(__firebase_config);
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'sahyadri-cars';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'sahyadri-cars-official';
 
         let userLoggedIn = false;
         let isManageModeEnabled = false;
@@ -425,7 +454,16 @@
         window.closeModal = (id) => document.getElementById(id).classList.remove('active');
         window.toggleDashboard = () => openModal('dashboardModal');
 
-        // Helper: Convert File to Base64
+        // Notification Helper
+        const showToast = (msg, isError = false) => {
+            const t = document.getElementById("toast");
+            t.innerText = msg;
+            t.style.backgroundColor = isError ? "#ef4444" : "#10b981";
+            t.className = "show";
+            setTimeout(() => { t.className = t.className.replace("show", ""); }, 3000);
+        };
+
+        // Helper: Convert File to Base64 (Compressed for Firestore)
         const toBase64 = file => new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -442,7 +480,8 @@
                     await signInAnonymously(auth);
                 }
             } catch (err) {
-                console.error("Auth initialization failed:", err);
+                console.error("Auth failed:", err);
+                showToast("Connection Error. Please refresh.", true);
             }
         };
 
@@ -457,27 +496,40 @@
             document.getElementById('adminPanel').classList.toggle('hidden', !showManage);
             document.getElementById('loginBtn').innerHTML = isManageModeEnabled ? 'EXIT MANAGE' : 'LOGIN';
             document.getElementById('loginBtn').onclick = isManageModeEnabled ? () => { isManageModeEnabled = false; updateUIState(); } : () => openModal('loginModal');
+            
+            // Re-render when mode changes
             renderInventory();
             renderGallery();
         };
 
-        // Simulated Login Handler for Preview Mode
+        // Manage Mode Toggle
         document.getElementById('autoLoginBtn').onclick = () => {
             isManageModeEnabled = true;
             closeModal('loginModal');
             updateUIState();
+            showToast("Manage Mode Enabled!");
         };
 
-        // CRUD Operations
+        // Add Car
         document.getElementById('addCarForm').onsubmit = async (e) => {
             e.preventDefault();
             if (!userLoggedIn) return;
             
+            const btn = e.target.querySelector('button');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> PUBLISHING...';
+            btn.disabled = true;
+
             let imgData = "https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800";
             const fileInput = document.getElementById('carImageFile');
+            
             if (fileInput.files[0]) {
                 const b64 = await toBase64(fileInput.files[0]);
-                if (b64.length > 1000000) { alert("File too large. Try under 1MB."); return; }
+                if (b64.length > 800000) { 
+                    showToast("Photo too large! Use a smaller image.", true);
+                    btn.innerHTML = 'PUBLISH CAR';
+                    btn.disabled = false;
+                    return; 
+                }
                 imgData = b64;
             }
 
@@ -491,20 +543,37 @@
                     image: imgData,
                     createdAt: serverTimestamp()
                 });
+                showToast("Car Added Successfully!");
                 document.getElementById('addCarForm').reset();
                 closeModal('dashboardModal');
-            } catch (err) { console.error(err); }
+            } catch (err) { 
+                console.error(err);
+                showToast("Error saving car.", true);
+            } finally {
+                btn.innerHTML = 'PUBLISH CAR TO WEBSITE';
+                btn.disabled = false;
+            }
         };
 
+        // Add Gallery Moment
         document.getElementById('addGalleryForm').onsubmit = async (e) => {
             e.preventDefault();
             if (!userLoggedIn) return;
+
+            const btn = e.target.querySelector('button');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> UPLOADING...';
+            btn.disabled = true;
 
             let imgData = "https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&q=80&w=800";
             const fileInput = document.getElementById('galleryImageFile');
             if (fileInput.files[0]) {
                 const b64 = await toBase64(fileInput.files[0]);
-                if (b64.length > 1000000) { alert("File too large. Try under 1MB."); return; }
+                if (b64.length > 800000) { 
+                    showToast("Photo too large!", true);
+                    btn.innerHTML = 'ADD TO GALLERY';
+                    btn.disabled = false;
+                    return; 
+                }
                 imgData = b64;
             }
 
@@ -514,17 +583,25 @@
                     image: imgData,
                     createdAt: serverTimestamp()
                 });
+                showToast("Moment Added!");
                 document.getElementById('addGalleryForm').reset();
                 closeModal('dashboardModal');
             } catch (err) { console.error(err); }
+            finally {
+                btn.innerHTML = 'ADD TO GALLERY';
+                btn.disabled = false;
+            }
         };
 
+        // Render Inventory
         const renderInventory = () => {
             if (!userLoggedIn) return;
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), (snapshot) => {
+            const q = collection(db, 'artifacts', appId, 'public', 'data', 'inventory');
+            
+            onSnapshot(q, (snapshot) => {
                 const grid = document.getElementById('inventoryGrid');
                 grid.innerHTML = '';
-                if (snapshot.empty) grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-600">No cars found. Add some!</div>';
+                if (snapshot.empty) grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-600">No cars found. Click "Manage" to add some!</div>';
                 
                 snapshot.forEach((itemDoc) => {
                     const car = itemDoc.data();
@@ -554,9 +631,12 @@
             }, err => console.error(err));
         };
 
+        // Render Gallery
         const renderGallery = () => {
             if (!userLoggedIn) return;
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'gallery'), (snapshot) => {
+            const q = collection(db, 'artifacts', appId, 'public', 'data', 'gallery');
+            
+            onSnapshot(q, (snapshot) => {
                 const grid = document.getElementById('galleryGrid');
                 grid.innerHTML = '';
                 snapshot.forEach((galDoc) => {
