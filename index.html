@@ -187,6 +187,32 @@
             cursor: pointer;
             appearance: none;
         }
+
+        /* Admin Dashboard Grid Styles */
+        .admin-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .admin-form-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .admin-form-input {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 12px;
+            color: white;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .admin-form-input:focus {
+            border-color: #facc15;
+        }
     </style>
 </head>
 <body>
@@ -215,28 +241,86 @@
 
     <!-- Dashboard Modal -->
     <div id="dashboardModal" class="modal">
-        <div class="bg-zinc-900 p-8 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-white/10 mx-4">
+        <div class="bg-zinc-900 p-8 rounded-3xl w-full max-w-3xl max-h-[90vh] overflow-y-auto border border-white/10 mx-4">
             <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
                 <h2 class="text-2xl font-bold text-yellow-500 italic">OWNER DASHBOARD</h2>
-                <div class="flex gap-4">
-                    <button onclick="closeModal('dashboardModal')" class="text-gray-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
-                </div>
+                <button onclick="closeModal('dashboardModal')" class="text-gray-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
             </div>
 
             <!-- Add Car Form -->
             <div class="mb-12">
-                <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fas fa-plus-circle text-yellow-500"></i> Add New Inventory Item</h3>
-                <form id="addCarForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="carModel" placeholder="Model Name (e.g. BMW 5 Series)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none text-white">
-                    <input type="text" id="carPrice" placeholder="Price (e.g. ₹38.75L)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none text-white">
-                    <input type="text" id="carKms" placeholder="Kilometers (e.g. 24k Kms)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none text-white">
-                    <input type="text" id="carFuel" placeholder="Fuel Type (e.g. Diesel)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none text-white">
-                    <input type="text" id="carYear" placeholder="Year (e.g. 2020)" required class="bg-white/5 border border-white/10 p-3 rounded-lg outline-none text-white">
-                    <div class="col-span-full">
-                        <label class="block text-xs text-gray-500 mb-2 uppercase font-bold">Car Photo (Max 1MB)</label>
+                <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i class="fas fa-plus-circle text-yellow-500"></i> Detailed Inventory Entry</h3>
+                <form id="addCarForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="admin-form-group lg:col-span-2">
+                        <label class="admin-form-label">Car Model</label>
+                        <input type="text" id="carModel" placeholder="e.g. Maruti Suzuki Dezire VDI" required class="admin-form-input">
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Price (Display Text)</label>
+                        <input type="text" id="carPrice" placeholder="e.g. ₹4,85,000" required class="admin-form-input">
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Year</label>
+                        <input type="text" id="carYear" placeholder="e.g. 2017" required class="admin-form-input">
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Fuel Type</label>
+                        <select id="carFuel" class="admin-form-input">
+                            <option value="Diesel">Diesel</option>
+                            <option value="Petrol">Petrol</option>
+                            <option value="CNG">CNG</option>
+                            <option value="Electric">Electric</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">KM Driven</label>
+                        <input type="text" id="carKms" placeholder="e.g. 45,643 KM" required class="admin-form-input">
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Transmission</label>
+                        <select id="carTrans" class="admin-form-input">
+                            <option value="Manual">Manual</option>
+                            <option value="Automatic">Automatic</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Body Type</label>
+                        <select id="carBody" class="admin-form-input">
+                            <option value="Sedan">Sedan</option>
+                            <option value="SUV">SUV</option>
+                            <option value="Hatchback">Hatchback</option>
+                            <option value="Coupe">Coupe</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Owner</label>
+                        <select id="carOwner" class="admin-form-input">
+                            <option value="1st Owner">1st Owner</option>
+                            <option value="2nd Owner">2nd Owner</option>
+                            <option value="3rd Owner">3rd Owner</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Engine CC</label>
+                        <input type="text" id="carEngine" placeholder="e.g. 1248 CC" class="admin-form-input">
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Insurance</label>
+                        <select id="carInsurance" class="admin-form-input">
+                            <option value="Valid">Valid</option>
+                            <option value="Expired">Expired</option>
+                            <option value="Comprehensive">Comprehensive</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group lg:col-span-3">
+                        <label class="admin-form-label">Car Photo (URL or Upload)</label>
                         <input type="file" id="carImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
                     </div>
-                    <button type="submit" class="col-span-full bg-yellow-500 text-black py-3 rounded-lg font-bold hover:bg-yellow-400">PUBLISH CAR TO WEBSITE</button>
+                    <div class="admin-form-group lg:col-span-3">
+                        <label class="admin-form-label">Car Overview (Description)</label>
+                        <textarea id="carDescription" rows="3" placeholder="Write highlights about the car condition..." class="admin-form-input"></textarea>
+                    </div>
+                    <button type="submit" class="lg:col-span-3 bg-yellow-500 text-black py-4 rounded-xl font-bold hover:bg-yellow-400 transition uppercase tracking-widest mt-4">PUBLISH DETAILED LISTING</button>
                 </form>
             </div>
 
@@ -244,7 +328,7 @@
             <div class="border-t border-white/10 pt-8">
                 <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fas fa-camera text-yellow-500"></i> Add Delivery Moment</h3>
                 <form id="addGalleryForm" class="space-y-4">
-                    <input type="text" id="galleryTitle" placeholder="Customer/Car Name (Optional)" class="w-full bg-white/5 border border-white/10 p-3 rounded-lg outline-none text-white">
+                    <input type="text" id="galleryTitle" placeholder="Customer/Car Name (Optional)" class="admin-form-input w-full">
                     <input type="file" id="galleryImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
                     <button type="submit" class="w-full bg-yellow-500 text-black py-3 rounded-lg font-bold hover:bg-yellow-400">ADD TO GALLERY</button>
                 </form>
@@ -275,7 +359,7 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <button id="loginBtn" onclick="openModal('loginModal')" class="text-sm font-bold hover:text-yellow-500 transition border border-white/10 px-4 py-2 rounded-full uppercase">Login</button>
+                <button id="loginBtn" onclick="openModal('loginModal')" class="text-sm font-bold hover:text-yellow-500 transition border border-white/20 px-5 py-2 rounded-full uppercase">Login</button>
                 <button class="bg-yellow-500 text-black px-6 py-2.5 rounded-full text-sm font-bold hover:bg-yellow-400 transition shadow-lg shadow-yellow-500/20 uppercase tracking-tight">Enquire Now</button>
             </div>
         </div>
@@ -298,7 +382,7 @@
             </div>
 
             <div class="max-w-6xl w-full">
-                <div class="premium-filter-bar shadow-2xl">
+                <div class="premium-filter-bar shadow-2xl backdrop-blur-md bg-black/40">
                     <div class="filter-item">
                         <p class="text-[12px] font-semibold text-white mb-1">Brand</p>
                         <div class="flex items-center justify-between text-gray-400">
@@ -328,8 +412,8 @@
                                 <option value="all">All Fuel Types</option>
                                 <option value="Diesel">Diesel</option>
                                 <option value="Petrol">Petrol</option>
+                                <option value="CNG">CNG</option>
                                 <option value="Electric">Electric</option>
-                                <option value="Hybrid">Hybrid</option>
                             </select>
                         </div>
                     </div>
@@ -412,11 +496,11 @@
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-end mb-12">
                 <div>
-                    <p class="text-yellow-500 font-bold tracking-widest mb-2">CURATED COLLECTION</p>
-                    <h2 class="text-4xl font-extrabold uppercase italic">Featured <span class="text-yellow-500">Inventory</span></h2>
+                    <p class="text-yellow-500 font-bold tracking-widest mb-2 uppercase text-[10px]">Premium Stock</p>
+                    <h2 class="text-4xl font-extrabold uppercase italic tracking-tighter">Featured <span class="text-yellow-500">Inventory</span></h2>
                 </div>
             </div>
-            <div id="inventoryGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div id="inventoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 <div class="col-span-full py-20 text-center text-gray-500 italic">Connecting to Database...</div>
             </div>
         </div>
@@ -474,14 +558,12 @@
 
         let userLoggedIn = false;
         let isManageModeEnabled = false;
-        let allCarInventory = []; // Local storage for filtering
+        let allCarInventory = []; 
 
-        // Modal Controls
         window.openModal = (id) => document.getElementById(id).classList.add('active');
         window.closeModal = (id) => document.getElementById(id).classList.remove('active');
         window.toggleDashboard = () => openModal('dashboardModal');
 
-        // Notification Helper
         const showToast = (msg, isError = false) => {
             const t = document.getElementById("toast");
             t.innerText = msg;
@@ -490,7 +572,6 @@
             setTimeout(() => { t.className = t.className.replace("show", ""); }, 4000);
         };
 
-        // Helper: Convert File to Base64 (Compressed for Firestore)
         const toBase64 = file => new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -498,7 +579,6 @@
             reader.onerror = error => reject(error);
         });
 
-        // Initialize Authentication (MANDATORY RULE 3)
         const initAuth = async () => {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -510,15 +590,11 @@
                 console.error("Auth failed:", err);
                 if (err.code === 'auth/admin-restricted-operation') {
                     showToast("Admin Alert: Enable 'Anonymous' Auth in Firebase Console.", true);
-                    const grid = document.getElementById('inventoryGrid');
-                    grid.innerHTML = '<div class="col-span-full py-20 text-center text-red-500">Enable "Anonymous" Sign-in in Firebase > Authentication > Sign-in Method.</div>';
-                } else {
-                    showToast("Connection Error. Please check settings.", true);
+                    document.getElementById('inventoryGrid').innerHTML = '<div class="col-span-full py-20 text-center text-red-500">Enable "Anonymous" Sign-in in Firebase > Authentication.</div>';
                 }
             }
         };
 
-        // Listen for Auth changes
         onAuthStateChanged(auth, (user) => {
             userLoggedIn = !!user;
             updateUIState();
@@ -529,13 +605,10 @@
             document.getElementById('adminPanel').classList.toggle('hidden', !showManage);
             document.getElementById('loginBtn').innerHTML = isManageModeEnabled ? 'EXIT MANAGE' : 'LOGIN';
             document.getElementById('loginBtn').onclick = isManageModeEnabled ? () => { isManageModeEnabled = false; updateUIState(); } : () => openModal('loginModal');
-            
-            // Re-render when mode changes
             renderInventory(allCarInventory);
             renderGallery();
         };
 
-        // Manage Mode Toggle
         document.getElementById('autoLoginBtn').onclick = () => {
             isManageModeEnabled = true;
             closeModal('loginModal');
@@ -543,7 +616,7 @@
             showToast("Manage Mode Enabled!");
         };
 
-        // Add Car
+        // Expanded Car Add Logic
         document.getElementById('addCarForm').onsubmit = async (e) => {
             e.preventDefault();
             if (!userLoggedIn) return;
@@ -557,10 +630,9 @@
             
             if (fileInput.files[0]) {
                 const b64 = await toBase64(fileInput.files[0]);
-                if (b64.length > 800000) { 
-                    showToast("Photo too large! Use a smaller image.", true);
-                    btn.innerHTML = 'PUBLISH CAR';
-                    btn.disabled = false;
+                if (b64.length > 900000) { 
+                    showToast("Photo too large! Use a smaller file.", true);
+                    btn.innerHTML = 'PUBLISH CAR'; btn.disabled = false;
                     return; 
                 }
                 imgData = b64;
@@ -570,13 +642,19 @@
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), {
                     model: document.getElementById('carModel').value,
                     price: document.getElementById('carPrice').value,
-                    kms: document.getElementById('carKms').value,
-                    fuel: document.getElementById('carFuel').value,
                     year: document.getElementById('carYear').value,
+                    fuel: document.getElementById('carFuel').value,
+                    kms: document.getElementById('carKms').value,
+                    transmission: document.getElementById('carTrans').value,
+                    bodyType: document.getElementById('carBody').value,
+                    owner: document.getElementById('carOwner').value,
+                    engine: document.getElementById('carEngine').value,
+                    insurance: document.getElementById('carInsurance').value,
+                    description: document.getElementById('carDescription').value,
                     image: imgData,
                     createdAt: serverTimestamp()
                 });
-                showToast("Car Added Successfully!");
+                showToast("Detailed Listing Published!");
                 document.getElementById('addCarForm').reset();
                 closeModal('dashboardModal');
             } catch (err) { 
@@ -588,26 +666,16 @@
             }
         };
 
-        // Add Gallery Moment
         document.getElementById('addGalleryForm').onsubmit = async (e) => {
             e.preventDefault();
             if (!userLoggedIn) return;
-
             const btn = e.target.querySelector('button');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> UPLOADING...';
-            btn.disabled = true;
+            btn.innerHTML = 'UPLOADING...'; btn.disabled = true;
 
             let imgData = "https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&q=80&w=800";
             const fileInput = document.getElementById('galleryImageFile');
             if (fileInput.files[0]) {
-                const b64 = await toBase64(fileInput.files[0]);
-                if (b64.length > 800000) { 
-                    showToast("Photo too large!", true);
-                    btn.innerHTML = 'ADD TO GALLERY';
-                    btn.disabled = false;
-                    return; 
-                }
-                imgData = b64;
+                imgData = await toBase64(fileInput.files[0]);
             }
 
             try {
@@ -620,68 +688,57 @@
                 document.getElementById('addGalleryForm').reset();
                 closeModal('dashboardModal');
             } catch (err) { console.error(err); }
-            finally {
-                btn.innerHTML = 'ADD TO GALLERY';
-                btn.disabled = false;
-            }
+            finally { btn.innerHTML = 'ADD TO GALLERY'; btn.disabled = false; }
         };
 
-        // Render Inventory Logic
         const renderInventory = (cars) => {
             const grid = document.getElementById('inventoryGrid');
             grid.innerHTML = '';
-            
             if (!cars || cars.length === 0) {
-                grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-600">No cars match your current filters.</div>';
+                grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-600">No cars found. Click "Manage" to add some!</div>';
                 return;
             }
             
             cars.forEach((carDoc) => {
                 const car = carDoc.data();
                 grid.innerHTML += `
-                <div class="bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl group border border-white/5 relative">
+                <div class="bg-zinc-900 rounded-[40px] overflow-hidden shadow-2xl group border border-white/5 relative">
                     ${isManageModeEnabled ? `<button onclick="deleteCar('${carDoc.id}')" class="absolute top-4 right-4 bg-red-600/80 backdrop-blur-md text-white w-10 h-10 rounded-full z-10 hover:bg-red-700 transition"><i class="fas fa-trash"></i></button>` : ''}
                     <div class="relative overflow-hidden h-64">
                         <img src="${car.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <div class="absolute bottom-4 left-4 flex gap-2">
+                             <span class="bg-black/60 backdrop-blur-md text-white text-[9px] px-3 py-1 rounded-full uppercase font-bold tracking-widest">${car.transmission || 'Manual'}</span>
+                             <span class="bg-yellow-500 text-black text-[9px] px-3 py-1 rounded-full uppercase font-bold tracking-widest">${car.owner || '1st Owner'}</span>
+                        </div>
                     </div>
-                    <div class="p-6">
+                    <div class="p-8">
                         <div class="flex justify-between items-start mb-4">
                             <div>
-                                <h3 class="text-xl font-extrabold text-white uppercase italic">${car.model}</h3>
-                                <p class="text-gray-400 text-sm">Sahyadri Certified</p>
+                                <h3 class="text-xl font-extrabold text-white uppercase italic leading-tight">${car.model}</h3>
+                                <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mt-1">${car.bodyType || 'Sedan'} • ${car.engine || 'Certified'}</p>
                             </div>
-                            <p class="text-yellow-500 font-bold text-xl">${car.price}</p>
+                            <p class="text-yellow-500 font-black text-xl italic">${car.price}</p>
                         </div>
-                        <div class="grid grid-cols-3 gap-2 border-t border-white/10 pt-4 mb-6 text-center">
-                            <div><i class="fas fa-road text-gray-500 mb-1"></i><p class="font-bold text-xs text-gray-300 uppercase">${car.kms}</p></div>
-                            <div class="border-x border-white/10"><i class="fas fa-gas-pump text-gray-500 mb-1"></i><p class="font-bold text-xs text-gray-300 uppercase">${car.fuel}</p></div>
-                            <div><i class="fas fa-calendar text-gray-500 mb-1"></i><p class="font-bold text-xs text-gray-300">${car.year}</p></div>
+                        <div class="grid grid-cols-3 gap-2 border-y border-white/10 py-4 mb-6 text-center">
+                            <div><i class="fas fa-road text-gray-500 text-sm mb-1"></i><p class="font-bold text-[10px] text-gray-300 uppercase">${car.kms}</p></div>
+                            <div class="border-x border-white/10"><i class="fas fa-gas-pump text-gray-500 text-sm mb-1"></i><p class="font-bold text-[10px] text-gray-300 uppercase">${car.fuel}</p></div>
+                            <div><i class="fas fa-calendar text-gray-500 text-sm mb-1"></i><p class="font-bold text-[10px] text-gray-300 uppercase">${car.year}</p></div>
                         </div>
-                        <button class="w-full bg-yellow-500 text-black py-3 rounded-xl font-bold hover:bg-yellow-400 transition uppercase text-sm">Enquire Interest</button>
+                        <p class="text-gray-400 text-xs mb-6 line-clamp-2 italic">${car.description || 'Premium pre-owned car in pristine condition with history check complete.'}</p>
+                        <button class="w-full bg-yellow-500 text-black py-4 rounded-2xl font-black hover:bg-yellow-400 transition uppercase text-xs tracking-widest shadow-lg shadow-yellow-500/10">View Detailed Specs</button>
                     </div>
                 </div>`;
             });
         };
 
-        // Filter Functionality
         window.applyFilters = () => {
             const brand = document.getElementById('filterBrand').value;
             const fuel = document.getElementById('filterFuel').value;
-            
             let filtered = allCarInventory;
-            
-            if (brand !== 'all') {
-                filtered = filtered.filter(doc => doc.data().model.toLowerCase().includes(brand.toLowerCase()));
-            }
-            
-            if (fuel !== 'all') {
-                filtered = filtered.filter(doc => doc.data().fuel === fuel);
-            }
-            
+            if (brand !== 'all') filtered = filtered.filter(doc => doc.data().model.toLowerCase().includes(brand.toLowerCase()));
+            if (fuel !== 'all') filtered = filtered.filter(doc => doc.data().fuel === fuel);
             renderInventory(filtered);
             showToast(`Found ${filtered.length} matches`);
-            
-            // Scroll to inventory
             document.getElementById('inventory').scrollIntoView({ behavior: 'smooth' });
         };
 
@@ -692,16 +749,13 @@
             showToast("Filters Reset");
         };
 
-        // Live Listeners
         const setupListeners = () => {
             if (!auth.currentUser) return;
-            
-            // Car Inventory Listener
             const carQuery = query(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), orderBy('createdAt', 'desc'));
             onSnapshot(carQuery, (snapshot) => {
                 allCarInventory = [];
                 snapshot.forEach(doc => allCarInventory.push(doc));
-                renderInventory(allCarInventory); // Default render all
+                renderInventory(allCarInventory);
             }, err => console.error(err));
         };
 
@@ -728,10 +782,7 @@
         window.deleteCar = async (id) => { if(confirm("Delete this car?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'inventory', id)); };
         window.deleteGallery = async (id) => { if(confirm("Delete this moment?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'gallery', id)); };
 
-        // Start
-        initAuth().then(() => {
-            setupListeners();
-        });
+        initAuth().then(() => { setupListeners(); });
 
         window.addEventListener('scroll', function() {
             const nav = document.querySelector('nav');
