@@ -1309,8 +1309,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-        // Correction for import path
+        // Firestore imports (correct module path)
         import { getFirestore as getDB, collection as col, addDoc as add, onSnapshot as listen, deleteDoc as del, doc as docRef, serverTimestamp as time, query as q, orderBy as ord } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
         // ✅ FIREBASE KEYS
@@ -1333,9 +1332,30 @@
         let isManageModeEnabled = false;
         let allCarInventory = []; 
 
-        window.openModal = (id) => document.getElementById(id).classList.add('active');
-        window.closeModal = (id) => document.getElementById(id).classList.remove('active');
+        const safeGet = (id) => document.getElementById(id);
+        window.openModal = (id) => {
+            const el = safeGet(id);
+            if (el) el.classList.add('active');
+        };
+        window.closeModal = (id) => {
+            const el = safeGet(id);
+            if (el) el.classList.remove('active');
+        };
         window.toggleDashboard = () => openModal('dashboardModal');
+
+        // Ensure login button works even if inline onclick is not fired.
+        const loginBtnEl = safeGet('loginBtn');
+        if (loginBtnEl) {
+            loginBtnEl.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (isManageModeEnabled) {
+                    isManageModeEnabled = false;
+                    updateUIState();
+                } else {
+                    openModal('loginModal');
+                }
+            });
+        }
 
         // Dashboard Tab Management
         window.switchAdminTab = (tab) => {
