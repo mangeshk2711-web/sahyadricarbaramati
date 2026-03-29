@@ -133,8 +133,8 @@
             position: fixed;
             z-index: 100;
             inset: 0;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(12px);
             align-items: center;
             justify-content: center;
         }
@@ -214,7 +214,6 @@
         .admin-form-input:focus {
             border-color: #facc15;
         }
-        /* Style for options inside dark inputs */
         .admin-form-input option {
             background-color: #18181b;
             color: white;
@@ -261,6 +260,28 @@
         }
         .feature-item-label:hover { background: rgba(255,255,255,0.07); }
         .feature-item-label input { accent-color: #facc15; }
+
+        /* Detail Modal Specifics */
+        .detail-card {
+            background: #111;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .detail-card span:first-child { color: #666; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+        .detail-card span:last-child { color: #fff; font-size: 14px; font-weight: 700; }
+
+        .feature-badge {
+            background: rgba(255,255,255,0.05);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            color: #ccc;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
     </style>
 </head>
 <body>
@@ -377,8 +398,8 @@
                             </select>
                         </div>
                         <div class="admin-form-group lg:col-span-3">
-                            <label class="admin-form-label">Car Photo</label>
-                            <input type="file" id="carImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
+                            <label class="admin-form-label">Car Photos (Select multiple for all angles)</label>
+                            <input type="file" id="carImageFile" accept="image/*" multiple class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
                         </div>
                         <div class="admin-form-group lg:col-span-3">
                             <label class="admin-form-label">Car Overview (Description)</label>
@@ -440,6 +461,63 @@
                     <input type="file" id="galleryImageFile" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-400">
                     <button type="submit" class="w-full bg-yellow-500 text-black py-3 rounded-lg font-bold hover:bg-yellow-400">ADD TO GALLERY</button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Car Details Window (Visitor View) -->
+    <div id="carDetailsModal" class="modal">
+        <div class="bg-zinc-950 w-full h-full md:w-[90%] md:h-[90%] md:rounded-[40px] overflow-hidden flex flex-col relative shadow-2xl border border-white/10">
+            <button onclick="closeModal('carDetailsModal')" class="absolute top-6 right-6 z-50 bg-black/50 text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-red-600 transition backdrop-blur-md">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+
+            <div class="flex-1 overflow-y-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2">
+                    <!-- Gallery Left -->
+                    <div class="p-4 md:p-8 bg-black flex flex-col gap-4">
+                        <div class="rounded-3xl overflow-hidden aspect-video bg-zinc-900 border border-white/5">
+                            <img id="mainDetailImage" src="" class="w-full h-full object-cover">
+                        </div>
+                        <div id="thumbnailStrip" class="flex gap-3 overflow-x-auto pb-4 scrollbar-hide">
+                            <!-- Thumbnails load here -->
+                        </div>
+                    </div>
+
+                    <!-- Info Right -->
+                    <div class="p-6 md:p-12">
+                        <p id="detailYearPrice" class="text-yellow-500 font-black uppercase tracking-[0.3em] text-xs mb-2"></p>
+                        <h2 id="detailModel" class="text-4xl md:text-5xl font-black italic uppercase leading-tight text-white mb-8"></h2>
+                        
+                        <!-- Specs Grid -->
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
+                            <div class="detail-card"><span>Fuel</span><span id="specFuel"></span></div>
+                            <div class="detail-card"><span>Driven</span><span id="specKms"></span></div>
+                            <div class="detail-card"><span>Trans.</span><span id="specTrans"></span></div>
+                            <div class="detail-card"><span>Body</span><span id="specBody"></span></div>
+                            <div class="detail-card"><span>Engine</span><span id="specEngine"></span></div>
+                            <div class="detail-card"><span>Owner</span><span id="specOwner"></span></div>
+                        </div>
+
+                        <!-- Car Overview -->
+                        <div class="mb-12">
+                            <h4 class="text-white font-black uppercase text-sm mb-4 border-b border-white/5 pb-2 italic">Car Overview</h4>
+                            <p id="detailDescription" class="text-gray-400 leading-relaxed italic"></p>
+                        </div>
+
+                        <!-- Car Features -->
+                        <div class="mb-12">
+                            <h4 class="text-white font-black uppercase text-sm mb-4 border-b border-white/5 pb-2 italic">Premium Features</h4>
+                            <div id="detailFeatures" class="flex flex-wrap gap-2">
+                                <!-- Badges load here -->
+                            </div>
+                        </div>
+
+                        <div class="sticky bottom-0 bg-zinc-950 pt-4 border-t border-white/5">
+                            <button class="w-full bg-yellow-500 text-black py-5 rounded-2xl font-black uppercase tracking-widest shadow-2xl hover:scale-[1.02] transition">Book Inspection Now</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -703,11 +781,10 @@
             setTimeout(() => { t.className = t.className.replace("show", ""); }, 4000);
         };
 
-        const toBase64 = file => new Promise((resolve, reject) => {
+        const toBase64 = file => new Promise((resolve) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
         });
 
         const initAuth = async () => {
@@ -724,10 +801,6 @@
                 }
             } catch (err) {
                 console.error("Auth failed:", err);
-                if (err.code === 'auth/admin-restricted-operation') {
-                    showToast("Admin Alert: Enable 'Anonymous' Auth in Firebase Console.", true);
-                    document.getElementById('inventoryGrid').innerHTML = '<div class="col-span-full py-20 text-center text-red-500">Enable "Anonymous" Sign-in in Firebase > Authentication.</div>';
-                }
             }
         };
 
@@ -772,24 +845,20 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> PUBLISHING...';
             btn.disabled = true;
 
-            let imgData = "https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800";
-            const fileInput = document.getElementById('carImageFile');
-            
-            if (fileInput.files[0]) {
-                const b64 = await toBase64(fileInput.files[0]);
-                if (b64.length > 900000) { 
-                    showToast("Photo too large! Use a smaller file.", true);
-                    btn.innerHTML = 'PUBLISH CAR'; btn.disabled = false;
-                    return; 
+            const imageFiles = document.getElementById('carImageFile').files;
+            let imagesArray = [];
+
+            if (imageFiles.length > 0) {
+                for(let i=0; i<imageFiles.length; i++){
+                    const b64 = await toBase64(imageFiles[i]);
+                    imagesArray.push(b64);
                 }
-                imgData = b64;
+            } else {
+                imagesArray.push("https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800");
             }
 
-            // Collect selected features
             const features = [];
-            document.querySelectorAll('input[name="feat"]:checked').forEach(cb => {
-                features.push(cb.value);
-            });
+            document.querySelectorAll('input[name="feat"]:checked').forEach(cb => features.push(cb.value));
 
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'inventory'), {
@@ -804,8 +873,8 @@
                     engine: document.getElementById('carEngine').value,
                     insurance: document.getElementById('carInsurance').value,
                     description: document.getElementById('carDescription').value,
-                    features: features, // Saving the list of features
-                    image: imgData,
+                    features: features,
+                    images: imagesArray,
                     createdAt: serverTimestamp()
                 });
                 showToast("Detailed Listing Published!");
@@ -820,31 +889,6 @@
             }
         };
 
-        document.getElementById('addGalleryForm').onsubmit = async (e) => {
-            e.preventDefault();
-            if (!userLoggedIn) return;
-            const btn = e.target.querySelector('button');
-            btn.innerHTML = 'UPLOADING...'; btn.disabled = true;
-
-            let imgData = "https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&q=80&w=800";
-            const fileInput = document.getElementById('galleryImageFile');
-            if (fileInput.files[0]) {
-                imgData = await toBase64(fileInput.files[0]);
-            }
-
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'gallery'), {
-                    title: document.getElementById('galleryTitle').value || "Delivery Moment",
-                    image: imgData,
-                    createdAt: serverTimestamp()
-                });
-                showToast("Moment Added!");
-                document.getElementById('addGalleryForm').reset();
-                closeModal('dashboardModal');
-            } catch (err) { console.error(err); }
-            finally { btn.innerHTML = 'ADD TO GALLERY'; btn.disabled = false; }
-        };
-
         const renderInventory = (cars) => {
             const grid = document.getElementById('inventoryGrid');
             grid.innerHTML = '';
@@ -855,11 +899,13 @@
             
             cars.forEach((carDoc) => {
                 const car = carDoc.data();
+                const coverImage = car.images && car.images.length > 0 ? car.images[0] : (car.image || "https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800");
+                
                 grid.innerHTML += `
                 <div class="bg-zinc-900 rounded-[40px] overflow-hidden shadow-2xl group border border-white/5 relative">
                     ${isManageModeEnabled ? `<button onclick="deleteCar('${carDoc.id}')" class="absolute top-4 right-4 bg-red-600/80 backdrop-blur-md text-white w-10 h-10 rounded-full z-10 hover:bg-red-700 transition flex items-center justify-center"><i class="fas fa-trash"></i></button>` : ''}
                     <div class="relative overflow-hidden h-64">
-                        <img src="${car.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <img src="${coverImage}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                         <div class="absolute bottom-4 left-4 flex gap-2">
                              <span class="bg-black/60 backdrop-blur-md text-white text-[9px] px-3 py-1 rounded-full uppercase font-bold tracking-widest">${car.transmission || 'Manual'}</span>
                              <span class="bg-yellow-500 text-black text-[9px] px-3 py-1 rounded-full uppercase font-bold tracking-widest">${car.owner || '1st Owner'}</span>
@@ -879,10 +925,52 @@
                             <div><i class="fas fa-calendar text-gray-500 text-sm mb-1"></i><p class="font-bold text-[10px] text-gray-300 uppercase">${car.year}</p></div>
                         </div>
                         <p class="text-gray-400 text-xs mb-6 line-clamp-2 italic">${car.description || 'Premium pre-owned car in pristine condition with history check complete.'}</p>
-                        <button class="w-full bg-yellow-500 text-black py-4 rounded-2xl font-black hover:bg-yellow-400 transition uppercase text-xs tracking-widest shadow-lg shadow-yellow-500/10">View Detailed Specs</button>
+                        <button onclick="showCarDetails('${carDoc.id}')" class="w-full bg-yellow-500 text-black py-4 rounded-2xl font-black hover:bg-yellow-400 transition uppercase text-xs tracking-widest shadow-lg shadow-yellow-500/10">View Detailed Specs</button>
                     </div>
                 </div>`;
             });
+        };
+
+        window.showCarDetails = (id) => {
+            const carDoc = allCarInventory.find(d => d.id === id);
+            if (!carDoc) return;
+            const car = carDoc.data();
+
+            document.getElementById('detailModel').innerText = car.model;
+            document.getElementById('detailYearPrice').innerText = `${car.year} • ${car.price}`;
+            document.getElementById('specFuel').innerText = car.fuel;
+            document.getElementById('specKms').innerText = car.kms;
+            document.getElementById('specTrans').innerText = car.transmission || 'Manual';
+            document.getElementById('specBody').innerText = car.bodyType || 'Sedan';
+            document.getElementById('specEngine').innerText = car.engine || 'N/A';
+            document.getElementById('specOwner').innerText = car.owner || '1st Owner';
+            document.getElementById('detailDescription').innerText = car.description || 'No description available.';
+
+            // Images
+            const images = car.images || [car.image];
+            document.getElementById('mainDetailImage').src = images[0];
+            const thumbStrip = document.getElementById('thumbnailStrip');
+            thumbStrip.innerHTML = '';
+            images.forEach((img) => {
+                thumbStrip.innerHTML += `
+                    <div onclick="document.getElementById('mainDetailImage').src='${img}'" class="flex-shrink-0 w-24 aspect-video rounded-lg overflow-hidden border border-white/10 cursor-pointer hover:border-yellow-500 transition">
+                        <img src="${img}" class="w-full h-full object-cover">
+                    </div>
+                `;
+            });
+
+            // Features
+            const featGrid = document.getElementById('detailFeatures');
+            featGrid.innerHTML = '';
+            if (car.features && car.features.length > 0) {
+                car.features.forEach(f => {
+                    featGrid.innerHTML += `<div class="feature-badge"><i class="fas fa-check text-yellow-500 mr-2"></i> ${f}</div>`;
+                });
+            } else {
+                featGrid.innerHTML = '<p class="text-gray-600 text-xs italic">Standard safety and luxury inclusions.</p>';
+            }
+
+            openModal('carDetailsModal');
         };
 
         window.applyFilters = () => {
